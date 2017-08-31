@@ -73,7 +73,9 @@
     <div class="row">
       <div class="col-md-4 col-md-offset-4 buttons">
         <el-button size="large" icon="arrow-left" class="pull-left" @click="back">上一步</el-button>
-        <el-button size="large" type="success" class="pull-right" icon="arrow-right">下一步</el-button>
+        <el-button size="large" type="success" class="pull-right" icon="arrow-right">
+          <router-link :to="'globalConfig'" >下一步</router-link>
+        </el-button>
       </div>
     </div>
   </div>
