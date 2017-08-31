@@ -1,86 +1,11 @@
-// $border-with-shadow-color: #e7ecf3;
-$logo-color: #004a70;
-$theme-color: $logo-color;
 
-$border-with-shadow-color: #d1dade;
 
-$border-gray-shadow-color: rgba(128, 128, 128, 0.25);
-$error-color: #f16a64;
-$gray-color: #666;
-$background-color: #ddd;
-$lighter-background-color: #F3F3F3;
 $green-color: #4CAF50;
-$green-hover-color: darken($green-color, 10%);
-$blue-color: #2196f3; //需要突出的块或文字
-$dark-blue-color: #39f;
-$black-color: #333;
-$gold-color: #F7BA2A;
-$sky-color: #5bc0de;
-$critical-color: #D43340;
-$blocker-color: #D43340;
-$red-color: #D43340;
-$minor-color: #87BB43;
-$info-color: #87BB43;
-$timeline-line: #d7e4ed;
-$link-color: #2196f3;
-$link-hover-color: #2183f3;
-$deep-white-color: #f7f9f9;
-$white-color: white;
-$job-log-line-number-color: #666;
-$job-log-line-color: #F1F1F1;
-$build-detail-back-color: #222;
-$sonar-background-color: #F3F3F3;
 $main-font-color: #333;
-$main-bg-color: #FFF;
-$border-color-s: #CCC;
-$two-triple-color: #222;
-$three-triple-color: #333;
-$user-table-bgc: #B2BCC1;
-$sys-setting-nav-active: #4BBBF4;
-$list-group-active: #d5edf2;
-$copy-right-color: #a8a8a8;
-$span-text-color: #8d9196;
-//
-$btn-success-color: $green-color;
-$btn-primary-color: $blue-color;
-$btn-danger-color: $error-color;
-//左侧构建
-$build-active: darken(#f0f3f6, 5%);
-$prominent-color: #333;
-//默认蓝色字体,蓝色背景
-$default-blue-font-color: #538dba;
-$default-blue-bg-color: #538dba;
-//首页导航栏 背景
-$nav-bg-color: #2a333c;
-// 构建历史 构建状态
-$aborted-color: #7d8e97;
-$success-color: $green-color;
-$building-color: $blue-color;
-$uncompleted-color: $green-color;
-$building-process-color: lighten($blue-color, 20%);
-$failure-color: $error-color;
-$wait-color: #efa850;
-//TABLE
-$table-boarder-color: #e0e7f0;
 $body-background-color: #f3f7f8;
-$select-hover-color: #e5e9f2;
-$select-default-color: #475669;
-$placeholder-color: #a6a6a6;
-//副标题 或者 注释
-$sub-title: #aeaeae;
-$stage-default-color: #9a9898;
-$dev-color: #90a4ae;
-$test-color: #ffbc2c;
-$edit-pipe-color: #777;
-$pure_black_color: #000;
-//新版本颜色
-$sidebar-bg: #283339;
-$sidebar-bg-hover: #21282e;
-$sidebar-text-default: #76909d;
-$worn: #f52749; //警告，提示删除
+$error-color: #f16a64;
+$blue-color: #2196f3; //需要突出的块或文字
+$white-color: white;
 $border-color: #e0e7f0; //分割线
-//sub sidebar
-$sub-sidebar-background: #dce1e2;
 // $default-bg: #fafafa;
 $default-bg: #fafafa;
-$sub-field-color: #8a919c;

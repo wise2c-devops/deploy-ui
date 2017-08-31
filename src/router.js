@@ -5,6 +5,10 @@ export default new VueRouter({
     {
       path: '/',
       component: require('./components/IndexPage.vue')
+    },
+    {
+      path: '/hosts',
+      component: require('./components/Hosts.vue')
     }
 
   ]

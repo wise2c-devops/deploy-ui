@@ -1,5 +1,5 @@
 <template>
-  <div id="container">
+  <div id="container" class="container">
     <router-view ></router-view>
     <loading></loading>
   </div>
@@ -28,11 +28,11 @@
       }
     },
     store,
-    watch: {
-      '$route'(to) {
-        this.mainCollsapn.key = false
-      }
-    },
+    // watch: {
+    //   '$route'(to) {
+    //     this.mainCollsapn.key = false
+    //   }
+    // },
     created () {
       this.showLoading()
       this.hideLoading()
@@ -58,11 +58,9 @@
 
 <style lang="scss">
   @import "./assets/stylesheets/variables";
-  @import "./assets/stylesheets/common.scss";
+
   @import "./assets/stylesheets/main.scss";
   @import "./assets/vendor/bootstrap/stylesheets/bootstrap.scss";
   @import "./assets/vendor/font-awesome/scss/font-awesome.scss";
-  @import "./assets/stylesheets/patchs";
   @import "./assets/stylesheets/theme";
-  @import "./assets/stylesheets/button";
 </style>
