@@ -9,6 +9,10 @@ export default new VueRouter({
     {
       path: '/hosts',
       component: require('./components/Hosts.vue')
+    },
+    {
+      path: '/globalConfig',
+      component: require('./components/GlobalConfig.vue')
     }
 
   ]
