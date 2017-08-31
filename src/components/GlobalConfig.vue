@@ -3,7 +3,7 @@
     <div class="row m0 mb-lg">
       <h4 class="pull-left pl-sm">全局配置</h4>
       <div class="pull-right pr-sm">
-        <button class="btn btn-default">返回</button>
+        <button class="btn btn-default" @click="goBack">返回</button>
         <button class="btn btn-success">下一步</button>
       </div>
     </div>
@@ -55,15 +55,17 @@
       return {
         changeInstall: ['Etcd', 'K8sMaster', 'K8sNode', 'Mysql', 'LoadBalance', 'Wisecloud']
       }
+    },
+    methods: {
+      goBack () {
+        window.history.back()
+      }
     }
   }
 </script>
 <style lang="scss">
   .install-config {
-    padding: 0 100px;
-    .bg-white {
-      background: #FFF;
-    }
+    margin: 50px 270px 0 270px;
     .split-line {
       height: 1px;
       border-top: 1px solid #ddd;
@@ -78,6 +80,11 @@
       }
     }
     .foot {
+      ul {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+      }
       li {
         padding-left: 8%;
         &:first-child {

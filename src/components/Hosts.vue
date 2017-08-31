@@ -2,7 +2,9 @@
   <div class="container">
     <div class="row add-host">
       <el-button size="small" type="primary" icon="plus" @click="addRow">添加主机</el-button>
-      <el-button size="small" type="success" icon="arrow-right" class="pull-right">下一步</el-button>
+      <el-button size="small" type="success" icon="arrow-right" class="pull-right">
+        <router-link :to="'globalConfig'">下一步</router-link>
+      </el-button>
     </div>
     <div class="row">
 
