@@ -1,11 +1,6 @@
 <template>
-  <div id="wrapper">
-    <template v-if="!isLogin">
-      <h3>Hello</h3>
-    </template>
-    <div v-if="isLogin">
-      <router-view ></router-view>
-    </div>
+  <div id="container">
+    <router-view ></router-view>
     <loading></loading>
   </div>
 </template>

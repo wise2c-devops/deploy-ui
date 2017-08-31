@@ -7,10 +7,6 @@ import router from './router'
 import $ from 'jquery'
 import "spinkit/css/spinners/9-cube-grid.css"
 import moment from 'moment'
-import 'dragula/dist/dragula.min.css'
-import 'hint.css/hint.css'
-import './assets/wise-icons/css/fontello.css'
-
 import Element from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 
