@@ -1,0 +1,73 @@
+<template>
+  <div id="wrapper">
+    <template v-if="!isLogin">
+      <h3>Hello</h3>
+    </template>
+    <div v-if="isLogin">
+      <router-view ></router-view>
+    </div>
+    <loading></loading>
+  </div>
+</template>
+<style lang="scss">
+
+</style>
+<script type="text/javascript">
+  import Loading from './components/Loading.vue'
+  import {showLoading, hideLoading} from './vuex/actions'
+  import store from './vuex/store'
+  import $ from 'jquery'
+
+
+  export default {
+    components: {
+      Loading
+    },
+    data() {
+      return {
+        title: 'WiseBuild',
+        collapse: true,
+        mainCollsapn: {key: false},
+        showMainNav: false,
+        content: ""
+      }
+    },
+    store,
+    watch: {
+      '$route'(to) {
+        this.mainCollsapn.key = false
+      }
+    },
+    created () {
+      this.showLoading()
+      this.hideLoading()
+    },
+    mounted () {
+      $('body').on('hidden.bs.modal', '.modal.should-clean', function () {
+        $(this).find('input').val('')
+      })
+      this.$root.eventHub.$on('UPDATE_TITLE', this.updataTitle)
+    },
+    computed : {
+    },
+    methods: {
+    },
+    vuex: {
+      actions: {
+        showLoading,
+        hideLoading
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import "./assets/stylesheets/variables";
+  @import "./assets/stylesheets/common.scss";
+  @import "./assets/stylesheets/main.scss";
+  @import "./assets/vendor/bootstrap/stylesheets/bootstrap.scss";
+  @import "./assets/vendor/font-awesome/scss/font-awesome.scss";
+  @import "./assets/stylesheets/patchs";
+  @import "./assets/stylesheets/theme";
+  @import "./assets/stylesheets/button";
+</style>

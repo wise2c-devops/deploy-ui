@@ -1,0 +1,9 @@
+before_script:
+  - apt-get update -qq && apt-get install -y -qq nodejs
+  - node -v
+  - npm install -g cnpm
+  - cnpm install -g webpack
+  - cnpm install
+rspec:
+  script:
+    - npm build
