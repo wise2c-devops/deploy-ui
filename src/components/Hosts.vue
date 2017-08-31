@@ -2,11 +2,9 @@
   <div class="container">
     <div class="row add-host">
       <el-button size="small" type="primary" icon="plus" @click="addRow">添加主机</el-button>
-      <el-button size="small" type="success" icon="arrow-right" class="pull-right">下一步</el-button>
     </div>
-    <div class="row">
-
-      <el-table :data="hosts" style="width: 100%" :row-class-name="tableRowClassName" stripe="true">
+    <div class="row hosts-table">
+      <el-table :data="hosts" style="width: 100%" :row-class-name="tableRowClassName" :stripe="true">
         <el-table-column align="center" prop="index" label="序号" width="70">
           <template scope="scope">
             {{scope.$index + 1}}
@@ -71,6 +69,13 @@
         </el-table-column>
       </el-table>
     </div>
+
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4 buttons">
+        <el-button size="large" icon="arrow-left" class="pull-left" @click="back">上一步</el-button>
+        <el-button size="large" type="success" class="pull-right" icon="arrow-right">下一步</el-button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -79,6 +84,9 @@ export default {
   methods: {
     deleteRow(index, rows) {
       rows.splice(index, 1)
+    },
+    back() {
+      this.$router.go(-1)
     },
     addRow() {
       this.hosts.push({
@@ -126,8 +134,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 .add-host {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+}
+
+.buttons {
+  margin-top: 100px;
+  padding: 0 80px;
 }
 </style>
-
-
