@@ -3,7 +3,7 @@
 //style for big screen
 @media (min-width: 1440px) {
   .container {
-    width: 1344px;
+    width: 1380px !important;
     .app-item {
       height: 240px;
       i.app-icon {
@@ -23,7 +23,7 @@ body {
   background: $body-background-color;
   font-family: Avenir, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
   font-size: 12px;
-  #container {
-    margin-top: 100px;
+  .container {
+    margin-top: 50px;
   }
 }
