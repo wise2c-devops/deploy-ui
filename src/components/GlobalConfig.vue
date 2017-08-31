@@ -4,7 +4,9 @@
       <h4 class="pull-left pl-sm">全局配置</h4>
       <div class="pull-right pr-sm">
         <button class="btn btn-default" @click="goBack">返回</button>
-        <button class="btn btn-success">下一步</button>
+        <button class="btn btn-success">
+          <router-link :to="'process'">下一步</router-link>
+        </button>
       </div>
     </div>
     <div class="row m0 bg-white">
@@ -41,7 +43,7 @@
       <span>安装选项</span>
     </div>
     <div class="bg-white row ml0 mr0 mt-lg foot">
-      <ul class="ul-clear-style m0">
+      <ul class="clear-style m0">
         <li class="pull-left pt-sm pb-sm" v-for="item in changeInstall">
           <el-checkbox class="m0"></el-checkbox> <label class="m0">{{item}}</label>
         </li>
@@ -80,11 +82,6 @@
       }
     }
     .foot {
-      ul {
-        list-style: none;
-        padding-left: 0;
-        margin: 0;
-      }
       li {
         padding-left: 8%;
         &:first-child {

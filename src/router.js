@@ -13,6 +13,10 @@ export default new VueRouter({
     {
       path: '/globalConfig',
       component: require('./components/GlobalConfig.vue')
+    },
+    {
+      path: '/process',
+      component: require('./components/Process.vue')
     }
 
   ]

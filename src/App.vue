@@ -58,7 +58,6 @@
 
 <style lang="scss">
   @import "./assets/stylesheets/variables";
-
   @import "./assets/stylesheets/main.scss";
   @import "./assets/vendor/bootstrap/stylesheets/bootstrap.scss";
   @import "./assets/vendor/font-awesome/scss/font-awesome.scss";
