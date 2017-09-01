@@ -5,7 +5,7 @@
       <div class="pull-right pr-sm">
         <button class="btn btn-default" @click="goBack">返回</button>
         <button class="btn btn-success">
-          <router-link :to="'process'">下一步</router-link>
+          <router-link tag="span" :to="'process'">下一步</router-link>
         </button>
       </div>
     </div>
