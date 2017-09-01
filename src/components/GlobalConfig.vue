@@ -4,9 +4,7 @@
       <h4 class="pull-left pl-sm">全局配置</h4>
       <div class="pull-right pr-sm">
         <button class="btn btn-default" @click="goBack">返回</button>
-        <button class="btn btn-success">
-          <router-link tag="span" :to="'process'">下一步</router-link>
-        </button>
+        <router-link class="btn btn-success" :to="'process'">下一步</router-link>
       </div>
     </div>
     <div class="row m0 bg-white">

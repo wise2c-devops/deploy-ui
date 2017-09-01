@@ -12,9 +12,7 @@
       </li>
     </ul>
     <div class="mt-lg text-center">
-      <btton class="btn btn-default pt-lg">
-        <router-link tag="span" :to="'/'">取消</router-link>
-      </btton>
+      <router-link class="btn btn-default" tag="span" :to="'/'">取消</router-link>
     </div>
   </div>
 </template>
