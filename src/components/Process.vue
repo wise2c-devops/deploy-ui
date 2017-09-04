@@ -11,8 +11,8 @@
         </div>
       </li>
     </ul>
-    <div class="mt-lg text-center">
-      <router-link class="btn btn-default" tag="span" :to="'/'">取消</router-link>
+    <div class="mt-lg text-center btn-wrapper">
+      <el-button size="large" icon="" class="pull-left" @click="back">取消</el-button>
     </div>
   </div>
 </template>
@@ -29,6 +29,13 @@
           {name: 'Wisecloud', icon: 'wise-icon-wisecloud'},
           {name: 'Registry', icon: 'wise-icon-registry'}
         ]
+      }
+    },
+    methods: {
+      back () {
+        this.$router.push({
+          path: '/'
+        })
       }
     }
   }
@@ -61,6 +68,10 @@
       &:first-child {
         padding-left: 0;
       }
+    }
+    .btn-wrapper {
+      width: 0;
+      margin: auto;
     }
   }
 </style>

@@ -73,9 +73,7 @@
     <div class="row">
       <div class="col-md-4 col-md-offset-4 buttons">
         <el-button size="large" icon="arrow-left" class="pull-left" @click="back">上一步</el-button>
-        <el-button size="large" type="success" class="pull-right" icon="arrow-right">
-          <router-link :to="'globalConfig'" >下一步</router-link>
-        </el-button>
+        <el-button size="large" type="success" class="pull-right" icon="arrow-right" @click="next">下一步</el-button>
       </div>
     </div>
   </div>
@@ -89,6 +87,11 @@ export default {
     },
     back() {
       this.$router.go(-1)
+    },
+    next () {
+      this.$router.push({
+        path: 'globalConfig'
+      })
     },
     addRow() {
       this.hosts.push({
@@ -138,7 +141,6 @@ export default {
 .add-host {
   margin-bottom: 10px;
 }
-
 .buttons {
   margin-top: 100px;
   padding: 0 80px;

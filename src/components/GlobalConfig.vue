@@ -1,11 +1,7 @@
 <template>
   <div class="install-config">
-    <div class="row m0 mb-lg">
-      <h4 class="pull-left pl-sm">全局配置</h4>
-      <div class="pull-right pr-sm">
-        <button class="btn btn-default" @click="goBack">返回</button>
-        <router-link class="btn btn-success" :to="'process'">下一步</router-link>
-      </div>
+    <div class="row m0">
+      <h4 class="mb-lg">全局配置</h4>
     </div>
     <div class="row m0 bg-white">
       <div class="col-sm-6">
@@ -47,6 +43,12 @@
         </li>
       </ul>
     </div>
+    <div class="row mt-lg">
+      <div class="col-md-4 col-md-offset-4 buttons">
+        <el-button size="large" icon="arrow-left" class="pull-left" @click="back">上一步</el-button>
+        <el-button size="large" type="success" class="pull-right" icon="arrow-right" @click="next">下一步</el-button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -57,8 +59,13 @@
       }
     },
     methods: {
-      goBack () {
-        window.history.back()
+      back() {
+        this.$router.go(-1)
+      },
+      next () {
+        this.$router.push({
+          path: 'process'
+        })
       }
     }
   }
