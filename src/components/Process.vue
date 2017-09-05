@@ -1,5 +1,5 @@
 <template>
-  <div class="process">
+  <div class="process middle">
     <ul class="clear-style row m0">
       <li class="pull-left" v-for="item in allProcess">
         <div class="box">
@@ -11,7 +11,7 @@
         </div>
       </li>
     </ul>
-    <div class="mt-lg text-center btn-wrapper">
+    <div class="text-center btn-wrapper">
       <el-button size="large" icon="" class="pull-left" @click="back">取消</el-button>
     </div>
   </div>
@@ -43,7 +43,8 @@
 <style lang="scss">
   @import "../assets/stylesheets/variables";
   .process {
-    margin: 150px 270px;
+    width:80%;
+    height: 150px;
     li {
       border-top: 1px solid #cdd1d9;
       padding-left: 10%;
@@ -71,6 +72,7 @@
     }
     .btn-wrapper {
       width: 0;
+      padding-top: 50px;
       margin: auto;
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="container welcome">
+  <div class="container welcome middle">
     <div class="row">
       <div class="col-md-8 col-md-offset-2 ">
         <img src="../assets/images/index.png" alt="" width="100%">
@@ -11,7 +11,7 @@
 </template>
 <style lang="scss" scoped>
   .welcome {
-    margin-top: 150px;
+    margin-top: 0px;
     text-align: center;
   }
 </style>

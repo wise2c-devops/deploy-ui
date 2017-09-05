@@ -31,6 +31,16 @@ body {
   list-style: none;
   padding-left: 0;
 }
+//垂直、左右居中
+.middle {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -ms-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
 .m0 {margin: 0}
 .mb-lg {margin-bottom: 30px;}
 .mt-sm {margin-top: 15px;}
