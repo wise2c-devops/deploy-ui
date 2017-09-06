@@ -20,7 +20,7 @@
     },
     data() {
       return {
-        title: 'WiseBuild',
+        title: 'Deployment UI',
         collapse: true,
         mainCollsapn: {key: false},
         showMainNav: false,
