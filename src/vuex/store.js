@@ -16,9 +16,15 @@ const mutations = {
     state.clusters = clusters
   },
   ADD_CLUSTER(state, cluster) {
-    console.log(state.clusters, cluster)
     state.clusters.push(cluster)
+  },
+  UPDATE_CLUSTER(state, cluster) {
+    console.log(cluster)
+  },
+  DELETE_CLUSTER(state, index) {
+    state.clusters.splice(index, 1)
   }
+
 }
 
 export default new Vuex.Store({

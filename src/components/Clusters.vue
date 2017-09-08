@@ -15,39 +15,57 @@
         </div>
         <span class="app-name">{{cluster.name}}</span>
         <span class="hint--top help app-edit" aria-label="编辑应用">
-          <i class="fa fa-cog app-edit" @click.prevent.stop="editProduct(cluster)"></i>
+          <i class="fa fa-cog app-edit" @click.prevent.stop="editClusterDialog(cluster)"></i>
         </span>
         <span class="hint--top help app-delete" aria-label="删除应用">
-          <i class="fa fa-trash" @click.prevent.stop="deleteCluster"></i>
+          <i class="fa fa-trash" @click.prevent.stop="remove(index)"></i>
         </span>
       </a>
     </div>
-    <cluster-dialog :dialog-visible.sync="dialogVisible" :add-cluster="create"></cluster-dialog>
+    <cluster-dialog :dialog-visible.sync="dialogVisible" :add-cluster="create" :cluster="cluster" :update-cluster="updateCluster"></cluster-dialog>
   </div>
 </template>
 
 <script type="text/javascript">
 import ClusterDialog from './common/ClusterDialog'
-import { fetchClusters, createCluster } from 'vuexPath/actions'
+import { fetchClusters, createCluster, deleteCluster } from 'vuexPath/actions'
 import { getClusters } from 'vuexPath/getters'
+import { promptOnDelete } from '../utils/prompt'
+import { pop } from '../utils/alert'
 export default {
   components: { ClusterDialog },
   data() {
     return {
-      dialogVisible: false
+      dialogVisible: false,
+      cluster: {
+        name: "",
+        description: ""
+      }
     }
   },
   methods: {
-    deleteCluster() {
-
+    remove(index) {
+      promptOnDelete(this, "如确认删除该集群", () => {
+        this.deleteCluster(index, () => {
+          pop('删除集群成功')
+        })
+      })
     },
-    editCluster(cluster) {
+    editClusterDialog(cluster) {
+      this.cluster = cluster
+      this.dialogVisible = true
+    },
+    updateCluster(cluster) {
 
     },
     showCluster(cluster) {
 
     },
     addClusterDialog() {
+      this.cluster = {
+        name: "",
+        description: ""
+      }
       this.dialogVisible = true
       return
     },
@@ -57,13 +75,14 @@ export default {
       this.dialogVisible = false
     }
   },
-  mounted () {
+  mounted() {
     this.fetchClusters()
   },
   vuex: {
     actions: {
       fetchClusters,
-      createCluster
+      createCluster,
+      deleteCluster
     },
     getters: {
       clusters: getClusters

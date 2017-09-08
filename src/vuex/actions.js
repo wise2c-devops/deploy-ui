@@ -32,3 +32,12 @@ export const createCluster = ({dispatch}, cluster, success = ()=>{}) => {
   dispatch('ADD_CLUSTER', cluster)
   success()
 }
+
+export const updateCluster = ({dispatch}, cluster, success = ()=> {}) => {
+  dispatch('UPDATE_CLUSTER', cluster)
+  success()
+}
+export const deleteCluster = ({dispatch}, index, success = ()=> {}) => {
+  dispatch('DELETE_CLUSTER', index)
+  success()
+}

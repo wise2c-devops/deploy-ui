@@ -12,7 +12,7 @@
     </form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
-      <el-button type="primary" @click="addCluster(cluster)">确 定</el-button>
+      <el-button type="primary" @click="callMethod">确 定</el-button>
     </span>
   </el-dialog>
 </template>
@@ -23,21 +23,11 @@ export default {
       type: Boolean,
       default: false
     },
-    addCluster: Function
-  },
-  watch: {
-    dialogVisible (newDialogVisible) {
-      if (!!newDialogVisible) {
-        this.cluster = {
-          name: "",
-          description: ""
-        }
-      }
-    }
-  },
-  data() {
-    return {
-      cluster: {
+    addCluster: Function,
+    updateCluster: Function,
+    cluster: {
+      type: Object,
+      default: {
         name: "",
         description: ""
       }
@@ -46,6 +36,12 @@ export default {
   methods: {
     close() {
       this.$emit('update:dialogVisible', false)
+    },
+    callMethod() {
+      if(!!this.cluster.id) {
+        return this.updateCluster(this.cluster)
+      }
+      return this.addCluster(this.cluster)
     }
   }
 }
