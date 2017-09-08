@@ -22,7 +22,7 @@
         </span>
       </a>
     </div>
-    <cluster-dialog :dialog-visible="dialogVisible"></cluster-dialog>
+    <cluster-dialog :dialog-visible.sync="dialogVisible"></cluster-dialog>
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="添加集群" v-model="dialogVisible" size="tiny" :close-on-click-modal="false" :show-close="false">
+  <el-dialog title="添加集群" :visible="dialogVisible" size="tiny" :close-on-click-modal="false" :show-close="false">
     <span>这是一段信息</span>
     <span slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
@@ -11,10 +11,13 @@
 export default {
   props: ['dialogVisible'],
   data() {
+    return {
+      abc: ""
+    }
   },
   methods: {
     close() {
-      this.$emit('closeDialog')
+      this.$emit('update:dialogVisible', false)
     }
   }
 }
