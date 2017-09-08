@@ -21,6 +21,20 @@ export default new VueRouter({
     {
       path: '/process',
       component: require('./components/Process.vue')
+    },
+    {
+      path: '/clusters/:id',
+      component: require('./components/ClusterBase.vue'),
+      children: [
+        {
+          path: 'hosts',
+          component: require('./components/Hosts.vue')
+        },
+        {
+          path: 'components',
+          component: require('./components/Hosts.vue')
+        }
+      ]
     }
 
   ]

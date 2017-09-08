@@ -4,63 +4,19 @@
       <el-button size="small" type="primary" icon="plus" @click="addRow">添加主机</el-button>
     </div>
     <div class="row hosts-table">
-      <el-table :data="hosts" style="width: 100%" :row-class-name="tableRowClassName" :stripe="true">
-        <el-table-column align="center" prop="index" label="序号" width="70">
+      <el-table :data="hosts" :row-class-name="tableRowClassName" :stripe="true">
+        <el-table-column align="center" prop="index" label="序号" >
           <template scope="scope">
             {{scope.$index + 1}}
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="host" label="Node" width="150">
-          <template scope="scope">
-            <el-input v-model="scope.row.host" placeholder="请输入IP"></el-input>
-          </template>
+        <el-table-column align="center" prop="host" label="IP" >
         </el-table-column>
-        <el-table-column align="center" prop="etcd" label="etcd" width="70">
-          <template scope="scope">
-            <el-checkbox v-model="scope.row.etcd"></el-checkbox>
-          </template>
+        <el-table-column align="center" prop="name" label="名称" >
         </el-table-column>
-        <el-table-column align="center" prop="mysqlSlave1" label="mysqlSlave1" width="130">
-          <template scope="scope">
-            <el-checkbox v-model="scope.row.mysqlSlave1"></el-checkbox>
-          </template>
+        <el-table-column align="center" prop="description" label="描述" >
         </el-table-column>
-        <el-table-column align="center" prop="mysqlSlave2" label="mysqlSlave2" width="130">
-          <template scope="scope">
-            <el-checkbox v-model="scope.row.mysqlSlave2"></el-checkbox>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" prop="mysqlSlave3" label="mysqlSlave3" width="130">
-          <template scope="scope">
-            <el-checkbox v-model="scope.row.mysqlSlave3"></el-checkbox>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" prop="loadBalancer" label="LoadBalancer">
-          <template scope="scope">
-            <el-checkbox v-model="scope.row.loadBalancer"></el-checkbox>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" prop="k8sMaster" label="K8sMaster">
-          <template scope="scope">
-            <el-checkbox v-model="scope.row.k8sMaster"></el-checkbox>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" prop="registry" label="Registry" width="100">
-          <template scope="scope">
-            <el-checkbox v-model="scope.row.registry"></el-checkbox>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" prop="control" label="WisecloudControl/k8sNode">
-          <template scope="scope">
-            <el-checkbox v-model="scope.row.control"></el-checkbox>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" prop="normal" label="Normal/k8sNode">
-          <template scope="scope">
-            <el-checkbox v-model="scope.row.normal"></el-checkbox>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="操作" width="70">
+        <el-table-column align="center" label="操作" >
           <template scope="scope">
             <el-button @click.native.prevent="deleteRow(scope.$index, hosts)" type="text" size="small">
               删除
@@ -96,15 +52,8 @@ export default {
     addRow() {
       this.hosts.push({
         host: '10.0.0.100',
-        etcd: false,
-        mysqlSlave1: false,
-        mysqlSlave2: false,
-        mysqlSlave3: false,
-        loadBalancer: false,
-        k8sMaster: false,
-        registry: false,
-        control: false,
-        normal: false
+        name: "dev1",
+        description: "睿云开发1"
       })
     }
   },
@@ -112,26 +61,13 @@ export default {
     return {
       hosts: [{
         host: '10.0.2.100',
-        etcd: true,
-        mysqlSlave1: true,
-        mysqlSlave2: true,
-        mysqlSlave3: true,
-        loadBalancer: true,
-        k8sMaster: false,
-        registry: false,
-        control: true,
-        normal: false
+        name: "dev4",
+        description: "睿云开发4"
       }, {
         host: '10.0.2.199',
         etcd: true,
-        mysqlSlave1: true,
-        mysqlSlave2: false,
-        mysqlSlave3: true,
-        loadBalancer: true,
-        k8sMaster: false,
-        registry: false,
-        control: true,
-        normal: false
+        name: "dev2",
+        description: "睿云开发2"
       }]
     }
   }
