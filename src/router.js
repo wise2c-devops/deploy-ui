@@ -7,6 +7,10 @@ export default new VueRouter({
       component: require('./components/IndexPage.vue')
     },
     {
+      path: '/clusters',
+      component: require('./components/Clusters.vue')
+    },
+    {
       path: '/hosts',
       component: require('./components/Hosts.vue')
     },

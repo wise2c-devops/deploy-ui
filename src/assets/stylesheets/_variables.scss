@@ -6,6 +6,10 @@ $body-background-color: #f3f7f8;
 $error-color: #f16a64;
 $blue-color: #2196f3; //需要突出的块或文字
 $white-color: white;
-$border-color: #e0e7f0; //分割线
+$border-color: darken(#e0e7f0, 10%);
+$border-hover-color: darken($border-color, .05);
 // $default-bg: #fafafa;
 $default-bg: #fafafa;
+
+$red-color:red;
+$gray-color: #333;
