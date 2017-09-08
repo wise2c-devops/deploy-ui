@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="col-md-2 col-lg-pr-2">
-      <div class="app-item add-item" @click="addCluster">
+      <div class="app-item add-item" @click="addClusterDialog">
         <div class="add">
           <i class="fa fa-plus"></i>
         </div>
@@ -22,22 +22,19 @@
         </span>
       </a>
     </div>
-    <cluster-dialog :dialog-visible.sync="dialogVisible"></cluster-dialog>
+    <cluster-dialog :dialog-visible.sync="dialogVisible" :add-cluster="create"></cluster-dialog>
   </div>
 </template>
 
 <script type="text/javascript">
 import ClusterDialog from './common/ClusterDialog'
+import { fetchClusters, createCluster } from 'vuexPath/actions'
+import { getClusters } from 'vuexPath/getters'
 export default {
-  components: {ClusterDialog},
+  components: { ClusterDialog },
   data() {
     return {
-      dialogVisible: false,
-      clusters: [{
-        name: "DevOps"
-      }, {
-        name: "平安 POC"
-      }]
+      dialogVisible: false
     }
   },
   methods: {
@@ -50,9 +47,26 @@ export default {
     showCluster(cluster) {
 
     },
-    addCluster() {
+    addClusterDialog() {
       this.dialogVisible = true
       return
+    },
+    create(cluster) {
+      var newCluster = Object.assign({}, cluster)
+      this.createCluster(newCluster)
+      this.dialogVisible = false
+    }
+  },
+  mounted () {
+    this.fetchClusters()
+  },
+  vuex: {
+    actions: {
+      fetchClusters,
+      createCluster
+    },
+    getters: {
+      clusters: getClusters
     }
   }
 }

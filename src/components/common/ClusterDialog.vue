@@ -1,18 +1,46 @@
 <template>
   <el-dialog title="添加集群" :visible="dialogVisible" size="tiny" :close-on-click-modal="false" :show-close="false">
-    <span>这是一段信息</span>
+    <form>
+      <div class="form-group">
+        <label for="clusterName">集群名称</label>
+        <input type="text" class="form-control" v-model="cluster.name" id="clusterName" placeholder="请输入集群名字">
+      </div>
+      <div class="form-group">
+        <label for="clusterDescrtipion">集群描述</label>
+        <input type="text" class="form-control" v-model="cluster.description" id="clusterDescrtipion" placeholder="描述">
+      </div>
+    </form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
-      <el-button type="primary" @click="close">确 定</el-button>
+      <el-button type="primary" @click="addCluster(cluster)">确 定</el-button>
     </span>
   </el-dialog>
 </template>
 <script>
 export default {
-  props: ['dialogVisible'],
+  props: {
+    dialogVisible: {
+      type: Boolean,
+      default: false
+    },
+    addCluster: Function
+  },
+  watch: {
+    dialogVisible (newDialogVisible) {
+      if (!!newDialogVisible) {
+        this.cluster = {
+          name: "",
+          description: ""
+        }
+      }
+    }
+  },
   data() {
     return {
-      abc: ""
+      cluster: {
+        name: "",
+        description: ""
+      }
     }
   },
   methods: {

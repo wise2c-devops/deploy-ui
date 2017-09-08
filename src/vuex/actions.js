@@ -14,3 +14,21 @@ export const hideLoading = function ({ dispatch }, success = null) {
     if (success !== null) success()
   }, 500)
 }
+
+export const fetchClusters = ({dispatch}, success = ()=> {}) => {
+  dispatch('UPDATE_CLUSTERS', [{
+    id: 1,
+    name: "DevOps",
+    description: ""
+  }, {
+    id: 22,
+    name: "平安 POC",
+    description: ""
+  }])
+  success()
+}
+
+export const createCluster = ({dispatch}, cluster, success = ()=>{}) => {
+  dispatch('ADD_CLUSTER', cluster)
+  success()
+}
