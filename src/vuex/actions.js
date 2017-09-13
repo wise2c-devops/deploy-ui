@@ -1,5 +1,6 @@
-import {get} from '../utils/rest'
+import {get, post} from '../utils/rest'
 import API from '../utils/rest'
+import {pop, popWarn} from '../utils/alert'
 export const showLoading = function ({ dispatch }, success = null) {
   dispatch('UPDATE_LOADING', true)
   if (success !== null) success()
@@ -19,23 +20,21 @@ export const hideLoading = function ({ dispatch }, success = null) {
 
 export const fetchClusters = ({dispatch}, success = ()=> {}) => {
   get(API.CLUSTERS).then((response) => {
-    console.log(response.body)
+    dispatch('UPDATE_CLUSTERS', response.body)
+    success()
+  }).catch(() => {
+    popWarn('获取集群失败')
   })
-  dispatch('UPDATE_CLUSTERS', [{
-    id: 1,
-    name: "DevOps",
-    description: ""
-  }, {
-    id: 22,
-    name: "平安 POC",
-    description: ""
-  }])
-  success()
 }
 
 export const createCluster = ({dispatch}, cluster, success = ()=>{}) => {
-  dispatch('ADD_CLUSTER', cluster)
-  success()
+  post(API.CLUSTERS, cluster).then((response) => {
+    dispatch('ADD_CLUSTER', response.body)
+    pop("创建集群成功")
+    success()
+  }).catch(() => {
+    popWarn('创建新集群失败')
+  })
 }
 
 export const updateCluster = ({dispatch}, cluster, success = ()=> {}) => {

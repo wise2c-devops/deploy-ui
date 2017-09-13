@@ -8,6 +8,7 @@ export default new VueRouter({
     },
     {
       path: '/clusters',
+      name: "clusters",
       component: require('./components/Clusters.vue')
     },
     {

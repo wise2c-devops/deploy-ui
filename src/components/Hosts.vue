@@ -45,7 +45,7 @@ export default {
       rows.splice(index, 1)
     },
     back() {
-      this.$router.go(-1)
+      this.$router.push({name: 'clusters'})
     },
     next () {
       this.$router.push({
