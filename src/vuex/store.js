@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Cluster from './modules/cluster'
 Vue.use(Vuex)
 
 const state = {
@@ -30,5 +31,7 @@ const mutations = {
 export default new Vuex.Store({
   state,
   mutations,
-  modules: {}
+  modules: {
+    cluster: Cluster
+  }
 })

@@ -46,7 +46,7 @@ export default {
   methods: {
     remove(index, id) {
       promptOnDelete(this, "如确认删除该集群", () => {
-        this.deleteCluster(index, id, () => {
+        this.deleteCluster(id, index, () => {
           pop('删除集群成功')
         })
       })
@@ -59,7 +59,7 @@ export default {
 
     },
     showCluster(cluster) {
-      this.$router.push({name: "hosts", params: {id: cluster.id}})
+      this.$router.push({ name: "hosts", params: { id: cluster.id } })
     },
     addClusterDialog() {
       this.cluster = {

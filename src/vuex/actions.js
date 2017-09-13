@@ -42,7 +42,7 @@ export const updateCluster = ({dispatch}, cluster, success = ()=> {}) => {
   success()
 }
 export const deleteCluster = ({dispatch}, id, index, success = ()=> {}) => {
-  destroy(formatString(API.CLUSTER, id), {}).then(() => {
+  destroy(formatString(API.CLUSTER.DETAIL, id), {}).then(() => {
     dispatch('DELETE_CLUSTER', index)
     success()
   }).catch(() => {

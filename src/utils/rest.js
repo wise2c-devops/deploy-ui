@@ -7,7 +7,11 @@ superagentJsonapify(superagent)
 
 export default {
   CLUSTERS: "/v1/clusters",
-  CLUSTER: "v1/clusters/$1"
+  CLUSTER: {
+    DETAIL: "/v1/clusters/$1",
+    HOSTS: "/v1/clusters/$1/hosts",
+    COMPONENTS: "/v1/clusters/$1/components"
+  }
 }
 
 

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row add-host">
-      <el-button size="small" type="primary" icon="plus" @click="addRow">添加主机</el-button>
+      <el-button size="small" type="primary" icon="plus" @click="addHostDialog">添加主机</el-button>
     </div>
     <div class="row hosts-table">
       <el-table :data="hosts" :row-class-name="tableRowClassName" :stripe="true">
@@ -10,9 +10,9 @@
             {{scope.$index + 1}}
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="host" label="IP" >
+        <el-table-column align="center" prop="ip" label="IP" >
         </el-table-column>
-        <el-table-column align="center" prop="name" label="名称" >
+        <el-table-column align="center" prop="hostname" label="名称" >
         </el-table-column>
         <el-table-column align="center" prop="description" label="描述" >
         </el-table-column>
@@ -32,13 +32,21 @@
         <el-button size="large" type="success" class="pull-right" icon="arrow-right" @click="next">下一步</el-button>
       </div>
     </div>
+    <host-dialog :dialog-visible.sync="dialogVisible" :add-host="create" :host="host" :update-host="updateHost"></host-dialog>
   </div>
 </template>
 
 <script>
+import {fetchHosts, getHosts, addHost} from 'vuexPath/modules/cluster'
+import HostDialog from './common/HostDialog'
+import {pop} from '../utils/alert'
 export default {
+  components: {
+    HostDialog
+  },
   mounted() {
     this.$root.$emit('clusterPage', 'hosts')
+    this.fetchHosts(this.$route.params.id)
   },
   methods: {
     deleteRow(index, rows) {
@@ -52,26 +60,33 @@ export default {
         path: 'globalConfig'
       })
     },
-    addRow() {
-      this.hosts.push({
-        host: '10.0.0.100',
-        name: "dev1",
-        description: "睿云开发1"
+    addHostDialog() {
+      this.host = {
+        name: "",
+        description: ""
+      }
+      this.dialogVisible = true
+    },
+    create(host) {
+      this.addHost(this.$route.params.id, host, () => {
+        pop('添加主机成功')
+        this.dialogVisible = false
       })
+    }
+  },
+  vuex: {
+    getters: {
+      hosts: getHosts
+    },
+    actions: {
+      fetchHosts,
+      addHost
     }
   },
   data() {
     return {
-      hosts: [{
-        host: '10.0.2.100',
-        name: "dev4",
-        description: "睿云开发4"
-      }, {
-        host: '10.0.2.199',
-        etcd: true,
-        name: "dev2",
-        description: "睿云开发2"
-      }]
+      dialogVisible: false,
+      host: {}
     }
   }
 }
