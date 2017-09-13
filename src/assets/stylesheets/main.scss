@@ -25,6 +25,9 @@ body {
   font-size: 12px;
   .container {
     margin-top: 50px;
+    a {
+      color: $link-color;
+    }
   }
 }
 .clear-style {

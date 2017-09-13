@@ -38,7 +38,7 @@
 <script>
 export default {
   mounted() {
-    this.$root.$emit('clusterPage', 'hosts')
+    this.$root.$emit('clusterPage', 'components')
   },
   methods: {
     deleteRow(index, rows) {

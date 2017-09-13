@@ -33,7 +33,8 @@ export default new VueRouter({
         },
         {
           path: 'components',
-          component: require('./components/Hosts.vue')
+          name: "components",
+          component: require('./components/Components.vue')
         }
       ]
     },

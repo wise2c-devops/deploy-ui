@@ -2,14 +2,10 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-2">
-        <el-menu default-active="1" class="el-menu-vertical-demo">
-          <el-menu-item index="1">
-            <router-link :to="hostsUrl"><i class="el-icon-menu"></i>主机</router-link>
-          </el-menu-item>
-          <el-menu-item index="2">
-            <router-link :to="componentsUrl"><i class="el-icon-setting"></i>服务组件</router-link>
-          </el-menu-item>
-        </el-menu>
+        <ul class="nav nav-pills nav-stacked">
+          <li role="presentation" :class="getActiveClass('hosts')"><router-link :to="hostsUrl"><i class="el-icon-menu"></i>主机</router-link></li>
+          <li role="presentation" :class="getActiveClass('components')"><router-link :to="componentsUrl"><i class="el-icon-setting"></i>服务组件</router-link></li>
+        </ul>
       </div>
       <div class="col-md-10">
         <router-view></router-view>
@@ -22,10 +18,21 @@
   ul {
     padding-top: 100px;
     padding-bottom: 100px;
+    font-size: 16px;
+    li {
+      i {
+        margin-right: 10px;
+      }
+    }
   }
 </style>
 <script>
 export default {
+  data() {
+    return {
+      subMenu: 'hosts'
+    }
+  },
   computed: {
     id() {
       return this.$route.params.id
@@ -37,8 +44,18 @@ export default {
       return `/clusters/${this.id}/components`
     }
   },
+  methods: {
+    getActiveClass(type) {
+      return this.subMenu === type ? 'active' : ''
+    }
+  },
   mounted() {
-    console.log(this.$route)
+    this.$root.$on('clusterPage', (name) => {
+      this.subMenu = name
+    })
+  },
+  beforeDestroy() {
+    this.$root.$off('clusterPage')
   }
 }
 </script>

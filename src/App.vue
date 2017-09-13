@@ -41,7 +41,6 @@
       $('body').on('hidden.bs.modal', '.modal.should-clean', function () {
         $(this).find('input').val('')
       })
-      this.$root.eventHub.$on('UPDATE_TITLE', this.updataTitle)
     },
     computed : {
     },

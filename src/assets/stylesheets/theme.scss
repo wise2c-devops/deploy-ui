@@ -247,3 +247,16 @@ table .btn-sm, .time-content-btns .btn-sm{
   width: 16px;
   cursor: pointer;
 }
+
+.container, .container-fluid {
+  ul {
+    &.nav-pills {
+      li.active {
+        a{
+          background-color: $link-color;
+        }
+      }
+    }
+  }
+
+}
