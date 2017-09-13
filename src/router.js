@@ -27,6 +27,7 @@ export default new VueRouter({
       component: require('./components/ClusterBase.vue'),
       children: [
         {
+          name: "hosts",
           path: 'hosts',
           component: require('./components/Hosts.vue')
         },
@@ -35,6 +36,10 @@ export default new VueRouter({
           component: require('./components/Hosts.vue')
         }
       ]
+    },
+    {
+      path: "*",
+      component: require('./components/404.vue')
     }
 
   ]

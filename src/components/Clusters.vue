@@ -59,7 +59,7 @@ export default {
 
     },
     showCluster(cluster) {
-
+      this.$router.push({name: "hosts", params: {id: cluster.id}})
     },
     addClusterDialog() {
       this.cluster = {

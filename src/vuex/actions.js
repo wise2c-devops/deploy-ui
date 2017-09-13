@@ -1,3 +1,5 @@
+import {get} from '../utils/rest'
+import API from '../utils/rest'
 export const showLoading = function ({ dispatch }, success = null) {
   dispatch('UPDATE_LOADING', true)
   if (success !== null) success()
@@ -16,6 +18,9 @@ export const hideLoading = function ({ dispatch }, success = null) {
 }
 
 export const fetchClusters = ({dispatch}, success = ()=> {}) => {
+  get(API.CLUSTERS).then((response) => {
+    console.log(response.body)
+  })
   dispatch('UPDATE_CLUSTERS', [{
     id: 1,
     name: "DevOps",
