@@ -6,7 +6,8 @@ import API from './rest'
 superagentJsonapify(superagent)
 
 export default {
-  CLUSTERS: "/v1/clusters"
+  CLUSTERS: "/v1/clusters",
+  CLUSTER: "v1/clusters/$1"
 }
 
 

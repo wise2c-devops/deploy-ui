@@ -18,7 +18,7 @@
           <i class="fa fa-cog app-edit" @click.prevent.stop="editClusterDialog(cluster)"></i>
         </span>
         <span class="hint--top help app-delete" aria-label="删除应用">
-          <i class="fa fa-trash" @click.prevent.stop="remove(index)"></i>
+          <i class="fa fa-trash" @click.prevent.stop="remove(index, cluster.id)"></i>
         </span>
       </a>
     </div>
@@ -44,9 +44,9 @@ export default {
     }
   },
   methods: {
-    remove(index) {
+    remove(index, id) {
       promptOnDelete(this, "如确认删除该集群", () => {
-        this.deleteCluster(index, () => {
+        this.deleteCluster(index, id, () => {
           pop('删除集群成功')
         })
       })
@@ -71,7 +71,9 @@ export default {
     },
     create(cluster) {
       var newCluster = Object.assign({}, cluster)
-      this.createCluster(newCluster)
+      this.createCluster(newCluster, () => {
+        pop("创建集群成功")
+      })
       this.dialogVisible = false
     }
   },
