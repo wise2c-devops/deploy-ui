@@ -7,10 +7,10 @@
         </div>
       </div>
     </div>
-    <div class="col-md-2 col-lg-pr-2" v-for="(cluster, index) in clusters">
+    <div class="col-md-2 col-lg-pr-2" v-for="(cluster, index) in clusters" :key="index">
       <a class="app-item" @click="showCluster(cluster)">
         <div class="icon-container">
-          <i class="app-icon fa fa-apple" style="font-size:60px"></i>
+          <i :class="['app-icon', 'fa', icon(cluster), cluster.state]" style="font-size:60px"></i>
           </br>
         </div>
         <span class="app-name">{{cluster.name}}</span>
@@ -20,6 +20,7 @@
         <span class="hint--top help app-delete" aria-label="删除应用">
           <i class="fa fa-trash" @click.prevent.stop="remove(index, cluster.id)"></i>
         </span>
+        <span class="status initial"></span>
       </a>
     </div>
     <cluster-dialog :dialog-visible.sync="dialogVisible" :add-cluster="create" :cluster="cluster" :update-cluster="updateCluster"></cluster-dialog>
@@ -75,6 +76,20 @@ export default {
         pop("创建集群成功")
       })
       this.dialogVisible = false
+    },
+    icon(cluster) {
+      switch(cluster.state) {
+        case 'initial':
+          return 'fa-heart-o'
+        case 'proccessing':
+          return 'fa-hourglass-half'
+        case 'success':
+          return 'fa-check-circle-o'
+        case 'failed':
+          return 'fa-times'
+        default:
+          return 'fa-heart-o'
+      }
     }
   },
   mounted() {
@@ -135,11 +150,26 @@ export default {
     margin-bottom: 30px;
     margin-right: 40px;
   }
-  i.app-icon {
-    margin-top: 60px;
-    margin-bottom: 10px;
-    font-size: 50px;
+  i{
+    &.app-icon {
+      margin-top: 60px;
+      margin-bottom: 10px;
+      font-size: 50px;
+    }
+    &.initial {
+      color: $gray-color;
+    }
+    &.proccessing {
+      color: $blue-color;
+    }
+    &.success {
+      color: $green-color;
+    }
+    &.failed {
+      color: $error-color;
+    }
   }
+
   &:hover {
     box-shadow: 0 0 30px 5px $border-hover-color;
     color: $blue-color;
@@ -226,4 +256,6 @@ export default {
     }
   }
 }
+
+
 </style>

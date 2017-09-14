@@ -9,7 +9,7 @@
           <router-link to="">{{cluster.name}}</router-link>
         </li>
       </ol>
-      <el-button size="small" type="primary" icon="plus" @click="addRow" class="pull-right">添加组件</el-button>
+      <el-button size="small" type="primary" icon="plus" @click="addComponentDialog" class="pull-right">添加组件</el-button>
     </div>
     <div class="row hosts-table">
       <el-table :data="hosts" :row-class-name="tableRowClassName" :stripe="true">
@@ -40,12 +40,17 @@
         <el-button size="large" type="success" class="pull-right" icon="arrow-right" @click="next">下一步</el-button>
       </div>
     </div>
+    <component-dialog :dialog-visible.sync="dialogVisible" :add-component="create" :component="component" :update-component="update"></component-dialog>
   </div>
 </template>
 
 <script>
 import {getCluster} from 'vuexPath/modules/cluster'
+import ComponentDialog from './common/ComponentDialog'
 export default {
+  components: {
+    ComponentDialog
+  },
   mounted() {
     this.$root.$emit('clusterPage', 'components')
   },
@@ -61,16 +66,18 @@ export default {
         path: 'globalConfig'
       })
     },
-    addRow() {
-      this.hosts.push({
-        host: '10.0.0.100',
-        name: "dev1",
-        description: "睿云开发1"
-      })
+    addComponentDialog() {
+      this.component = {
+        type: "",
+        hosts: []
+      }
+      this.dialogVisible = true
     }
   },
   data() {
     return {
+      component: {},
+      dialogVisible: false,
       hosts: [{
         host: '10.0.2.100',
         name: "dev4",

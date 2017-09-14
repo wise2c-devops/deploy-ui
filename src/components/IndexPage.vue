@@ -13,6 +13,9 @@
   .welcome {
     margin-top: 0px;
     text-align: center;
+    a {
+      color: #fff;
+    }
   }
 </style>
 <script type="text/javascript">
