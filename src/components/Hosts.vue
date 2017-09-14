@@ -18,9 +18,8 @@
         </el-table-column>
         <el-table-column align="center" label="操作" >
           <template scope="scope">
-            <el-button @click.native.prevent="deleteRow(scope.$index, hosts)" type="text" size="small">
-              删除
-            </el-button>
+            <el-button @click.native.prevent="editHostDialog(scope.row)" type="primary" size="small" icon="edit"></el-button>
+            <el-button @click.native.prevent="remove(scope.$index, scope.row.id)" type="danger" size="small" icon="delete"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -32,14 +31,15 @@
         <el-button size="large" type="success" class="pull-right" icon="arrow-right" @click="next">下一步</el-button>
       </div>
     </div>
-    <host-dialog :dialog-visible.sync="dialogVisible" :add-host="create" :host="host" :update-host="updateHost"></host-dialog>
+    <host-dialog :dialog-visible.sync="dialogVisible" :add-host="create" :host="host" :update-host="update"></host-dialog>
   </div>
 </template>
 
 <script>
-import {fetchHosts, getHosts, addHost} from 'vuexPath/modules/cluster'
+import {fetchHosts, getHosts, addHost, deleteHost, updateHost} from 'vuexPath/modules/cluster'
 import HostDialog from './common/HostDialog'
 import {pop} from '../utils/alert'
+import { promptOnDelete } from '../utils/prompt'
 export default {
   components: {
     HostDialog
@@ -49,8 +49,12 @@ export default {
     this.fetchHosts(this.$route.params.id)
   },
   methods: {
-    deleteRow(index, rows) {
-      rows.splice(index, 1)
+    remove(index, id) {
+      promptOnDelete(this, "如确认删除该主机", () => {
+        this.deleteHost(this.$route.params.id, id, index, () => {
+          pop('删除主机成功')
+        })
+      })
     },
     back() {
       this.$router.push({name: 'clusters'})
@@ -72,6 +76,16 @@ export default {
         pop('添加主机成功')
         this.dialogVisible = false
       })
+    },
+    editHostDialog(host) {
+      this.host = Object.assign({}, host)
+      this.dialogVisible = true
+    },
+    update(host) {
+      this.updateHost(this.$route.params.id, host, () => {
+        pop('更新主机成功')
+        this.dialogVisible = false
+      })
     }
   },
   vuex: {
@@ -80,7 +94,9 @@ export default {
     },
     actions: {
       fetchHosts,
-      addHost
+      addHost,
+      deleteHost,
+      updateHost
     }
   },
   data() {

@@ -10,7 +10,8 @@ export default {
   CLUSTER: {
     DETAIL: "/v1/clusters/$1",
     HOSTS: "/v1/clusters/$1/hosts",
-    COMPONENTS: "/v1/clusters/$1/components"
+    COMPONENTS: "/v1/clusters/$1/components",
+    HOST_DETAIL: "/v1/clusters/$1/hosts/$2"
   }
 }
 
