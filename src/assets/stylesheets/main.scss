@@ -28,6 +28,16 @@ body {
     a {
       color: $link-color;
     }
+    .breadcrumb {
+      font-size: 16px;
+      background-color: $body-background-color;
+    }
+    .active-breadcrumb  a{
+      color: $main-font-color;
+      &:hover {
+        text-decoration: none;
+      }
+    }
   }
 }
 .clear-style {

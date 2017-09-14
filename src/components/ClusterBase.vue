@@ -8,7 +8,7 @@
         </ul>
       </div>
       <div class="col-md-10">
-        <router-view></router-view>
+        <router-view :cluster="cluster"></router-view>
       </div>
     </div>
   </div>
@@ -27,6 +27,7 @@
   }
 </style>
 <script>
+import {fetchClusterDetail} from '../vuex/modules/cluster'
 export default {
   data() {
     return {
@@ -53,9 +54,15 @@ export default {
     this.$root.$on('clusterPage', (name) => {
       this.subMenu = name
     })
+    this.fetchClusterDetail(this.id)
   },
   beforeDestroy() {
     this.$root.$off('clusterPage')
+  },
+  vuex: {
+    actions: {
+      fetchClusterDetail
+    }
   }
 }
 </script>

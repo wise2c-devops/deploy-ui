@@ -5,7 +5,8 @@ import {popWarn} from '../../utils/alert'
 import {find} from 'lodash'
 const state = {
   hosts: [],
-  components: []
+  components: [],
+  cluster: {}
 }
 
 const mutations = {
@@ -26,6 +27,9 @@ const mutations = {
       return item.id === host.id
     })
     targetHost = host
+  },
+  SET_CLUSTER(state, cluster){
+    state.cluster = cluster
   }
 }
 
@@ -79,10 +83,22 @@ export const updateHost = ({dispatch}, clusterId, host, success = ()=>{}) => {
   })
 }
 
+export const fetchClusterDetail = ({dispatch}, clusterId) => {
+  get(formatString(API.CLUSTER.DETAIL, clusterId)).then((response) => {
+    dispatch('SET_CLUSTER', response.body)
+  }).catch(() => {
+    popWarn('获取集群详情失败')
+  })
+}
+
 export const getHosts = (state) => {
   return state.cluster.hosts
 }
 
-const getComponents = (state) => {
+export const getComponents = (state) => {
   return state.cluster.components
+}
+
+export const getCluster = (state) => {
+  return state.cluster.cluster
 }

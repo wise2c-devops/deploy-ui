@@ -1,22 +1,30 @@
 <template>
   <div class="container">
     <div class="row add-host">
-      <el-button size="small" type="primary" icon="plus" @click="addHostDialog">添加主机</el-button>
+      <ol class="breadcrumb pull-left">
+        <li>
+          <router-link to="/clusters">集群</router-link>
+        </li>
+        <li class="active-breadcrumb">
+          <router-link to="">{{cluster.name}}</router-link>
+        </li>
+      </ol>
+      <el-button size="small" type="primary" icon="plus" @click="addHostDialog" class="pull-right">添加主机</el-button>
     </div>
     <div class="row hosts-table">
       <el-table :data="hosts" :row-class-name="tableRowClassName" :stripe="true">
-        <el-table-column align="center" prop="index" label="序号" >
+        <el-table-column align="center" prop="index" label="序号">
           <template scope="scope">
             {{scope.$index + 1}}
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="ip" label="IP" >
+        <el-table-column align="center" prop="ip" label="IP">
         </el-table-column>
-        <el-table-column align="center" prop="hostname" label="名称" >
+        <el-table-column align="center" prop="hostname" label="名称">
         </el-table-column>
-        <el-table-column align="center" prop="description" label="描述" >
+        <el-table-column align="center" prop="description" label="描述">
         </el-table-column>
-        <el-table-column align="center" label="操作" >
+        <el-table-column align="center" label="操作">
           <template scope="scope">
             <el-button @click.native.prevent="editHostDialog(scope.row)" type="primary" size="small" icon="edit"></el-button>
             <el-button @click.native.prevent="remove(scope.$index, scope.row.id)" type="danger" size="small" icon="delete"></el-button>
@@ -36,9 +44,9 @@
 </template>
 
 <script>
-import {fetchHosts, getHosts, addHost, deleteHost, updateHost} from 'vuexPath/modules/cluster'
+import { fetchHosts, getHosts, addHost, deleteHost, updateHost, getCluster } from 'vuexPath/modules/cluster'
 import HostDialog from './common/HostDialog'
-import {pop} from '../utils/alert'
+import { pop } from '../utils/alert'
 import { promptOnDelete } from '../utils/prompt'
 export default {
   components: {
@@ -57,9 +65,9 @@ export default {
       })
     },
     back() {
-      this.$router.push({name: 'clusters'})
+      this.$router.push({ name: 'clusters' })
     },
-    next () {
+    next() {
       this.$router.push({
         path: 'globalConfig'
       })
@@ -90,7 +98,8 @@ export default {
   },
   vuex: {
     getters: {
-      hosts: getHosts
+      hosts: getHosts,
+      cluster: getCluster
     },
     actions: {
       fetchHosts,
@@ -108,11 +117,13 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.add-host {
-  margin-bottom: 10px;
-}
-.buttons {
-  margin-top: 100px;
-  padding: 0 80px;
+.container {
+  .add-host {
+    margin-bottom: 10px;
+  }
+  .buttons {
+    margin-top: 100px;
+    padding: 0 80px;
+  }
 }
 </style>

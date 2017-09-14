@@ -1,7 +1,15 @@
 <template>
   <div class="container">
     <div class="row add-host">
-      <el-button size="small" type="primary" icon="plus" @click="addRow">添加主机</el-button>
+      <ol class="breadcrumb pull-left">
+        <li>
+          <router-link to="/clusters">集群</router-link>
+        </li>
+        <li class="active-breadcrumb">
+          <router-link to="">{{cluster.name}}</router-link>
+        </li>
+      </ol>
+      <el-button size="small" type="primary" icon="plus" @click="addRow" class="pull-right">添加组件</el-button>
     </div>
     <div class="row hosts-table">
       <el-table :data="hosts" :row-class-name="tableRowClassName" :stripe="true">
@@ -36,6 +44,7 @@
 </template>
 
 <script>
+import {getCluster} from 'vuexPath/modules/cluster'
 export default {
   mounted() {
     this.$root.$emit('clusterPage', 'components')
@@ -72,6 +81,11 @@ export default {
         name: "dev2",
         description: "睿云开发2"
       }]
+    }
+  },
+  vuex: {
+    getters: {
+      cluster: getCluster
     }
   }
 }
