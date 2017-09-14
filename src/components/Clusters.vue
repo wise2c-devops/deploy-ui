@@ -80,7 +80,7 @@ export default {
     icon(cluster) {
       switch(cluster.state) {
         case 'initial':
-          return 'fa-heart-o'
+          return 'fa-desktop'
         case 'proccessing':
           return 'fa-hourglass-half'
         case 'success':
@@ -88,7 +88,7 @@ export default {
         case 'failed':
           return 'fa-times'
         default:
-          return 'fa-heart-o'
+          return 'fa-desktop'
       }
     }
   },

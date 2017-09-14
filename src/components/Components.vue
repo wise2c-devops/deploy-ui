@@ -26,9 +26,8 @@
         </el-table-column>
         <el-table-column align="center" label="操作" >
           <template scope="scope">
-            <el-button @click.native.prevent="deleteRow(scope.$index, hosts)" type="text" size="small">
-              删除
-            </el-button>
+            <el-button @click.native.prevent="editComponentDialog(scope.row)" type="primary" size="small" icon="edit"></el-button>
+            <el-button @click.native.prevent="remove(scope.$index, scope.row.id)" type="danger" size="small" icon="delete"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -55,8 +54,15 @@ export default {
     this.$root.$emit('clusterPage', 'components')
   },
   methods: {
-    deleteRow(index, rows) {
-      rows.splice(index, 1)
+    create(component){
+      this.dialogVisible = false
+    },
+    editComponentDialog(component){
+      this.component = Object.assign({}, component)
+      this.dialogVisible = true
+    },
+    remove(index, componentId) {
+
     },
     back() {
       this.$router.go(-1)
