@@ -18,7 +18,9 @@
   </el-dialog>
 </template>
 <script>
+import {validationError} from '../../mixin/error'
 export default {
+  mixins: [validationError],
   props: {
     dialogVisible: {
       type: Boolean,
@@ -47,7 +49,6 @@ export default {
   },
   computed: {
     hasError() {
-      console.log(this.errors, '=================', this.errors.items.length)
       return this.errors.items.length !== 0
     }
   }

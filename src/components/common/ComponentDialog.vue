@@ -32,12 +32,14 @@
     </form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
-      <el-button type="primary" @click="callMethod">确 定</el-button>
+      <el-button type="primary" @click="callMethod" :disabled="hasError">确 定</el-button>
     </span>
   </el-dialog>
 </template>
 <script>
+import {validationError} from '../../mixin/error'
 export default {
+  mixins: [validationError],
   props: {
     dialogVisible: {
       type: Boolean,
@@ -55,11 +57,6 @@ export default {
         type: 'lb',
         hosts: []
       }
-    }
-  },
-  data(){
-    return {
-      hosts: []
     }
   },
   methods: {
