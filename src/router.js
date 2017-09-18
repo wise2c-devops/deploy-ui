@@ -20,10 +20,6 @@ export default new VueRouter({
       component: require('./components/GlobalConfig.vue')
     },
     {
-      path: '/process',
-      component: require('./components/Process.vue')
-    },
-    {
       path: '/clusters/:id',
       component: require('./components/ClusterBase.vue'),
       children: [
@@ -38,6 +34,10 @@ export default new VueRouter({
           component: require('./components/Components.vue')
         }
       ]
+    },
+    {
+      path: '/clusters/:id/processing',
+      component: require('./components/Process.vue')
     },
     {
       path: "*",

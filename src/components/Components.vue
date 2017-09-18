@@ -80,7 +80,7 @@ export default {
     },
     next () {
       this.$router.push({
-        path: 'globalConfig'
+        path: `/clusters/${this.clusterId}/processing`
       })
     },
     addComponentDialog() {

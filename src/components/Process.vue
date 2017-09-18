@@ -1,7 +1,7 @@
 <template>
   <div class="process middle">
     <ul class="clear-style row m0">
-      <li class="pull-left" v-for="item in allProcess">
+      <li class="pull-left" v-for="(item, index) in allProcess" :key="index">
         <div class="box">
           <div class="text-center">
             <el-tooltip class="item" effect="dark" :content="item.name" placement="top">
@@ -11,13 +11,24 @@
         </div>
       </li>
     </ul>
-    <div class="text-center btn-wrapper">
-      <el-button size="large" icon="" class="pull-left" @click="back">取消</el-button>
+    <div class="btn-wrapper row">
+      <div class="col-md-2 col-md-offset-4">
+        <el-button size="large" icon="arrow-left" class="pull-left " @click="back">返回</el-button>
+      </div>
+      <div class="col-md-2">
+        <el-button size="large" icon="close" type="danger" @click="cancel">取消</el-button>
+      </div>
     </div>
   </div>
 </template>
 <script>
+  import {pop} from '../utils/alert'
   export default {
+    computed: {
+      clusterId() {
+        return this.$route.params.id
+      }
+    },
     data () {
       return {
         allProcess: [
@@ -34,8 +45,11 @@
     methods: {
       back () {
         this.$router.push({
-          path: '/'
+          path: `/clusters/${this.clusterId}/hosts`
         })
+      },
+      cancel() {
+        pop('取消安装成功')
       }
     }
   }
@@ -71,7 +85,6 @@
       }
     }
     .btn-wrapper {
-      width: 0;
       padding-top: 50px;
       margin: auto;
     }

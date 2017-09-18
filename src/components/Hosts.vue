@@ -54,12 +54,17 @@ export default {
   },
   mounted() {
     this.$root.$emit('clusterPage', 'hosts')
-    this.fetchHosts(this.$route.params.id)
+    this.fetchHosts(this.clusterId)
+  },
+  computed: {
+    clusterId() {
+      return this.$route.params.id
+    }
   },
   methods: {
     remove(index, id) {
       promptOnDelete(this, "如确认删除该主机", () => {
-        this.deleteHost(this.$route.params.id, id, index, () => {
+        this.deleteHost(this.clusterId, id, index, () => {
           pop('删除主机成功')
         })
       })
@@ -69,7 +74,7 @@ export default {
     },
     next() {
       this.$router.push({
-        path: 'globalConfig'
+        path: `/clusters/${this.clusterId}/components`
       })
     },
     addHostDialog() {
@@ -80,7 +85,7 @@ export default {
       this.dialogVisible = true
     },
     create(host) {
-      this.addHost(this.$route.params.id, host, () => {
+      this.addHost(this.clusterId, host, () => {
         pop('添加主机成功')
         this.dialogVisible = false
       })
