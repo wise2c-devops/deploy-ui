@@ -3,26 +3,32 @@
     <form>
       <div class="form-group">
         <label for="componentType">组件类型</label>
-        <select class="form-control" id="componentType" v-model="component.type">
-          <option>LB</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
+        <select class="form-control" id="componentType" v-model="component.type" autofocus="true">
+          <option label="LB" selected>lb</option>
+          <option label="Mysql">mysql</option>
+          <option label="Kafka">kafka</option>
         </select>
       </div>
-      <div class="form-group">
+      <div class="form-group" v-if="component.type !== 'lb'">
         <label for="ip">主机列表</label>
         <br>
-        <el-select v-model="value" placeholder="请选择">
-          <el-option v-for="item in hosts" :key="item.id" :label="item.hostname" :value="item.ip">
+        <el-select v-model="component.hosts" multiple placeholder="请选择">
+          <el-option v-for="item in hosts" :key="item.id" :label="item.hostname" :value="item.id">
           </el-option>
         </el-select>
       </div>
-      <!-- <div class="form-group">
-        <label for="description">描述信息</label>
-        <input type="text" class="form-control" v-model="component.attribute" id="description" placeholder="描述信息">
-      </div> -->
+      <div class="form-group" v-if="component.type === 'lb'">
+        <label for="description">K8S VIP</label>
+        <input type="text" class="form-control" v-model="component.k8sVip" id="description" placeholder="vip">
+      </div>
+      <div class="form-group" v-if="component.type === 'lb'">
+        <label for="description">ES VIP</label>
+        <input type="text" class="form-control" v-model="component.esVip" id="description" placeholder="vip">
+      </div>
+      <div class="form-group" v-if="component.type === 'lb'">
+        <label for="description">Other VIP</label>
+        <input type="text" class="form-control" v-model="component.otherVip" id="description" placeholder="vip">
+      </div>
     </form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
@@ -37,12 +43,16 @@ export default {
       type: Boolean,
       default: false
     },
+    hosts: {
+      type: Array,
+      default: []
+    },
     addComponent: Function,
     updateComponent: Function,
     component: {
       type: Object,
       default: {
-        type: '',
+        type: 'lb',
         hosts: []
       }
     }
@@ -58,9 +68,9 @@ export default {
     },
     callMethod() {
       if (!!this.component.id) {
-        return this.updateComponent(this.host)
+        return this.updateComponent(this.component)
       }
-      return this.addComponent(this.host)
+      return this.addComponent(this.component)
     }
   }
 }

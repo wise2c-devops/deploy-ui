@@ -9,20 +9,21 @@
           <router-link to="">{{cluster.name}}</router-link>
         </li>
       </ol>
+      <el-button size="mini" type="primary" icon="caret-right" @click="addComponentDialog" class="status-icon">开始安装</el-button>
       <el-button size="small" type="primary" icon="plus" @click="addComponentDialog" class="pull-right">添加组件</el-button>
     </div>
     <div class="row hosts-table">
-      <el-table :data="hosts" :row-class-name="tableRowClassName" :stripe="true">
+      <el-table :data="components" :row-class-name="tableRowClassName" :stripe="true" >
         <el-table-column align="center" prop="index" label="序号" >
           <template scope="scope">
             {{scope.$index + 1}}
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="host" label="IP" >
+        <el-table-column align="center" prop="name" label="服务名称" >
         </el-table-column>
-        <el-table-column align="center" prop="name" label="名称" >
+        <el-table-column align="center" prop="name" label="属性" >
         </el-table-column>
-        <el-table-column align="center" prop="description" label="描述" >
+        <el-table-column align="center" prop="hosts" label="主机" >
         </el-table-column>
         <el-table-column align="center" label="操作" >
           <template scope="scope">
@@ -39,23 +40,33 @@
         <el-button size="large" type="success" class="pull-right" icon="arrow-right" @click="next">下一步</el-button>
       </div>
     </div>
-    <component-dialog :dialog-visible.sync="dialogVisible" :add-component="create" :component="component" :update-component="update"></component-dialog>
+    <component-dialog :dialog-visible.sync="dialogVisible" :add-component="create" :component="component" :update-component="update" :hosts="hosts"></component-dialog>
   </div>
 </template>
 
 <script>
-import {getCluster} from 'vuexPath/modules/cluster'
+import {getCluster, getComponents, fetchComponents, createComponent, fetchHosts, getHosts} from 'vuexPath/modules/cluster'
 import ComponentDialog from './common/ComponentDialog'
+import {pop} from '../utils/alert'
 export default {
   components: {
     ComponentDialog
   },
   mounted() {
-    this.$root.$emit('clusterPage', 'components')
+    this.fetchComponents(this.clusterId)
+    setTimeout(()=>{
+      this.$root.$emit('clusterPage', 'components')
+    }, 100)
   },
   methods: {
     create(component){
-      this.dialogVisible = false
+      if(component.type === 'lb') {
+        component.name = 'loadbalancer'
+      }
+      this.createComponent(this.clusterId, component, ()=> {
+        this.dialogVisible = false
+        pop('创建服务组件成功')
+      })
     },
     editComponentDialog(component){
       this.component = Object.assign({}, component)
@@ -74,31 +85,33 @@ export default {
     },
     addComponentDialog() {
       this.component = {
-        type: "",
+        type: "lb",
         hosts: []
       }
       this.dialogVisible = true
     }
   },
+  computed: {
+    clusterId() {
+      return this.$route.params.id
+    }
+  },
   data() {
     return {
       component: {},
-      dialogVisible: false,
-      hosts: [{
-        host: '10.0.2.100',
-        name: "dev4",
-        description: "睿云开发4"
-      }, {
-        host: '10.0.2.199',
-        etcd: true,
-        name: "dev2",
-        description: "睿云开发2"
-      }]
+      dialogVisible: false
     }
   },
   vuex: {
+    actions: {
+      fetchComponents,
+      createComponent,
+      fetchHosts
+    },
     getters: {
-      cluster: getCluster
+      cluster: getCluster,
+      components: getComponents,
+      hosts: getHosts
     }
   }
 }
@@ -110,5 +123,8 @@ export default {
 .buttons {
   margin-top: 100px;
   padding: 0 80px;
+}
+.status-icon {
+  margin-top: 7px;
 }
 </style>

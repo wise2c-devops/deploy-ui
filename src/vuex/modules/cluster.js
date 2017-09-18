@@ -30,6 +30,9 @@ const mutations = {
   },
   SET_CLUSTER(state, cluster){
     state.cluster = cluster
+  },
+  ADD_COMPONENT(state, component) {
+    state.components.push(component)
   }
 }
 
@@ -88,6 +91,16 @@ export const fetchClusterDetail = ({dispatch}, clusterId) => {
     dispatch('SET_CLUSTER', response.body)
   }).catch(() => {
     popWarn('获取集群详情失败')
+  })
+}
+
+export const createComponent = ({dispatch}, clusterId, component, success = ()=>{}) => {
+  post(formatString(API.CLUSTER.COMPONENT, clusterId), component).then((response) => {
+    dispatch('ADD_COMPONENT', response.body)
+    success()
+  }).catch((error) => {
+    popWarn('创建服务组件失败')
+    console.error(error)
   })
 }
 

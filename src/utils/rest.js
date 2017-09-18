@@ -11,7 +11,8 @@ export default {
     DETAIL: "/v1/clusters/$1",
     HOSTS: "/v1/clusters/$1/hosts",
     COMPONENTS: "/v1/clusters/$1/components",
-    HOST_DETAIL: "/v1/clusters/$1/hosts/$2"
+    HOST_DETAIL: "/v1/clusters/$1/hosts/$2",
+    COMPONENT:  "/v1/clusters/$1/components"
   }
 }
 
