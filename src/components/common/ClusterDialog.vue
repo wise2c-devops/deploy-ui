@@ -3,7 +3,8 @@
     <form>
       <div class="form-group">
         <label for="clusterName">集群名称</label>
-        <input type="text" class="form-control" v-model="cluster.name" id="clusterName" placeholder="请输入集群名字">
+        <input type="text" class="form-control" v-validate.initial="'required'" v-model="cluster.name" name="cluster" id="clusterName" placeholder="请输入集群名字">
+        <i v-show="errors.has('cluster')" class="error fa fa-warning">请输入集群名称</i>
       </div>
       <div class="form-group">
         <label for="clusterDescrtipion">集群描述</label>
@@ -12,7 +13,7 @@
     </form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
-      <el-button type="primary" @click="callMethod">确 定</el-button>
+      <el-button type="primary" @click="callMethod" :disabled="hasError">确 定</el-button>
     </span>
   </el-dialog>
 </template>
@@ -42,6 +43,12 @@ export default {
         return this.updateCluster(this.cluster)
       }
       return this.addCluster(this.cluster)
+    }
+  },
+  computed: {
+    hasError() {
+      console.log(this.errors, '=================', this.errors.items.length)
+      return this.errors.items.length !== 0
     }
   }
 }

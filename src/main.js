@@ -9,6 +9,8 @@ import "spinkit/css/spinners/9-cube-grid.css"
 import moment from 'moment'
 import Element from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
+import VeeValidate from 'vee-validate'
+
 
 Vue.prototype.$config = Vue.prototype.$config || require('../config/sysconfig.json')
 Vue.use(Element)
@@ -20,6 +22,7 @@ Vue.use(Element)
 
 
 Vue.use(VueRouter)
+Vue.use(VeeValidate)
 
 router.beforeEach((to,from,next) => {
   document.title ="WiseCloud 部署中心"
