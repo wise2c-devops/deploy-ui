@@ -2,7 +2,7 @@ import {get, post, put, destroy} from '../../utils/rest'
 import API from '../../utils/rest'
 import {formatString} from '../../utils/string'
 import {popWarn} from '../../utils/alert'
-import {find} from 'lodash'
+import {findIndex} from 'lodash'
 const state = {
   hosts: [],
   components: [],
@@ -23,16 +23,19 @@ const mutations = {
     state.components = components
   },
   UPDATE_HOST(state, host) {
-    var targetHost = find(state.hosts, (item) => {
+    var index = findIndex(state.hosts, (item) => {
       return item.id === host.id
     })
-    targetHost = host
+    state.hosts.splice(index, 1, host)
   },
   SET_CLUSTER(state, cluster){
     state.cluster = cluster
   },
   ADD_COMPONENT(state, component) {
     state.components.push(component)
+  },
+  DELETE_COMPONENT(state, index) {
+    state.components.splice(index, 1)
   }
 }
 
@@ -95,7 +98,7 @@ export const fetchClusterDetail = ({dispatch}, clusterId) => {
 }
 
 export const createComponent = ({dispatch}, clusterId, component, success = ()=>{}) => {
-  post(formatString(API.CLUSTER.COMPONENT, clusterId), component).then((response) => {
+  post(formatString(API.CLUSTER.COMPONENTS, clusterId), component).then((response) => {
     dispatch('ADD_COMPONENT', response.body)
     success()
   }).catch((error) => {
@@ -103,6 +106,18 @@ export const createComponent = ({dispatch}, clusterId, component, success = ()=>
     console.error(error)
   })
 }
+
+export const deleteComponent = ({dispatch}, clusterId, componentId, index, success = ()=>{}) => {
+  destroy(formatString(API.CLUSTER.COMPONENT, clusterId, componentId), {}).then( ()=> {
+    dispatch('DELETE_COMPONENT', index)
+    success()
+  }).catch((error) => {
+    popWarn('删除组件失败')
+    console.error(error)
+  })
+}
+
+//getters
 
 export const getHosts = (state) => {
   return state.cluster.hosts

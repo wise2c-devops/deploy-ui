@@ -45,9 +45,10 @@
 </template>
 
 <script>
-import {getCluster, getComponents, fetchComponents, createComponent, fetchHosts, getHosts} from 'vuexPath/modules/cluster'
+import {getCluster, getComponents, fetchComponents, createComponent, fetchHosts, getHosts, deleteComponent} from 'vuexPath/modules/cluster'
 import ComponentDialog from './common/ComponentDialog'
 import {pop} from '../utils/alert'
+import {promptOnDelete} from '../utils/prompt'
 export default {
   components: {
     ComponentDialog
@@ -57,12 +58,10 @@ export default {
     setTimeout(()=>{
       this.$root.$emit('clusterPage', 'components')
     }, 100)
+    this.fetchHosts(this.clusterId)
   },
   methods: {
     create(component){
-      if(component.type === 'lb') {
-        component.name = 'loadbalancer'
-      }
       this.createComponent(this.clusterId, component, ()=> {
         this.dialogVisible = false
         pop('创建服务组件成功')
@@ -73,7 +72,11 @@ export default {
       this.dialogVisible = true
     },
     remove(index, componentId) {
-
+      promptOnDelete(this, "如确认删除该服务", () => {
+        this.deleteComponent(this.clusterId, componentId, index, () => {
+          pop('删除主机成功')
+        })
+      })
     },
     back() {
       this.$router.go(-1)
@@ -85,7 +88,7 @@ export default {
     },
     addComponentDialog() {
       this.component = {
-        type: "lb",
+        name: "loadbalancer",
         hosts: []
       }
       this.dialogVisible = true
@@ -106,7 +109,8 @@ export default {
     actions: {
       fetchComponents,
       createComponent,
-      fetchHosts
+      fetchHosts,
+      deleteComponent
     },
     getters: {
       cluster: getCluster,

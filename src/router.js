@@ -32,6 +32,11 @@ export default new VueRouter({
           path: 'components',
           name: "components",
           component: require('./components/Components.vue')
+        },
+        {
+          path: 'logs',
+          name: "logs",
+          component: require('./components/Logs.vue')
         }
       ]
     },

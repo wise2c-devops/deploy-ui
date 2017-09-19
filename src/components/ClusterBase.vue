@@ -5,6 +5,7 @@
         <ul class="nav nav-pills nav-stacked">
           <li role="presentation" :class="getActiveClass('hosts')"><router-link :to="hostsUrl"><i class="el-icon-menu"></i>主机</router-link></li>
           <li role="presentation" :class="getActiveClass('components')"><router-link :to="componentsUrl"><i class="el-icon-setting"></i>服务组件</router-link></li>
+          <li role="presentation" :class="getActiveClass('logs')"><router-link :to="logsUrl"><i class="el-icon-document"></i>安装日志</router-link></li>
         </ul>
       </div>
       <div class="col-md-10 wrapper">
@@ -43,6 +44,9 @@ export default {
     },
     componentsUrl() {
       return `/clusters/${this.id}/components`
+    },
+    logsUrl() {
+      return `/clusters/${this.id}/logs`
     }
   },
   methods: {

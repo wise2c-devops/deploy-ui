@@ -3,18 +3,13 @@
     <form>
       <div class="form-group">
         <label for="componentType">组件类型</label>
-        <select class="form-control" id="componentType" v-model="component.type" autofocus="true">
-          <option label="LB" selected>lb</option>
-          <option label="MySql">mysql</option>
-          <option label="Kafka">kafka</option>
-          <option label="Registry">registry</option>
-          <option label="etcd">etcd</option>
-          <option label="K8S master">k8smaster</option>
-          <option label="K8S node">k8snode</option>
-          <option label="WiseCloud">wisecloud</option>
-        </select>
+        <br>
+        <el-select v-model="component.name" :disabled="!!component.id">
+          <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
       </div>
-      <div class="form-group" v-if="component.type !== 'lb'">
+      <div class="form-group" v-if="component.name !== 'loadbalancer'">
         <label for="ip">主机列表</label>
         <br>
         <el-select v-model="component.hosts" multiple placeholder="请选择">
@@ -22,17 +17,41 @@
           </el-option>
         </el-select>
       </div>
-      <div class="form-group" v-if="component.type === 'lb'">
-        <label for="description">K8S VIP</label>
-        <input type="text" class="form-control" v-model="component.k8sVip" id="description" placeholder="vip">
+      <div class="form-group" v-if="component.name === 'loadbalancer'">
+        <label for="interface">网卡</label>
+        <input type="text" class="form-control" v-model="component.interface" id="interface" placeholder="interface">
       </div>
-      <div class="form-group" v-if="component.type === 'lb'">
+      <div class="form-group" v-if="component.name === 'loadbalancer'">
+        <label for="netMask">掩码</label>
+        <input type="text" class="form-control" v-model="component.netMask" id="netMask" placeholder="netMask">
+      </div>
+      <div class="form-group" v-if="component.name === 'loadbalancer'">
+        <label for="registryIP">Registry IP</label>
+        <input type="text" class="form-control" v-model="component.registryIP" id="registryIP" placeholder="registryIP">
+      </div>
+      <div class="form-group" v-if="component.name === 'loadbalancer'">
+        <label for="k8sVip">K8S VIP</label>
+        <input type="text" class="form-control" v-model="component.k8sVip" id="k8sVip" placeholder="k8sVip">
+      </div>
+      <div class="form-group" v-if="component.name === 'loadbalancer'">
+        <label for="k8sPort">K8S Port</label>
+        <input type="text" class="form-control" v-model="component.k8sPort" id="k8sPort" placeholder="k8sPort">
+      </div>
+      <div class="form-group" v-if="component.name === 'loadbalancer'">
         <label for="description">ES VIP</label>
-        <input type="text" class="form-control" v-model="component.esVip" id="description" placeholder="vip">
+        <input type="text" class="form-control" v-model="component.esVip" id="description" placeholder="esVip">
       </div>
-      <div class="form-group" v-if="component.type === 'lb'">
+      <div class="form-group" v-if="component.name === 'loadbalancer'">
+        <label for="esPort">ES Port</label>
+        <input type="text" class="form-control" v-model="component.esPort" id="esPort" placeholder="esPort">
+      </div>
+      <div class="form-group" v-if="component.name === 'loadbalancer'">
         <label for="description">Other VIP</label>
         <input type="text" class="form-control" v-model="component.otherVip" id="description" placeholder="vip">
+      </div>
+      <div class="form-group" v-if="component.name === 'loadbalancer'">
+        <label for="otherPort">Other Port</label>
+        <input type="text" class="form-control" v-model="component.otherPort" id="otherPort" placeholder="otherPort">
       </div>
     </form>
     <span slot="footer" class="dialog-footer">
@@ -42,7 +61,7 @@
   </el-dialog>
 </template>
 <script>
-import {validationError} from '../../mixin/error'
+import { validationError } from '../../mixin/error'
 export default {
   mixins: [validationError],
   props: {
@@ -59,9 +78,39 @@ export default {
     component: {
       type: Object,
       default: {
-        type: 'lb',
+        name: 'loadbalancer',
         hosts: []
       }
+    }
+  },
+  data() {
+    return {
+      types: [{
+        value: 'loadbalancer',
+        label: 'Load Balancer'
+      }, {
+        value: 'mysql',
+        label: 'MySql'
+      }, {
+        value: 'kafka',
+        label: 'Kafka'
+      }, {
+        value: 'registry',
+        label: 'Registry'
+      }, {
+        value: 'etcd',
+        label: 'etcd'
+      }, {
+        value: 'k8smaster',
+        label: 'K8S master'
+      }, {
+        value: 'k8snode',
+        label: 'K8S node'
+      },
+      {
+        value: 'wisecloud',
+        label: 'WiseCloud'
+      }]
     }
   },
   methods: {
