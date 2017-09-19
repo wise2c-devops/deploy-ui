@@ -5,3 +5,13 @@
   log stdout
   errors stdout
 }
+
+# 代理华相的 API
+#0.0.0.0:80/v1 {
+#  proxy /  127.0.0.1:8080 {
+#      transparent
+#  }
+#  gzip
+#  log stdout
+#  errors stdout
+#}
