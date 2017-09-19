@@ -7,7 +7,7 @@
           <li role="presentation" :class="getActiveClass('components')"><router-link :to="componentsUrl"><i class="el-icon-setting"></i>服务组件</router-link></li>
         </ul>
       </div>
-      <div class="col-md-10">
+      <div class="col-md-10 wrapper">
         <router-view :cluster="cluster"></router-view>
       </div>
     </div>

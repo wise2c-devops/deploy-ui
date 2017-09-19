@@ -5,8 +5,13 @@
         <label for="componentType">组件类型</label>
         <select class="form-control" id="componentType" v-model="component.type" autofocus="true">
           <option label="LB" selected>lb</option>
-          <option label="Mysql">mysql</option>
+          <option label="MySql">mysql</option>
           <option label="Kafka">kafka</option>
+          <option label="Registry">registry</option>
+          <option label="etcd">etcd</option>
+          <option label="K8S master">k8smaster</option>
+          <option label="K8S node">k8snode</option>
+          <option label="WiseCloud">wisecloud</option>
         </select>
       </div>
       <div class="form-group" v-if="component.type !== 'lb'">

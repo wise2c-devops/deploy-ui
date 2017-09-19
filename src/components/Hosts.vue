@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="hosts-container">
     <div class="row add-host">
       <ol class="breadcrumb pull-left">
         <li>
@@ -123,12 +123,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .container {
-  .add-host {
-    margin-bottom: 10px;
-  }
   .buttons {
     margin-top: 100px;
-    padding: 0 80px;
   }
 }
 </style>
