@@ -24,6 +24,15 @@ npm run e2e
 npm test
 ```
 
+## 制作镜像
+
+```bash
+npm run build
+docker build deployment-ui .
+
+```
+
+
 ## 使用svg生成我们自己的icon
 ![官网](http://fontello.com/)
 
