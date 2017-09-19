@@ -1,0 +1,7 @@
+0.0.0.0:80 {
+  root /root/ui
+  timeouts none
+  gzip
+  log stdout
+  errors stdout
+}

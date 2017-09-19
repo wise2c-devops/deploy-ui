@@ -1,7 +1,0 @@
-wise2build-frontend:
-  image: registry.aliyuncs.com/wise2c/wisebuild-fronted:BUILD-$BUILD_NUMBER
-  stdin_open: true
-  tty: true
-  labels:
-    io.rancher.container.pull_image: always
-    io.rancher.scheduler.affinity:host_label: wise2builder=$HOST_LABEL

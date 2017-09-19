@@ -1,6 +1,6 @@
 var merge = require('webpack-merge')
 
-module.exports = merge({ PUSHER_HOST: JSON.stringify(process.env.PUSHER_HOST || '182.140.210.215') }, {
+module.exports = merge({}, {
   NODE_ENV: '"production"',
   HTTP_HOST: '""',
   WS_HOST: '""',
