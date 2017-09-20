@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="log-wrapper">
     Logs
   </div>
 </template>
@@ -12,3 +12,14 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  @import "../assets/stylesheets/variables";
+  .log-wrapper {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    margin-top: 50px;
+  }
+</style>
+
