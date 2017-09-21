@@ -1,7 +1,6 @@
-FROM alpine
+FROM generik/ansible:v2.3
 
 WORKDIR /root
-
 
 RUN apk add curl bash --no-cache && curl https://getcaddy.com | bash
 
