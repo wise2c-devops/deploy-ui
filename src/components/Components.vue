@@ -9,7 +9,7 @@
           <router-link to="">{{cluster.name}}</router-link>
         </li>
       </ol>
-      <el-button size="mini" type="primary" icon="caret-right" @click="addComponentDialog" class="status-icon">开始安装</el-button>
+      <el-button size="mini" type="primary" icon="caret-right" @click="install" class="status-icon">开始安装</el-button>
       <el-button size="small" type="primary" icon="plus" @click="addComponentDialog" class="pull-right">添加组件</el-button>
     </div>
     <div class="row hosts-table">
@@ -141,6 +141,12 @@ export default {
         return "无"
       }
       return component.properties
+    },
+    install() {
+      pop('开始安装')
+      this.$router.push({
+        path: `/clusters/${this.clusterId}/processing`
+      })
     }
   },
   computed: {
