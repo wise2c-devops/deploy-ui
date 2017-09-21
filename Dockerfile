@@ -1,6 +1,9 @@
-FROM abiosoft/caddy
+FROM alpine
 
 WORKDIR /root
+
+
+RUN apk add curl bash --no-cache && curl https://getcaddy.com | bash
 
 ADD dist/ /root/ui
 
