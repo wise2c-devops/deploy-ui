@@ -51,6 +51,7 @@
 </template>
 <script>
 import { validationError } from '../../mixin/error'
+import {popWarn} from '../../utils/alert'
 export default {
   mixins: [validationError],
   props: {
@@ -99,6 +100,10 @@ export default {
       this.$emit('update:dialogVisible', false)
     },
     callMethod() {
+      if(this.component.name !== 'loadbalancer' && this.component.hosts.length === 0) {
+        popWarn('请选择主机后再保存')
+        return
+      }
       if (!!this.component.id) {
         return this.updateComponent(this.component)
       }

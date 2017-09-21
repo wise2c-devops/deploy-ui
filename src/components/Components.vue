@@ -78,6 +78,10 @@ export default {
     },
     editComponentDialog(component) {
       this.component = Object.assign({}, component)
+      var newHosts = map(this.component.hosts, (host) => {
+        return host.id
+      })
+      this.component.hosts = newHosts
       this.dialogVisible = true
     },
     remove(index, componentId) {
