@@ -4,7 +4,7 @@
       <div class="form-group">
         <label for="componentType">组件类型</label>
         <br>
-        <el-select v-model="component.name" :disabled="!!component.id">
+        <el-select v-model="component.name">
           <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
@@ -12,7 +12,7 @@
       <div class="form-group" v-if="component.name !== 'loadbalancer'">
         <label for="ip">主机列表</label>
         <br>
-        <el-select v-model="component.hosts" multiple placeholder="请选择" v-validate.initial="'required'">
+        <el-select v-model="component.hosts" multiple placeholder="请选择">
           <el-option v-for="item in hosts" :key="item.id" :label="item.hostname" :value="item.id">
           </el-option>
         </el-select>

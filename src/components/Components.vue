@@ -23,7 +23,10 @@
         </el-table-column>
         <el-table-column align="center" prop="name" label="属性">
         </el-table-column>
-        <el-table-column align="center" prop="hosts" label="主机">
+        <el-table-column align="center" label="主机">
+          <template scope="scope">
+            {{simpleHosts(scope.row.hosts)}}
+          </template>
         </el-table-column>
         <el-table-column align="center" label="操作">
           <template scope="scope">
@@ -49,6 +52,7 @@ import { getCluster, getComponents, fetchComponents, createComponent, fetchHosts
 import ComponentDialog from './common/ComponentDialog'
 import { pop } from '../utils/alert'
 import { promptOnDelete } from '../utils/prompt'
+
 export default {
   components: {
     ComponentDialog
@@ -101,6 +105,13 @@ export default {
         }
       }
       this.dialogVisible = true
+    },
+    simpleHosts(hosts) {
+      var hostsStr = ""
+      hosts.forEach((item) => {
+        hostsStr += item.hostname + ","
+      })
+      return hostsStr.substring(0, hostsStr.length - 1)
     }
   },
   computed: {
