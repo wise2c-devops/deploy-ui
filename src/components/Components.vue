@@ -21,7 +21,10 @@
         </el-table-column>
         <el-table-column align="center" prop="name" label="服务名称">
         </el-table-column>
-        <el-table-column align="center" prop="name" label="属性">
+        <el-table-column align="center" label="属性">
+          <template scope="scope">
+            {{properties(scope.row)}}
+          </template>
         </el-table-column>
         <el-table-column align="center" label="主机">
           <template scope="scope">
@@ -50,7 +53,7 @@
 </template>
 
 <script>
-import { getCluster, getComponents, fetchComponents, createComponent, fetchHosts, getHosts, deleteComponent } from 'vuexPath/modules/cluster'
+import { getCluster, getComponents, fetchComponents, createComponent, fetchHosts, getHosts, deleteComponent, updateComponent} from 'vuexPath/modules/cluster'
 import ComponentDialog from './common/ComponentDialog'
 import { pop } from '../utils/alert'
 import { promptOnDelete } from '../utils/prompt'
@@ -93,6 +96,15 @@ export default {
       })
     },
     update(component) {
+      if(component.name === 'loadbalancer') {
+        component.hosts = []
+      }else {
+        component.properties = {}
+      }
+      this.updateComponent(this.clusterId, component, ()=> {
+        pop('更新组件成功')
+        this.dialogVisible = false
+      })
 
     },
     addComponentDialog() {
@@ -111,11 +123,20 @@ export default {
       this.dialogVisible = true
     },
     simpleHosts(hosts) {
+      if(hosts.length === 0) {
+        return "无"
+      }
       var hostsStr = ""
       hosts.forEach((item) => {
         hostsStr += item.hostname + ","
       })
       return hostsStr.substring(0, hostsStr.length - 1)
+    },
+    properties(component) {
+      if(!component.properties || !component.properties.netMask || component.properties.netMask === "") {
+        return "无"
+      }
+      return component.properties
     }
   },
   computed: {
@@ -170,7 +191,8 @@ export default {
       fetchComponents,
       createComponent,
       fetchHosts,
-      deleteComponent
+      deleteComponent,
+      updateComponent
     },
     getters: {
       cluster: getCluster,

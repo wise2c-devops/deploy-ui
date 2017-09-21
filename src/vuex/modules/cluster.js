@@ -36,6 +36,12 @@ const mutations = {
   },
   DELETE_COMPONENT(state, index) {
     state.components.splice(index, 1)
+  },
+  UPDATE_COMPONENT(state, component) {
+    var index = findIndex(state.components, (item) => {
+      return item.id === component.id
+    })
+    state.components.splice(index, 1, component)
   }
 }
 
@@ -113,6 +119,16 @@ export const deleteComponent = ({dispatch}, clusterId, componentId, index, succe
     success()
   }).catch((error) => {
     popWarn('删除组件失败')
+    console.error(error)
+  })
+}
+
+export const updateComponent = ({dispatch}, clusterId, component, success= ()=> {}) => {
+  put(formatString(API.CLUSTER.COMPONENT, clusterId, component.id), component).then( (response)=> {
+    dispatch('UPDATE_COMPONENT', response.body)
+    success()
+  }).catch((error) => {
+    popWarn('更新组件失败')
     console.error(error)
   })
 }

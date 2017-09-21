@@ -4,7 +4,7 @@
       <div class="form-group">
         <label for="componentType">组件类型</label>
         <br>
-        <el-select v-model="component.name" disabled="!!component.id">
+        <el-select v-model="component.name" :disabled="!!component.id">
           <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
@@ -111,7 +111,7 @@ export default {
       })
     },
     remove(index) {
-      this.vips.splice(index, 1)
+      this.component.properties.vips.splice(index, 1)
     }
   }
 }
