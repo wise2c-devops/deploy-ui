@@ -4,7 +4,7 @@
       <div class="form-group">
         <label for="componentType">组件类型</label>
         <br>
-        <el-select v-model="component.name">
+        <el-select v-model="component.name" disabled="!!component.id">
           <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
@@ -64,42 +64,20 @@ export default {
     },
     addComponent: Function,
     updateComponent: Function,
+    types: {
+      type: Array,
+      default: []
+    },
     component: {
       type: Object,
       default: {
-        name: 'loadbalancer',
+        name: '',
         hosts: []
       }
     }
   },
   data() {
     return {
-      types: [{
-        value: 'loadbalancer',
-        label: 'Load Balancer'
-      }, {
-        value: 'mysql',
-        label: 'MySql'
-      }, {
-        value: 'kafka',
-        label: 'Kafka'
-      }, {
-        value: 'registry',
-        label: 'Registry'
-      }, {
-        value: 'etcd',
-        label: 'etcd'
-      }, {
-        value: 'k8smaster',
-        label: 'K8S master'
-      }, {
-        value: 'k8snode',
-        label: 'K8S node'
-      },
-      {
-        value: 'wisecloud',
-        label: 'WiseCloud'
-      }],
       vipTypes: [
         {
           value: 'k8s',

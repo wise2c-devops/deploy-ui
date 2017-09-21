@@ -43,7 +43,9 @@
         <el-button size="large" type="success" class="pull-right" icon="arrow-right" @click="next">下一步</el-button>
       </div>
     </div>
-    <component-dialog :dialog-visible.sync="dialogVisible" :add-component="create" :component="component" :update-component="update" :hosts="hosts"></component-dialog>
+    <component-dialog :dialog-visible.sync="dialogVisible" :add-component="create" :component="component" :types="validComponentTypes"
+    :update-component="update" :hosts="hosts">
+    </component-dialog>
   </div>
 </template>
 
@@ -52,7 +54,7 @@ import { getCluster, getComponents, fetchComponents, createComponent, fetchHosts
 import ComponentDialog from './common/ComponentDialog'
 import { pop } from '../utils/alert'
 import { promptOnDelete } from '../utils/prompt'
-
+import {filter, map} from 'lodash'
 export default {
   components: {
     ComponentDialog
@@ -66,7 +68,6 @@ export default {
   },
   methods: {
     create(component) {
-      console.log(component)
       this.createComponent(this.clusterId, component, ()=> {
         this.dialogVisible = false
         pop('创建服务组件成功')
@@ -91,9 +92,12 @@ export default {
         path: `/clusters/${this.clusterId}/processing`
       })
     },
+    update(component) {
+
+    },
     addComponentDialog() {
       this.component = {
-        name: "loadbalancer",
+        name: "",
         hosts: [],
         properties: {
           netInterface: "",
@@ -117,12 +121,48 @@ export default {
   computed: {
     clusterId() {
       return this.$route.params.id
+    },
+    existedComponentTypes() {
+      return map(this.components, (component) => {
+        return component.name
+      })
+    },
+    validComponentTypes() {
+      return filter(this.types, (type) => {
+        return this.existedComponentTypes.indexOf(type.value) === -1
+      })
     }
   },
   data() {
     return {
       component: {},
-      dialogVisible: false
+      dialogVisible: false,
+      types: [{
+        value: 'loadbalancer',
+        label: 'Load Balancer'
+      }, {
+        value: 'mysql',
+        label: 'MySql'
+      }, {
+        value: 'kafka',
+        label: 'Kafka'
+      }, {
+        value: 'registry',
+        label: 'Registry'
+      }, {
+        value: 'etcd',
+        label: 'etcd'
+      }, {
+        value: 'k8smaster',
+        label: 'K8S master'
+      }, {
+        value: 'k8snode',
+        label: 'K8S node'
+      },
+      {
+        value: 'wisecloud',
+        label: 'WiseCloud'
+      }]
     }
   },
   vuex: {
