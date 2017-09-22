@@ -2,7 +2,7 @@ FROM generik/ansible:v2.3
 
 WORKDIR /root
 
-RUN apk add curl bash --no-cache && curl https://getcaddy.com | bash
+RUN apk add curl bash gnupg caddy --no-cache
 
 ADD dist/ /root/ui
 
