@@ -133,6 +133,24 @@ export const updateComponent = ({dispatch}, clusterId, component, success= ()=> 
   })
 }
 
+export const deploy = ({dispatch}, clusterId, type='install', success=()=>{}) => {
+  put(formatString(API.CLUSTER.DEPLOY, clusterId), {operation: type}).then(response => {
+    success()
+  }).catch(error => {
+    popWarn('无法执行部署命令，请稍后重试')
+    console.error(error)
+  })
+}
+
+export const cancel = ({dispatch}, clusterId, success=()=>{}) => {
+  destroy(formatString(API.CLUSTER.DEPLOY, clusterId), {}).then(response => {
+    success()
+  }).catch(error => {
+    popWarn('无法执行部署命令，请稍后重试')
+    console.error(error)
+  })
+}
+
 //getters
 
 export const getHosts = (state) => {

@@ -16,13 +16,14 @@
         <el-button size="large" icon="arrow-left" class="pull-left " @click="back">返回</el-button>
       </div>
       <div class="col-md-2">
-        <el-button size="large" icon="close" type="danger" @click="cancel">取消</el-button>
+        <el-button size="large" icon="close" type="danger" @click="cancelDeployment">取消</el-button>
       </div>
     </div>
   </div>
 </template>
 <script>
   import {pop} from '../utils/alert'
+  import {cancel} from 'vuexPath/modules/cluster'
   export default {
     computed: {
       clusterId() {
@@ -48,8 +49,15 @@
           path: `/clusters/${this.clusterId}/hosts`
         })
       },
-      cancel() {
-        pop('取消安装成功')
+      cancelDeployment() {
+        this.cancel(this.clusterId, () => {
+          pop('取消安装成功')
+        })
+      }
+    },
+    vuex: {
+      actions: {
+        cancel
       }
     }
   }

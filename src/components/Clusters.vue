@@ -14,7 +14,7 @@
           </br>
         </div>
         <span class="app-name">{{cluster.name}}</span>
-        <span class="hint--top help app-edit" aria-label="编辑应用">
+        <span class="hint--top help app-edit" aria-label="编辑应用" v-if="false">
           <i class="fa fa-cog app-edit" @click.prevent.stop="editClusterDialog(cluster)"></i>
         </span>
         <span class="hint--top help app-delete" aria-label="删除应用">

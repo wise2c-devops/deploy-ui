@@ -46,18 +46,17 @@
         <el-button size="large" type="success" class="pull-right" icon="arrow-right" @click="next">下一步</el-button>
       </div>
     </div>
-    <component-dialog :dialog-visible.sync="dialogVisible" :add-component="create" :component="component" :types="validComponentTypes"
-    :update-component="update" :hosts="hosts">
+    <component-dialog :dialog-visible.sync="dialogVisible" :add-component="create" :component="component" :types="validComponentTypes" :update-component="update" :hosts="hosts">
     </component-dialog>
   </div>
 </template>
 
 <script>
-import { getCluster, getComponents, fetchComponents, createComponent, fetchHosts, getHosts, deleteComponent, updateComponent} from 'vuexPath/modules/cluster'
+import { getCluster, getComponents, fetchComponents, createComponent, fetchHosts, getHosts, deleteComponent, updateComponent, deploy } from 'vuexPath/modules/cluster'
 import ComponentDialog from './common/ComponentDialog'
 import { pop } from '../utils/alert'
 import { promptOnDelete } from '../utils/prompt'
-import {filter, map} from 'lodash'
+import { filter, map } from 'lodash'
 export default {
   components: {
     ComponentDialog
@@ -71,7 +70,7 @@ export default {
   },
   methods: {
     create(component) {
-      this.createComponent(this.clusterId, component, ()=> {
+      this.createComponent(this.clusterId, component, () => {
         this.dialogVisible = false
         pop('创建服务组件成功')
       })
@@ -95,17 +94,15 @@ export default {
       this.$router.go(-1)
     },
     next() {
-      this.$router.push({
-        path: `/clusters/${this.clusterId}/processing`
-      })
+      this.install()
     },
     update(component) {
-      if(component.name === 'loadbalancer') {
+      if (component.name === 'loadbalancer') {
         component.hosts = []
-      }else {
+      } else {
         component.properties = {}
       }
-      this.updateComponent(this.clusterId, component, ()=> {
+      this.updateComponent(this.clusterId, component, () => {
         pop('更新组件成功')
         this.dialogVisible = false
       })
@@ -127,7 +124,7 @@ export default {
       this.dialogVisible = true
     },
     simpleHosts(hosts) {
-      if(hosts.length === 0) {
+      if (hosts.length === 0) {
         return "无"
       }
       var hostsStr = ""
@@ -137,13 +134,22 @@ export default {
       return hostsStr.substring(0, hostsStr.length - 1)
     },
     properties(component) {
-      if(!component.properties || !component.properties.netMask || component.properties.netMask === "") {
+      if (!component.properties || !component.properties.netMask || component.properties.netMask === "") {
         return "无"
       }
       return component.properties
     },
     install() {
-      pop('开始安装')
+      if (this.cluster.state === 'initial') {
+        this.deploy(this.clusterId, 'install', () => {
+          pop('开始安装')
+          this.$router.push({
+            path: `/clusters/${this.clusterId}/processing`
+          })
+        })
+        return
+      }
+
       this.$router.push({
         path: `/clusters/${this.clusterId}/processing`
       })
@@ -202,7 +208,8 @@ export default {
       createComponent,
       fetchHosts,
       deleteComponent,
-      updateComponent
+      updateComponent,
+      deploy
     },
     getters: {
       cluster: getCluster,
