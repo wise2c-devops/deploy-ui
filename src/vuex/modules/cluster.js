@@ -134,7 +134,7 @@ export const updateComponent = ({dispatch}, clusterId, component, success= ()=> 
 }
 
 export const deploy = ({dispatch}, clusterId, type='install', success=()=>{}) => {
-  put(formatString(API.CLUSTER.DEPLOY, clusterId), {operation: type}).then(response => {
+  put(formatString(API.CLUSTER.DEPLOY, clusterId), {operation: type}).then(() => {
     success()
   }).catch(error => {
     popWarn('无法执行部署命令，请稍后重试')
@@ -143,7 +143,7 @@ export const deploy = ({dispatch}, clusterId, type='install', success=()=>{}) =>
 }
 
 export const cancel = ({dispatch}, clusterId, success=()=>{}) => {
-  destroy(formatString(API.CLUSTER.DEPLOY, clusterId), {}).then(response => {
+  destroy(formatString(API.CLUSTER.DEPLOY, clusterId), {}).then(() => {
     success()
   }).catch(error => {
     popWarn('无法执行部署命令，请稍后重试')

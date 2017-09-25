@@ -20,7 +20,6 @@ const mutations = {
     state.clusters.push(cluster)
   },
   UPDATE_CLUSTER(state, cluster) {
-    console.log(cluster)
   },
   DELETE_CLUSTER(state, index) {
     state.clusters.splice(index, 1)

@@ -1,6 +1,6 @@
 import {get, post, destroy } from '../utils/rest'
 import API from '../utils/rest'
-import {pop, popWarn} from '../utils/alert'
+import {popWarn} from '../utils/alert'
 import {formatString} from '../utils/string'
 export const showLoading = function ({ dispatch }, success = null) {
   dispatch('UPDATE_LOADING', true)
