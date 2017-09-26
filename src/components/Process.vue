@@ -4,9 +4,8 @@
       <li class="pull-left" v-for="(item, index) in allProcess" :key="index">
         <div class="box">
           <div class="text-center">
-            <el-tooltip class="item" effect="dark" :content="item.name" placement="top">
-              <i :class="item.icon"></i>
-            </el-tooltip>
+            <i :class="item.icon"></i>
+            <p class="title">{{item.name}}</p>
           </div>
         </div>
       </li>
@@ -24,6 +23,7 @@
 <script>
   import {pop} from '../utils/alert'
   import {cancel} from 'vuexPath/modules/cluster'
+  import SockJS from 'sockjs-client'
   export default {
     computed: {
       clusterId() {
@@ -52,7 +52,18 @@
       cancelDeployment() {
         this.cancel(this.clusterId, () => {
           pop('取消安装成功')
+          this.back()
         })
+      }
+    },
+    mounted() {
+      // var socket = new SockJS(`${process.env.WEBSOCKET_HOST}/v1/stats`)
+      var socket = new WebSocket(`${process.env.WEBSOCKET_HOST}/v1/stats`, "ws")
+      socket.onopen = (event) => {
+        console.log('--------open,', event)
+      }
+      socket.onmessage = (event) => {
+        console.log(event.data)
       }
     },
     vuex: {
@@ -86,6 +97,11 @@
         i {
           font-size: 40px;
 
+        }
+        p.title {
+          color: $main-font-color;
+          margin-top: 10px;
+          font-size: 14px;
         }
       }
       &:first-child {
