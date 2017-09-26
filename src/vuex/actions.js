@@ -32,8 +32,8 @@ export const createCluster = ({dispatch}, cluster, success = ()=>{}) => {
   post(API.CLUSTERS, cluster).then((response) => {
     dispatch('ADD_CLUSTER', response.body)
     success()
-  }).catch(() => {
-    popWarn('创建新集群失败')
+  }).catch((error) => {
+    popWarn(error)
   })
 }
 

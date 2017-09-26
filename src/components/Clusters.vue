@@ -74,8 +74,9 @@ export default {
       var newCluster = Object.assign({}, cluster)
       this.createCluster(newCluster, () => {
         pop("创建集群成功")
+        this.dialogVisible = false
       })
-      this.dialogVisible = false
+
     },
     icon(cluster) {
       switch(cluster.state) {
