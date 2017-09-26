@@ -1,6 +1,6 @@
 <template>
   <el-dialog title="服务组件" :visible="dialogVisible" size="tiny" :close-on-click-modal="false" :show-close="false">
-    <form>
+    <form @submit.prevent="onSubmit">
       <div class="form-group">
         <label for="componentType">组件类型</label>
         <br>
@@ -42,11 +42,11 @@
         </div>
         <i v-show="errors.has('vip')" class="error fa fa-warning">请输入有效的VIP IP地址</i>
       </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="close">取 消</el-button>
+        <el-button type="primary" @click.prevent="callMethod" :disabled="hasError" native-type="submit">确 定</el-button>
+      </div>
     </form>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="close">取 消</el-button>
-      <el-button type="primary" @click="callMethod" :disabled="hasError">确 定</el-button>
-    </span>
   </el-dialog>
 </template>
 <script>
@@ -108,6 +108,9 @@ export default {
         return this.updateComponent(this.component)
       }
       return this.addComponent(this.component)
+    },
+    onSubmit(){
+      this.callMethod()
     },
     addVip() {
       this.component.properties.vips.push({

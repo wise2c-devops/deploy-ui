@@ -1,9 +1,9 @@
 <template>
   <el-dialog title="主机" :visible="dialogVisible" size="tiny" :close-on-click-modal="false" :show-close="false">
-    <form>
+    <form @submit.prevent="onSubmit">
       <div class="form-group">
         <label for="hostName">主机名称</label>
-        <input type="text" class="form-control" v-validate.initial="'required'" v-model="host.hostname" name="hostname" id="hostName" placeholder="主机名称">
+        <input type="text" class="form-control" v-validate.initial="'required'" v-model="host.hostname" name="hostname" id="hostName" autofocus placeholder="主机名称">
         <i v-show="errors.has('hostname')" class="error fa fa-warning">请输入主机名称</i>
       </div>
       <div class="form-group">
@@ -15,11 +15,11 @@
         <label for="description">描述信息</label>
         <input type="text" class="form-control" v-model="host.description" id="description" placeholder="描述信息">
       </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="close">取 消</el-button>
+        <el-button type="primary" @click.prevent="callMethod" :disabled="hasError" native-type="submit">确 定</el-button>
+      </div>
     </form>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="close">取 消</el-button>
-      <el-button type="primary" @click="callMethod" :disabled="hasError">确 定</el-button>
-    </span>
   </el-dialog>
 </template>
 <script>
@@ -51,6 +51,9 @@ export default {
         return this.updateHost(this.host)
       }
       return this.addHost(this.host)
+    },
+    onSubmit() {
+      this.callMethod()
     }
   }
 }

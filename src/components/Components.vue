@@ -9,7 +9,7 @@
           <router-link to="">{{cluster.name}}</router-link>
         </li>
       </ol>
-      <el-button size="mini" type="primary" icon="caret-right" @click="install" class="status-icon">开始安装</el-button>
+      <el-button size="mini" type="primary" icon="caret-right" @click="install" class="status-icon" :disabled="components.length === 0">开始安装</el-button>
       <el-button size="small" type="primary" icon="plus" @click="addComponentDialog" class="pull-right">添加组件</el-button>
     </div>
     <div class="row hosts-table">
@@ -43,7 +43,7 @@
     <div class="row">
       <div class="col-md-4 col-md-offset-4 buttons">
         <el-button size="large" icon="arrow-left" class="pull-left" @click="back">上一步</el-button>
-        <el-button size="large" type="success" class="pull-right" icon="arrow-right" @click="next">下一步</el-button>
+        <el-button size="large" type="success" class="pull-right" icon="arrow-right" @click="next" :disabled="components.length === 0">下一步</el-button>
       </div>
     </div>
     <component-dialog :dialog-visible.sync="dialogVisible" :add-component="create" :component="component" :types="validComponentTypes" :update-component="update" :hosts="hosts">

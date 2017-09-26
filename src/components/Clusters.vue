@@ -76,7 +76,6 @@ export default {
         pop("创建集群成功")
         this.dialogVisible = false
       })
-
     },
     icon(cluster) {
       switch(cluster.state) {
