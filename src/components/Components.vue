@@ -70,6 +70,9 @@ export default {
   },
   methods: {
     create(component) {
+      if (component.name !== 'loadbalancer') {
+        component.properties = {}
+      }
       this.createComponent(this.clusterId, component, () => {
         this.dialogVisible = false
         pop('创建服务组件成功')
@@ -97,9 +100,7 @@ export default {
       this.install()
     },
     update(component) {
-      if (component.name === 'loadbalancer') {
-        component.hosts = []
-      } else {
+      if (component.name !== 'loadbalancer') {
         component.properties = {}
       }
       this.updateComponent(this.clusterId, component, () => {

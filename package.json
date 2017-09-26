@@ -27,7 +27,7 @@
     "lodash": "^4.14.1",
     "marked": "^0.3.6",
     "moment": "^2.14.1",
-    "sockjs-client": "^1.1.1",
+    "sockjs-client": "^v1.1.4",
     "spinkit": "^1.2.5",
     "superagent": "^3.5.1",
     "superagent-jsonapify": "^1.4.4",

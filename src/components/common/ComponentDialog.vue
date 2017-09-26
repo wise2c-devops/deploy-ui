@@ -9,7 +9,7 @@
           </el-option>
         </el-select>
       </div>
-      <div class="form-group" v-if="component.name !== 'loadbalancer'">
+      <div class="form-group">
         <label for="ip">主机列表</label>
         <br>
         <el-select v-model="component.hosts" multiple placeholder="请选择">
