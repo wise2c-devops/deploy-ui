@@ -18,9 +18,9 @@
             {{scope.$index + 1}}
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="ip" label="IP">
-        </el-table-column>
         <el-table-column align="center" prop="hostname" label="名称">
+        </el-table-column>
+        <el-table-column align="center" prop="ip" label="IP">
         </el-table-column>
         <el-table-column align="center" prop="description" label="描述">
         </el-table-column>
