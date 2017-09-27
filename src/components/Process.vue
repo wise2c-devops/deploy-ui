@@ -45,7 +45,10 @@ export default {
       })
     },
     isDone() {
-      return this.validStages[this.validStages.length - 1].enabled
+      if(this.validStages.length > 0) {
+        return this.validStages[this.validStages.length - 1].enabled
+      }
+      return false
     }
   },
   data() {
@@ -91,7 +94,7 @@ export default {
     socket.onmessage = (event) => {
       var json = JSON.parse(event.data)
       console.log(json)
-      this.logs.push(`${json.now}: 【${json.stage}】${json.data.msg}`)
+      this.logs.push(`${json.now}: [${json.stage}] [${json.host}]  task: ${json.task.name} - ${json.task.state},  message: ${json.data.msg}`)
       if (json.state === 'ok') {
         var stage = findLast(this.stages, (stage) => {
           return stage.value === json.stage
@@ -173,19 +176,12 @@ export default {
         display: inline-block;
         color: #666;
         text-align: right;
-        width: 60px;
+        width: 30px;
         margin-right: 10px;
       }
       p {
         display: inline-block;
-      } // &:before {
-      //   counter-increment: subsection;
-      //   content: counter(subsection);
-      //   margin-right: 10px;
-      //   color: #666;
-      //   text-align: right;
-      //   width: 100px;
-      // }
+      }
     }
   }
 }
