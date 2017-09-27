@@ -1,7 +1,7 @@
 <template>
   <div class="process-container">
     <ul class="clear-style row m0 process">
-      <li class="pull-left" v-for="(item, index) in allProcess" :key="index">
+      <li class="pull-left" v-for="(item, index) in stages" :key="index">
         <div class="box">
           <div class="text-center">
             <i :class="getIconClass(item)"></i>
@@ -26,124 +26,133 @@
   </div>
 </template>
 <script>
-  import {pop} from '../utils/alert'
-  import {cancel} from 'vuexPath/modules/cluster'
-  export default {
-    computed: {
-      clusterId() {
-        return this.$route.params.id
-      }
+import { pop } from '../utils/alert'
+import { cancel } from 'vuexPath/modules/cluster'
+import { findLast } from 'lodash'
+export default {
+  computed: {
+    clusterId() {
+      return this.$route.params.id
+    }
+  },
+  data() {
+    return {
+      logs: [],
+      stages: [
+        { name: 'Registry', icon: 'wise-icon-registry', value: 'registry', enabled: false },
+        { name: 'Etcd', icon: 'wise-icon-etcd', value: 'etcd', enabled: false },
+        { name: 'Mysql', icon: 'wise-icon-mysql', value: 'mysql', enabled: false },
+        { name: 'LoadBalance', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false },
+        { name: 'K8sMaster', icon: 'wise-icon-kubernets', value: 'k8smaster', enabled: false },
+        { name: 'K8sNode', icon: 'wise-icon-kubernets', value: 'k8snode', enabled: false },
+        { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: false }
+      ]
+    }
+  },
+  methods: {
+    back() {
+      this.$router.push({
+        path: `/clusters/${this.clusterId}/hosts`
+      })
     },
-    data () {
-      return {
-        logs: [],
-        allProcess: [
-          {name: 'Etcd', icon: 'wise-icon-etcd', enabled: true},
-          {name: 'K8sMaster', icon: 'wise-icon-kubernets', enabled: false},
-          {name: 'K8sNode', icon: 'wise-icon-kubernets', enabled: false},
-          {name: 'Mysql', icon: 'wise-icon-mysql', enabled: false},
-          {name: 'LoadBalance', icon: 'wise-icon-lb-service', enabled: false},
-          {name: 'Wisecloud', icon: 'wise-icon-wisecloud', enabled: false},
-          {name: 'Registry', icon: 'wise-icon-registry', enabled: false}
-        ]
-      }
+    cancelDeployment() {
+      this.cancel(this.clusterId, () => {
+        pop('取消安装成功')
+        this.back()
+      })
     },
-    methods: {
-      back () {
-        this.$router.push({
-          path: `/clusters/${this.clusterId}/hosts`
+    getIconClass(item) {
+      return [item.icon, item.enabled ? "enabled" : ""]
+    }
+  },
+  mounted() {
+    var socket = new WebSocket(`${process.env.WEBSOCKET_HOST}/v1/stats`)
+    socket.onopen = (event) => {
+      console.info('Success link to backend server')
+    }
+    socket.onmessage = (event) => {
+      var json = JSON.parse(event.data)
+      console.log(json)
+      this.logs.push(`${json.now}: 【${json.stage}】${json.data.msg}`)
+      if (json.state === 'ok') {
+        var stage = findLast(this.stages, (stage) => {
+          return stage.value === json.stage
         })
-      },
-      cancelDeployment() {
-        this.cancel(this.clusterId, () => {
-          pop('取消安装成功')
-          this.back()
-        })
-      },
-      getIconClass(item) {
-        return [item.icon, item.enabled ? "enabled" : ""]
-      }
-    },
-    mounted() {
-      var socket = new WebSocket(`${process.env.WEBSOCKET_HOST}/v1/stats`)
-      socket.onopen = (event) => {
-        console.info('Success link to backend server')
-      }
-      socket.onmessage = (event) => {
-        console.log(event.data, '------------msg')
-        this.logs.push(`【${event.data.stage}】 ${event.data.now}: ${event.data.data.msg}`)
-      }
-    },
-    vuex: {
-      actions: {
-        cancel
+        stage.enabled = true
       }
     }
+  },
+  vuex: {
+    actions: {
+      cancel
+    }
   }
+}
 </script>
 <style lang="scss">
-  @import "../assets/stylesheets/variables";
-  .process-container {
-    width:80%;
-    margin: 0 auto;
-    margin-top: 100px;
-    .process {
-      height: 150px;
-      li {
-        border-top: 1px solid #cdd1d9;
-        padding-left: 10%;
-        .box {
-          width: 70px;
-          position: relative;
-          top: -30px;
-          background: #f5f8fa;
-        }
-        .box > div {
-          margin: auto;
-          width: 60px;
-          height: 60px;
-          border-radius: 50%;
-          border: 2px solid #cdd1d9;
-          color: #cdd1d9;
-          i {
-            font-size: 40px;
-            &.enabled {
-              color: $green-color;
-            }
-          }
-          p.title {
-            color: $main-font-color;
-            margin-top: 10px;
-            font-size: 14px;
+@import "../assets/stylesheets/variables";
+.process-container {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 100px;
+  .process {
+    height: 150px;
+    li {
+      border-top: 1px solid #cdd1d9;
+      padding-left: 10%;
+      .box {
+        width: 70px;
+        position: relative;
+        top: -30px;
+        background: #f5f8fa;
+      }
+      .box>div {
+        margin: auto;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: 2px solid #cdd1d9;
+        color: #cdd1d9;
+        i {
+          font-size: 40px;
+          &.enabled {
+            color: $green-color;
           }
         }
-        &:first-child {
-          padding-left: 0;
+        p.title {
+          color: $main-font-color;
+          margin-top: 10px;
+          font-size: 14px;
         }
       }
-      .btn-wrapper {
-        padding-top: 50px;
-        margin: auto;
+      &:first-child {
+        padding-left: 0;
       }
     }
-    .logs {
-      width:70%;
-      margin: 50px auto;
-      padding: 20px;
-      border-top: 30px solid #b3b3b3;
-      background: lighten(#000, 15%);
-      border-radius: 8px;
-      color: #fff;
-      counter-reset:subsection;
-      .log {
-        &:before{
-          counter-increment:subsection;
-          content: counter(subsection);
-          margin-right: 10px;
-          color: #666;
-        }
-      }
-
+    .btn-wrapper {
+      padding-top: 50px;
+      margin: auto;
     }
   }
+  .logs {
+    width: 70%;
+    margin: 50px auto;
+    padding: 20px;
+    border-top: 30px solid #b3b3b3;
+    background: lighten(#000, 15%);
+    border-radius: 8px;
+    color: #fff;
+    counter-reset: subsection;
+    .log {
+      font-size: 14px;
+      margin-bottom: 5px;
+      &:before {
+        counter-increment: subsection;
+        content: counter(subsection);
+        margin-right: 10px;
+        color: #666;
+      }
+    }
+  }
+}
 </style>

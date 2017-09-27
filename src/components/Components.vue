@@ -141,7 +141,7 @@ export default {
       return component.properties
     },
     install() {
-      if (this.cluster.state === 'initial') {
+      if (this.cluster.state !== 'proccessing') {
         this.deploy(this.clusterId, 'install', () => {
           pop('开始安装')
           this.$router.push({
