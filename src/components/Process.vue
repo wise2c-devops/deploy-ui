@@ -20,7 +20,8 @@
         <el-button size="large" icon="arrow-left" class="pull-left " @click="back" v-if="false">返回</el-button>
       </div>
       <div class="col-md-2">
-        <el-button size="large" icon="close" type="danger" @click="cancelDeployment">取消</el-button>
+        <el-button size="large" icon="close" type="danger" @click="cancelDeployment" v-if="!isDone">取消</el-button>
+        <el-button size="large" icon="check" type="primary" @click="back" v-if="isDone">完成</el-button>
       </div>
     </div>
   </div>
@@ -41,6 +42,9 @@ export default {
         })
         return !!target
       })
+    },
+    isDone() {
+      return this.validStages[this.validStages.length - 1].enabled
     }
   },
   data() {
@@ -53,7 +57,7 @@ export default {
         { name: 'LoadBalance', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false },
         { name: 'K8sMaster', icon: 'wise-icon-kubernets', value: 'k8smaster', enabled: false },
         { name: 'K8sNode', icon: 'wise-icon-kubernets', value: 'k8snode', enabled: false },
-        { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: false }
+        { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: true }
       ]
     }
   },
