@@ -170,6 +170,7 @@ export default {
       font-size: 14px;
       margin-bottom: 5px;
       span {
+        display: inline-block;
         color: #666;
         text-align: right;
         width: 60px;
