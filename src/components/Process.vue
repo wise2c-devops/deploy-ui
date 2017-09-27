@@ -1,7 +1,7 @@
 <template>
   <div class="process-container">
     <ul class="clear-style row m0 process">
-      <li class="pull-left" v-for="(item, index) in stages" :key="index">
+      <li class="pull-left" v-for="(item, index) in validStages" :key="index">
         <div class="box">
           <div class="text-center">
             <i :class="getIconClass(item)"></i>
@@ -27,12 +27,20 @@
 </template>
 <script>
 import { pop } from '../utils/alert'
-import { cancel } from 'vuexPath/modules/cluster'
-import { findLast } from 'lodash'
+import { cancel, getCluster, fetchClusterDetail } from 'vuexPath/modules/cluster'
+import { findLast, filter } from 'lodash'
 export default {
   computed: {
     clusterId() {
       return this.$route.params.id
+    },
+    validStages() {
+      return filter(this.stages, (stage) => {
+        var target = findLast(this.cluster.components, (component) => {
+          return component.name === stage.value
+        })
+        return !!target
+      })
     }
   },
   data() {
@@ -66,6 +74,7 @@ export default {
     }
   },
   mounted() {
+    this.fetchClusterDetail(this.clusterId)
     var socket = new WebSocket(`${process.env.WEBSOCKET_HOST}/v1/stats`)
     socket.onopen = (event) => {
       console.info('Success link to backend server')
@@ -84,7 +93,11 @@ export default {
   },
   vuex: {
     actions: {
-      cancel
+      cancel,
+      fetchClusterDetail
+    },
+    getters: {
+      cluster: getCluster
     }
   }
 }
@@ -96,6 +109,7 @@ export default {
   margin: 0 auto;
   margin-top: 100px;
   .process {
+    margin-left: 50px;
     height: 150px;
     li {
       border-top: 1px solid #cdd1d9;
