@@ -3,7 +3,7 @@ var merge = require('webpack-merge')
 module.exports = merge({}, {
   NODE_ENV: '"production"',
   HTTP_HOST: '""',
-  WS_HOST: '""',
+  WEBSOCKET_HOST: '"ws://172.20.3.1:8080"',
   FEATURE_DEPLOY_PIPELINE: false,
   FEATURE_SERVICE_BINDING: true,
   FEATURE_REGISTRY: true,

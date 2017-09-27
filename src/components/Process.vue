@@ -12,7 +12,8 @@
     </ul>
     <div class="logs">
       <div v-for="(log, index) in logs" :key="index" class="log">
-        {{log}}
+        <span class="line-number">{{index + 1}}</span>
+        <p v-html="log"></p>
       </div>
     </div>
     <div class="btn-wrapper row">
@@ -79,9 +80,13 @@ export default {
   },
   mounted() {
     this.fetchClusterDetail(this.clusterId)
-    var socket = new WebSocket(`${process.env.WEBSOCKET_HOST}/v1/stats`)
+    var url = `${process.env.WEBSOCKET_HOST}/v1/stats`
+    if (process.env.NODE_ENV === 'production') {
+      url = `ws://${location.host}/v1/stats`
+    }
+    var socket = new WebSocket(url)
     socket.onopen = (event) => {
-      console.info('Success link to backend server')
+      console.info('Success link to backend server', event)
     }
     socket.onmessage = (event) => {
       var json = JSON.parse(event.data)
@@ -164,12 +169,22 @@ export default {
     .log {
       font-size: 14px;
       margin-bottom: 5px;
-      &:before {
-        counter-increment: subsection;
-        content: counter(subsection);
-        margin-right: 10px;
+      span {
         color: #666;
+        text-align: right;
+        width: 60px;
+        margin-right: 10px;
       }
+      p {
+        display: inline-block;
+      } // &:before {
+      //   counter-increment: subsection;
+      //   content: counter(subsection);
+      //   margin-right: 10px;
+      //   color: #666;
+      //   text-align: right;
+      //   width: 100px;
+      // }
     }
   }
 }
