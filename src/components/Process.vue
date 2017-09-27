@@ -99,7 +99,9 @@ export default {
         var stage = findLast(this.stages, (stage) => {
           return stage.value === json.stage
         })
-        stage.enabled = true
+        if(!!stage) {
+          stage.enabled = true
+        }
       }
     }
   },
