@@ -61,7 +61,7 @@ export default {
         { name: 'LoadBalance', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false },
         { name: 'K8sMaster', icon: 'wise-icon-kubernets', value: 'k8smaster', enabled: false },
         { name: 'K8sNode', icon: 'wise-icon-kubernets', value: 'k8snode', enabled: false },
-        { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: true }
+        { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: false }
       ]
     }
   },

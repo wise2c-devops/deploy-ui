@@ -182,9 +182,6 @@ export default {
         value: 'mysql',
         label: 'MySql'
       }, {
-        value: 'kafka',
-        label: 'Kafka'
-      }, {
         value: 'registry',
         label: 'Registry'
       }, {
