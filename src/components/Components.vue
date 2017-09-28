@@ -10,6 +10,7 @@
         </li>
       </ol>
       <el-button size="mini" type="primary" icon="caret-right" @click="install" class="status-icon" :disabled="components.length === 0">开始安装</el-button>
+      <el-button size="mini" type="warning" icon="warning" @click="reset" class="status-icon" :disabled="isInitial">重置</el-button>
       <el-button size="small" type="primary" icon="plus" @click="addComponentDialog" class="pull-right">添加组件</el-button>
     </div>
     <div class="row hosts-table">
@@ -55,7 +56,7 @@
 import { getCluster, getComponents, fetchComponents, createComponent, fetchHosts, getHosts, deleteComponent, updateComponent, deploy } from 'vuexPath/modules/cluster'
 import ComponentDialog from './common/ComponentDialog'
 import { pop } from '../utils/alert'
-import { promptOnDelete } from '../utils/prompt'
+import { promptOnDelete, promptOnAction } from '../utils/prompt'
 import { filter, map } from 'lodash'
 export default {
   components: {
@@ -141,7 +142,7 @@ export default {
       return component.properties
     },
     install() {
-      if (this.cluster.state !== 'proccessing') {
+      if (this.cluster.state !== 'processing') {
         this.deploy(this.clusterId, 'install', () => {
           pop('开始安装')
           this.$router.push({
@@ -153,6 +154,13 @@ export default {
 
       this.$router.push({
         path: `/clusters/${this.clusterId}/processing`
+      })
+    },
+    reset() {
+      promptOnAction(this, "确认重置该集群到初始状态？", () => {
+        this.deploy(this.clusterId, 'reset', () => {
+          pop('重置成功，系统需要一些时间处理请求，请稍后刷新页面查看。')
+        })
       })
     }
   },
@@ -169,6 +177,9 @@ export default {
       return filter(this.types, (type) => {
         return this.existedComponentTypes.indexOf(type.value) === -1
       })
+    },
+    isInitial() {
+      return this.cluster.state === 'initial'
     }
   },
   data() {

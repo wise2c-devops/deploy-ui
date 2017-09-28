@@ -13,3 +13,20 @@ export const promptOnDelete = function (vue, description = '确认删除', callb
     value
   })
 }
+
+
+export const promptOnAction = function (vue, description = '确认操作', callback = {}) {
+  if(description === null) description = '确认操作'
+  vue.$prompt(`${description}，请输入OK`, '确认操作', {
+    inputErrorMessage: '输入不正确',
+    inputValidator(value) {
+      if (value === null) return false
+      if ('ok' === value.toLowerCase()) return true
+      return false
+    }
+  }).then(value => {
+    callback(value)
+  }).catch((value) => {
+    value
+  })
+}
