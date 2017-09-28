@@ -45,6 +45,9 @@ export default {
       })
     },
     isDone() {
+      if(this.failed) {
+        return true
+      }
       if(this.validStages.length > 0) {
         return this.validStages[this.validStages.length - 1].enabled
       }
@@ -53,6 +56,7 @@ export default {
   },
   data() {
     return {
+      failed: false,
       logs: [],
       stages: [
         { name: 'Registry', icon: 'wise-icon-registry', value: 'registry', enabled: false },
@@ -94,6 +98,11 @@ export default {
     socket.onmessage = (event) => {
       var json = JSON.parse(event.data)
       console.log(json)
+
+      if(json.state === 'failed') {
+        this.failed = true
+      }
+
       this.logs.push(`${json.now}: [${json.stage}] [${json.host}]  task: ${json.task.name} - ${json.task.state},  message: ${json.data.msg}`)
       if (json.state === 'ok') {
         var stage = findLast(this.stages, (stage) => {
