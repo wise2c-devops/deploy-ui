@@ -17,10 +17,8 @@
       </div>
     </div>
     <div class="btn-wrapper row">
-      <div class="col-md-2 col-md-offset-4">
+      <div class="col-md-2 col-md-offset-5">
         <el-button size="large" icon="arrow-left" class="pull-left " @click="back" v-if="false">返回</el-button>
-      </div>
-      <div class="col-md-2">
         <el-button size="large" icon="close" type="danger" @click="cancelDeployment" v-if="!isDone">取消</el-button>
         <el-button size="large" icon="check" type="primary" @click="back" v-if="isDone">完成</el-button>
       </div>
@@ -132,11 +130,12 @@ export default {
   margin: 0 auto;
   margin-top: 100px;
   .process {
-    margin-left: 50px;
+    width: 76%;
+    margin: 0 auto;
     height: 150px;
     li {
       border-top: 1px solid #cdd1d9;
-      padding-left: 10%;
+      padding-left: 7%;
       .box {
         width: 70px;
         position: relative;
@@ -172,7 +171,7 @@ export default {
     }
   }
   .logs {
-    width: 70%;
+    width: 80%;
     margin: 50px auto;
     padding: 20px;
     border-top: 30px solid #b3b3b3;
