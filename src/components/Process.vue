@@ -101,7 +101,7 @@ export default {
         this.failed = true
       }
 
-      this.logs.push(`${json.now}: [${json.stage}] [${json.host}]  task: ${json.task.name} - ${json.task.state},  message: ${json.data.msg}`)
+      this.logs.push(`${json.time}: [${json.stage}] [${json.host}]  task: ${json.task.name} - ${json.task.state},  message: ${json.data.msg}`)
       if (json.state === 'ok') {
         var stage = findLast(this.stages, (stage) => {
           return stage.value === json.stage
