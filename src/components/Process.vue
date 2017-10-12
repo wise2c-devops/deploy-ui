@@ -27,7 +27,7 @@
 </template>
 <script>
 import { pop } from '../utils/alert'
-import { cancel, getCluster, fetchClusterDetail } from 'vuexPath/modules/cluster'
+import { cancel, getCluster, fetchClusterDetail, getClusterStatus, fetchClusterStatus } from 'vuexPath/modules/cluster'
 import { findLast, filter } from 'lodash'
 export default {
   computed: {
@@ -85,6 +85,7 @@ export default {
   },
   mounted() {
     this.fetchClusterDetail(this.clusterId)
+    this.fetchClusterStatus(this.clusterId)
     var url = `${process.env.WEBSOCKET_HOST}/v1/stats`
     if (process.env.NODE_ENV === 'production') {
       url = `ws://${location.host}/v1/stats`
@@ -95,8 +96,6 @@ export default {
     }
     socket.onmessage = (event) => {
       var json = JSON.parse(event.data)
-      console.log(json)
-
       if (json.state === 'failed') {
         this.failed = true
       }
@@ -115,10 +114,12 @@ export default {
   vuex: {
     actions: {
       cancel,
-      fetchClusterDetail
+      fetchClusterDetail,
+      fetchClusterStatus
     },
     getters: {
-      cluster: getCluster
+      cluster: getCluster,
+      status: getClusterStatus
     }
   }
 }

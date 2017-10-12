@@ -7,7 +7,8 @@ const state = {
   hosts: [],
   components: [],
   cluster: {},
-  logs: []
+  logs: [],
+  status: {}
 }
 
 const mutations = {
@@ -46,6 +47,9 @@ const mutations = {
   },
   SET_LOGS(state, logs) {
     state.logs = logs
+  },
+  SET_STATUS(state, status) {
+    state.status = status
   }
 }
 
@@ -165,6 +169,16 @@ export const fetchLogs = ({dispatch}, clusterId, success = ()=>{}) =>{
   })
 }
 
+export const fetchClusterStatus = ({dispatch}, clusterId, success = ()=>{}) => {
+  get(formatString(API.CLUSTER.STATUS, clusterId)).then(response => {
+    dispatch('SET_STATUS', response.body)
+    success()
+  }).catch(error => {
+    popWarn('获取集群状态失败')
+    console.error(error)
+  })
+}
+
 //getters
 
 export const getHosts = (state) => {
@@ -181,4 +195,9 @@ export const getCluster = (state) => {
 
 export const getLogs = (state) => {
   return state.cluster.logs
+}
+
+
+export const getClusterStatus = (state) => {
+  return state.cluster.status
 }
