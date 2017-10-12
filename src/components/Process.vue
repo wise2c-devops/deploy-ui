@@ -28,7 +28,7 @@
 <script>
 import { pop } from '../utils/alert'
 import { cancel, getCluster, fetchClusterDetail, getClusterStatus, fetchClusterStatus } from 'vuexPath/modules/cluster'
-import { findLast, filter } from 'lodash'
+import { findLast, filter, findIndex } from 'lodash'
 export default {
   computed: {
     clusterId() {
@@ -43,7 +43,7 @@ export default {
       })
     },
     isDone() {
-      if (this.failed) {
+      if (this.failed || (!!this.cluster && this.cluster.state === 'success')) {
         return true
       }
       if (this.validStages.length > 0) {
@@ -85,7 +85,17 @@ export default {
   },
   mounted() {
     this.fetchClusterDetail(this.clusterId)
-    this.fetchClusterStatus(this.clusterId)
+    this.fetchClusterStatus(this.clusterId, () => {
+      //显示那些组件已经安装了
+      const index = findIndex(this.stages, (stage) => {
+        return stage.value === this.status.currentStage
+      })
+      if(!!this.cluster && this.cluster.state !== 'success' && index > 0 ) {
+        for(var tempIndex = 0; tempIndex < index; tempIndex ++) {
+          this.stages[tempIndex].enabled = true
+        }
+      }
+    })
     var url = `${process.env.WEBSOCKET_HOST}/v1/stats`
     if (process.env.NODE_ENV === 'production') {
       url = `ws://${location.host}/v1/stats`
@@ -194,6 +204,8 @@ export default {
     }
     p {
       display: inline-block;
+      text-overflow: ellipsis;
+      width: 95%;
     }
   }
 }
