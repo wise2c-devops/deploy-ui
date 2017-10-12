@@ -6,7 +6,8 @@ import {findIndex} from 'lodash'
 const state = {
   hosts: [],
   components: [],
-  cluster: {}
+  cluster: {},
+  logs: []
 }
 
 const mutations = {
@@ -42,6 +43,9 @@ const mutations = {
       return item.id === component.id
     })
     state.components.splice(index, 1, component)
+  },
+  SET_LOGS(state, logs) {
+    state.logs = logs
   }
 }
 
@@ -151,6 +155,16 @@ export const cancel = ({dispatch}, clusterId, success=()=>{}) => {
   })
 }
 
+export const fetchLogs = ({dispatch}, clusterId, success = ()=>{}) =>{
+  get(formatString(API.CLUSTER.LOGS, clusterId)).then((response) => {
+    dispatch('SET_LOGS', response.body)
+    success()
+  }).catch(error => {
+    popWarn('获取集群安装日志失败')
+    console.error(error)
+  })
+}
+
 //getters
 
 export const getHosts = (state) => {
@@ -163,4 +177,8 @@ export const getComponents = (state) => {
 
 export const getCluster = (state) => {
   return state.cluster.cluster
+}
+
+export const getLogs = (state) => {
+  return state.cluster.logs
 }

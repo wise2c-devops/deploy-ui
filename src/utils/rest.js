@@ -13,7 +13,9 @@ export default {
     COMPONENTS: "/v1/clusters/$1/components",
     HOST_DETAIL: "/v1/clusters/$1/hosts/$2",
     COMPONENT:  "/v1/clusters/$1/components/$2",
-    DEPLOY: "/v1/clusters/$1/deployment"
+    DEPLOY: "/v1/clusters/$1/deployment",
+    LOGS: "/v1/clusters/$1/logs",
+    STATUS: "/v1/clusters/$1/status"
   }
 }
 

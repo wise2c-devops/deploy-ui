@@ -43,10 +43,10 @@ export default {
       })
     },
     isDone() {
-      if(this.failed) {
+      if (this.failed) {
         return true
       }
-      if(this.validStages.length > 0) {
+      if (this.validStages.length > 0) {
         return this.validStages[this.validStages.length - 1].enabled
       }
       return false
@@ -97,7 +97,7 @@ export default {
       var json = JSON.parse(event.data)
       console.log(json)
 
-      if(json.state === 'failed') {
+      if (json.state === 'failed') {
         this.failed = true
       }
 
@@ -106,7 +106,7 @@ export default {
         var stage = findLast(this.stages, (stage) => {
           return stage.value === json.stage
         })
-        if(!!stage) {
+        if (!!stage) {
           stage.enabled = true
         }
       }
@@ -170,28 +170,29 @@ export default {
       margin: auto;
     }
   }
-  .logs {
-    width: 80%;
-    margin: 50px auto;
-    padding: 20px;
-    border-top: 30px solid #b3b3b3;
-    background: lighten(#000, 15%);
-    border-radius: 8px;
-    color: #fff;
-    counter-reset: subsection;
-    .log {
-      font-size: 14px;
-      margin-bottom: 5px;
-      span {
-        display: inline-block;
-        color: #666;
-        text-align: right;
-        width: 30px;
-        margin-right: 10px;
-      }
-      p {
-        display: inline-block;
-      }
+}
+
+.logs {
+  width: 80%;
+  margin: 50px auto;
+  padding: 20px;
+  border-top: 30px solid #b3b3b3;
+  background: lighten(#000, 15%);
+  border-radius: 8px;
+  color: #fff;
+  counter-reset: subsection;
+  .log {
+    font-size: 14px;
+    margin-bottom: 5px;
+    span {
+      display: inline-block;
+      color: #666;
+      text-align: right;
+      width: 30px;
+      margin-right: 10px;
+    }
+    p {
+      display: inline-block;
     }
   }
 }
