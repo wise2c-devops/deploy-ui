@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="主机" :visible="dialogVisible" size="tiny" :close-on-click-modal="false" :show-close="false">
+  <el-dialog title="主机" :visible="dialogVisible" size="small" :close-on-click-modal="false" :show-close="false">
     <form @submit.prevent="onSubmit">
       <div class="form-group">
         <label for="hostName">主机名称</label>

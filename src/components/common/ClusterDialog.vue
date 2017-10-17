@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="添加集群" :visible="dialogVisible" size="tiny" :close-on-click-modal="false" :show-close="false">
+  <el-dialog title="添加集群" :visible="dialogVisible" size="small" :close-on-click-modal="false" :show-close="false">
     <form @submit.prevent="onSubmit">
       <div class="form-group">
         <label for="clusterName">集群名称</label>

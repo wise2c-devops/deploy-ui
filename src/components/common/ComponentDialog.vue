@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="服务组件" :visible="dialogVisible" size="tiny" :close-on-click-modal="false" :show-close="false">
+  <el-dialog title="服务组件" :visible="dialogVisible" size="small" :close-on-click-modal="false" :show-close="false">
     <form @submit.prevent="onSubmit">
       <div class="form-group">
         <label for="componentType">组件类型</label>
@@ -127,7 +127,7 @@ export default {
 
 <style lang="scss" scoped>
 .el-select {
-  width: 535px;
+  width: 80%;
 }
 
 .container-fluid {

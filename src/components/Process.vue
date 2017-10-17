@@ -184,7 +184,7 @@ export default {
 }
 
 .logs {
-  width: 80%;
+  width: 86%;
   margin: 50px auto;
   padding: 20px;
   border-top: 30px solid #b3b3b3;
@@ -205,7 +205,7 @@ export default {
     p {
       display: inline-block;
       text-overflow: ellipsis;
-      width: 95%;
+      width: 92%;
     }
   }
 }
