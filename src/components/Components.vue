@@ -56,7 +56,7 @@
 import { getCluster, getComponents, fetchComponents, createComponent, fetchHosts, getHosts, deleteComponent, updateComponent, deploy } from 'vuexPath/modules/cluster'
 import ComponentDialog from './common/ComponentDialog'
 import { pop } from '../utils/alert'
-import { promptOnDelete, promptOnAction } from '../utils/prompt'
+import { confirmation, promptOnDelete, promptOnAction } from '../utils/prompt'
 import { filter, map } from 'lodash'
 export default {
   components: {
@@ -142,18 +142,20 @@ export default {
       return component.properties
     },
     install() {
-      if (this.cluster.state !== 'processing') {
+      if (this.cluster.state === 'processing') {
+        this.$router.push({
+          path: `/clusters/${this.clusterId}/processing`
+        })
+        return
+      }
+      //确认安装
+      confirmation(this, '确认开始安装集群', () => {
         this.deploy(this.clusterId, 'install', () => {
           pop('开始安装')
           this.$router.push({
             path: `/clusters/${this.clusterId}/processing`
           })
         })
-        return
-      }
-
-      this.$router.push({
-        path: `/clusters/${this.clusterId}/processing`
       })
     },
     reset() {

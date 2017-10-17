@@ -30,3 +30,19 @@ export const promptOnAction = function (vue, description = '确认操作', callb
     value
   })
 }
+
+
+export const confirmation = function (vue, description = '确认操作，是否继续？', callback = {}) {
+  vue.$confirm(description, '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    callback()
+  }).catch(() => {
+    vue.$message({
+      type: 'info',
+      message: '已取消'
+    })
+  })
+}

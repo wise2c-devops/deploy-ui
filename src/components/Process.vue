@@ -17,8 +17,8 @@
       </div>
     </div>
     <div class="btn-wrapper row">
-      <div class="col-md-2 col-md-offset-5">
-        <el-button size="large" icon="arrow-left" class="pull-left " @click="back" v-if="false">返回</el-button>
+      <div class="col-md-3 col-md-offset-5">
+        <el-button size="large" icon="arrow-left" class="pull-left " @click="back">返回</el-button>
         <el-button size="large" icon="close" type="danger" @click="cancelDeployment" v-if="!isDone">取消</el-button>
         <el-button size="large" icon="check" type="primary" @click="back" v-if="isDone">完成</el-button>
       </div>
