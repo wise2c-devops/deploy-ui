@@ -11,9 +11,6 @@
   import Loading from './components/Loading.vue'
   import {showLoading, hideLoading} from './vuex/actions'
   import store from './vuex/store'
-  import $ from 'jquery'
-
-
   export default {
     components: {
       Loading
@@ -38,9 +35,6 @@
       this.hideLoading()
     },
     mounted () {
-      $('body').on('hidden.bs.modal', '.modal.should-clean', function () {
-        $(this).find('input').val('')
-      })
     },
     computed : {
     },

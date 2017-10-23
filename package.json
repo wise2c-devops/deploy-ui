@@ -22,8 +22,6 @@
     "element-ui": "^1.4.4",
     "hint.css": "^2.3.2",
     "imports-loader": "^0.6.5",
-    "jquery": "^3.1.0",
-    "jquery-knob": "^1.2.11",
     "lodash": "^4.14.1",
     "marked": "^0.3.6",
     "moment": "^2.14.1",
