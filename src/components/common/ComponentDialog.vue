@@ -19,13 +19,13 @@
           </el-select>
         </div>
         <div v-if="property.type==='string'">
-          <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[index].value">
+          <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[index].value" :name="property.variable">
         </div>
         <div v-if="property.type==='int'">
-          <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model="values[index].value">
+          <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model="values[index].value" :name="property.variable">
         </div>
         <div v-if="property.type==='password'">
-          <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[index].value">
+          <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[index].value" :name="property.variable">
         </div>
         <div v-if="property.type==='host'">
           <el-select v-model="values[index].value" multiple :placeholder="property.description">
@@ -33,6 +33,7 @@
             </el-option>
           </el-select>
         </div>
+        <i v-show="errors.has(property.variable)" class="error fa fa-warning">{{`请输入有效的${property.label}值`}}</i>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="close">取 消</el-button>
@@ -93,7 +94,7 @@ export default {
   },
   data() {
     return {
-      values:[{},{},{},{},{},{},{},{},{},{}],
+      values:[],
       vipTypes: [
         {
           value: 'k8s',
