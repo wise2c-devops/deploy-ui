@@ -9,38 +9,30 @@
           </el-option>
         </el-select>
       </div>
-      <div class="form-group">
-        <label for="ip">主机列表</label>
-        <br>
-        <el-select v-model="component.hosts" multiple placeholder="请选择">
-          <el-option v-for="item in hosts" :key="item.id" :label="item.hostname" :value="item.id">
-          </el-option>
-        </el-select>
-      </div>
-      <div class="form-group" v-if="component.name === 'loadbalancer'">
-        <label for="interface">网卡</label>
-        <input type="text" class="form-control" v-model="component.properties.netInterface" v-validate="'required'" id="interface" placeholder="interface" name="interface">
-        <i v-show="errors.has('interface')" class="error fa fa-warning">请输入有效的网卡</i>
-      </div>
-      <div class="form-group" v-if="component.name === 'loadbalancer'">
-        <label for="netMask">掩码</label>
-        <input type="text" class="form-control" v-model="component.properties.netMask" v-validate="'required|numeric'" id="netMask" placeholder="netMask" name="netMask">
-        <i v-show="errors.has('netMask')" class="error fa fa-warning">请输入有效的掩码</i>
-      </div>
-
-      <div class="form-group" v-if="component.name === 'loadbalancer'">
-        <div class="vip-label">
-          <label for="vip">VIP</label>
-          <el-button size="mini" icon="plus" class="add-button" @click="addVip" :disabled="component.properties.vips.length >= 3"></el-button>
+      <div class="form-group" v-for="(property, index) in properties" :key="index">
+        <label for="ip">{{property.label}}</label><br>
+        <input type="hidden" v-model="values[index].key" :value="property.variable">
+        <div v-if="property.type==='enum'">
+          <el-select :placeholder="property.description" v-model="values[index].value">
+            <el-option v-for="(option, index) in property.options" :key="index" :label="option" :value="option">
+            </el-option>
+          </el-select>
         </div>
-        <div class="vip-data" v-for="(vip, index) in component.properties.vips" :key="index">
-          <select class="form-control" v-model="vip.type">
-            <option v-for="(item, index) in vipTypes" :key="index" :value="item.value">{{item.label}}</option>
-          </select>
-          <input type="text" class="form-control half inline" v-model="vip.vip" v-validate="'required|ip'" name="vip">
-          <el-button size="mini" icon="minus" type="danger" @click="remove(index)"  :disabled="component.properties.vips.length === 1" ></el-button>
+        <div v-if="property.type==='string'">
+          <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[index].value">
         </div>
-        <i v-show="errors.has('vip')" class="error fa fa-warning">请输入有效的VIP IP地址</i>
+        <div v-if="property.type==='int'">
+          <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model="values[index].value">
+        </div>
+        <div v-if="property.type==='password'">
+          <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[index].value">
+        </div>
+        <div v-if="property.type==='host'">
+          <el-select v-model="values[index].value" multiple :placeholder="property.description">
+            <el-option v-for="item in hosts" :key="item.id" :label="item.hostname" :value="item.id">
+            </el-option>
+          </el-select>
+        </div>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="close">取 消</el-button>
@@ -74,8 +66,22 @@ export default {
       type: Object,
       default: {
         name: '',
+        hello: '',
+        variable: {},
         hosts: []
       }
+    }
+  },
+  watch: {
+    properties(newProperties) {
+      this.values = []
+      newProperties.forEach((item) => {
+        if(item.type === 'host') {
+          this.values.push({key: item.variable, value: []})
+          return
+        }
+        this.values.push({key: item.variable, value: ''})
+      })
     }
   },
   vuex: {
@@ -88,6 +94,7 @@ export default {
   },
   data() {
     return {
+      values:[],
       vipTypes: [
         {
           value: 'k8s',
@@ -114,14 +121,20 @@ export default {
       this.$emit('update:dialogVisible', false)
     },
     callMethod() {
-      if(this.component.name !== 'loadbalancer' && this.component.hosts.length === 0) {
-        popWarn('请选择主机后再保存')
-        return
-      }
-      if (!!this.component.id) {
-        return this.updateComponent(this.component)
-      }
-      return this.addComponent(this.component)
+      console.log(this.values)
+      var tempObject = {}
+      this.values.forEach(item => {
+        tempObject[item.key] = item.value
+      })
+      console.log(tempObject)
+      // if(this.component.name !== 'loadbalancer' && this.component.hosts.length === 0) {
+      //   popWarn('请选择主机后再保存')
+      //   return
+      // }
+      // if (!!this.component.id) {
+      //   return this.updateComponent(this.component)
+      // }
+      // return this.addComponent(this.component)
     },
     onSubmit(){
       this.callMethod()
@@ -153,6 +166,9 @@ export default {
       &.half {
         width: 46%;
         display: inline-block;
+      }
+      &.form-control {
+        width: 80%;
       }
     }
 

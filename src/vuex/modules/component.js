@@ -20,10 +20,10 @@ export default {
 
 export const fetchComponentProperties = ({dispatch}, componentName, success = () => {}) => {
   get(formatString(API.COMPONENT_PROPERTIES, componentName)).then(response => {
-    dispatch('SET_PROPERTIES', response.body)
+    dispatch('SET_PROPERTIES', JSON.parse(response.text))
     success()
   }).catch(error => {
-    popWarn(`获取组件:${componentName} 属性失败`)
+    popWarn(`获取 ${componentName}组件属性失败`)
     console.error(error)
   })
 }

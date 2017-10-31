@@ -17,7 +17,7 @@ export default {
     LOGS: "/v1/clusters/$1/logs",
     STATUS: "/v1/clusters/$1/status"
   },
-  COMPONENT_PROPERTIES: "/v1/components/$1/property"
+  COMPONENT_PROPERTIES: "/v1/components/$1/properties"
 }
 
 
