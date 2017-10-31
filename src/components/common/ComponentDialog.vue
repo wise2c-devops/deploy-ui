@@ -19,13 +19,16 @@
           </el-select>
         </div>
         <div v-if="property.type==='string'">
-          <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[index].value" :name="property.variable">
+          <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[index].value" :name="property.variable" v-if="property.required">
+          <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[index].value" :name="property.variable" v-else>
         </div>
         <div v-if="property.type==='int'">
-          <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model="values[index].value" :name="property.variable">
+          <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model="values[index].value" :name="property.variable" v-if="property.required">
+          <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model="values[index].value" :name="property.variable" v-else>
         </div>
         <div v-if="property.type==='password'">
-          <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[index].value" :name="property.variable">
+          <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[index].value" :name="property.variable" v-if="property.required">
+          <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[index].value" :name="property.variable" v-else>
         </div>
         <div v-if="property.type==='host'">
           <el-select v-model="values[index].value" multiple :placeholder="property.description">
@@ -67,7 +70,8 @@ export default {
       type: Object,
       default: {
         name: '',
-        hosts: []
+        hosts: [],
+        properties: {}
       }
     }
   },
@@ -133,10 +137,12 @@ export default {
       //   popWarn('请选择主机后再保存')
       //   return
       // }
-      // if (!!this.component.id) {
-      //   return this.updateComponent(this.component)
-      // }
-      // return this.addComponent(this.component)
+      this.component.properties = tempObject
+      console.log(this.component)
+      if (!!this.component.id) {
+        return this.updateComponent(this.component)
+      }
+      return this.addComponent(this.component)
     },
     onSubmit(){
       this.callMethod()

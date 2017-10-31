@@ -15,16 +15,16 @@
     </div>
     <div class="row hosts-table">
       <el-table :data="components" :row-class-name="tableRowClassName" :stripe="true">
-        <el-table-column align="center" prop="index" label="序号">
+        <el-table-column align="center" prop="index" label="序号" width="100px">
           <template scope="scope">
             {{scope.$index + 1}}
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="name" label="服务名称">
+        <el-table-column align="center" prop="name" label="服务名称" width="250px">
         </el-table-column>
-        <el-table-column align="center" label="属性">
+        <el-table-column align="left" label="属性">
           <template scope="scope">
-            {{properties(scope.row)}}
+            <div v-html="properties(scope.row)"></div>
           </template>
         </el-table-column>
         <el-table-column align="center" label="主机">
@@ -71,9 +71,9 @@ export default {
   },
   methods: {
     create(component) {
-      if (component.name !== 'loadbalancer') {
-        component.properties = {}
-      }
+      // if (component.name !== 'loadbalancer') {
+      //   component.properties = {}
+      // }
       this.createComponent(this.clusterId, component, () => {
         this.dialogVisible = false
         pop('创建服务组件成功')
@@ -136,10 +136,15 @@ export default {
       return hostsStr.substring(0, hostsStr.length - 1)
     },
     properties(component) {
-      if (!component.properties || !component.properties.netMask || component.properties.netMask === "") {
+      if (!component.properties || component.properties === {}) {
         return "无"
       }
-      return component.properties
+      var msg = ""
+      Object.keys(component.properties).map(function(objectKey, index) {
+        let value = component.properties[objectKey]
+        msg += `<p><b>${objectKey}</b>: ${value}</p>`
+      })
+      return msg
     },
     install() {
       if (this.cluster.state === 'processing') {
@@ -230,12 +235,25 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.buttons {
-  margin-top: 100px;
-}
+<style lang="scss">
 
-.status-icon {
-  margin-top: 7px;
+  .component-container {
+    .buttons {
+    margin-top: 100px;
+  }
+
+  .status-icon {
+    margin-top: 7px;
+  }
+  table {
+    tr {
+      td {
+
+        p {
+          margin-bottom: 1px;
+        }
+      }
+    }
+  }
 }
 </style>
