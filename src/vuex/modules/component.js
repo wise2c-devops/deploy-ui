@@ -28,6 +28,10 @@ export const fetchComponentProperties = ({dispatch}, componentName, success = ()
   })
 }
 
+export const resetProperties = ({dispatch}) => {
+  dispatch('SET_PROPERTIES', [])
+}
+
 
 export const getComponentProperties = (state) => {
   return state.component.properties

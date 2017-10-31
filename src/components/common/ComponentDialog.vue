@@ -44,7 +44,7 @@
 <script>
 import { validationError } from '../../mixin/error'
 import {popWarn} from '../../utils/alert'
-import {fetchComponentProperties, getComponentProperties} from 'vuexPath/modules/component'
+import {fetchComponentProperties, getComponentProperties, resetProperties} from 'vuexPath/modules/component'
 export default {
   mixins: [validationError],
   props: {
@@ -66,8 +66,6 @@ export default {
       type: Object,
       default: {
         name: '',
-        hello: '',
-        variable: {},
         hosts: []
       }
     }
@@ -86,7 +84,8 @@ export default {
   },
   vuex: {
     actions: {
-      fetchComponentProperties
+      fetchComponentProperties,
+      resetProperties
     },
     getters: {
       properties: getComponentProperties
@@ -94,7 +93,7 @@ export default {
   },
   data() {
     return {
-      values:[],
+      values:[{},{},{},{},{},{},{},{},{},{}],
       vipTypes: [
         {
           value: 'k8s',
@@ -116,12 +115,14 @@ export default {
       return this.$route.params.id
     }
   },
+  beforeMount() {
+    this.resetProperties()
+  },
   methods: {
     close() {
       this.$emit('update:dialogVisible', false)
     },
     callMethod() {
-      console.log(this.values)
       var tempObject = {}
       this.values.forEach(item => {
         tempObject[item.key] = item.value
@@ -149,7 +150,9 @@ export default {
       this.component.properties.vips.splice(index, 1)
     },
     onChange(value) {
-      this.fetchComponentProperties(value)
+      if(!!value && value !== '') {
+        this.fetchComponentProperties(value)
+      }
     }
   }
 }
