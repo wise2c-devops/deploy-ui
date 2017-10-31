@@ -16,7 +16,8 @@ export default {
     DEPLOY: "/v1/clusters/$1/deployment",
     LOGS: "/v1/clusters/$1/logs",
     STATUS: "/v1/clusters/$1/status"
-  }
+  },
+  COMPONENT_PROPERTIES: "/v1/components/$1/property"
 }
 
 

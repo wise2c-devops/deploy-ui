@@ -179,6 +179,15 @@ export const fetchClusterStatus = ({dispatch}, clusterId, success = ()=>{}) => {
   })
 }
 
+export const fetchComponentProperties = ({dispatch}, clusterId, componentName, success = () => {}) => {
+  get(formatString(API.CLUSTER.COMPONENT_PROPERTIES, clusterId, componentName)).then(response => {
+    dispatch('SET_COMPONENT', response.body)
+    success()
+  }).catch(error => {
+    popWarn('获取集群状态失败')
+    console.error(error)
+  })
+}
 //getters
 
 export const getHosts = (state) => {

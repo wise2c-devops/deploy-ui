@@ -4,7 +4,7 @@
       <div class="form-group">
         <label for="componentType">组件类型</label>
         <br>
-        <el-select v-model="component.name" :disabled="!!component.id">
+        <el-select v-model="component.name" :disabled="!!component.id" @change="onChange">
           <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
@@ -52,6 +52,7 @@
 <script>
 import { validationError } from '../../mixin/error'
 import {popWarn} from '../../utils/alert'
+import {fetchComponentProperties, getComponentProperties} from 'vuexPath/modules/component'
 export default {
   mixins: [validationError],
   props: {
@@ -77,6 +78,14 @@ export default {
       }
     }
   },
+  vuex: {
+    actions: {
+      fetchComponentProperties
+    },
+    getters: {
+      properties: getComponentProperties
+    }
+  },
   data() {
     return {
       vipTypes: [
@@ -93,6 +102,11 @@ export default {
           label: 'Other'
         }
       ]
+    }
+  },
+  computed: {
+    clusterId() {
+      return this.$route.params.id
     }
   },
   methods: {
@@ -120,6 +134,9 @@ export default {
     },
     remove(index) {
       this.component.properties.vips.splice(index, 1)
+    },
+    onChange(value) {
+      this.fetchComponentProperties(value)
     }
   }
 }
