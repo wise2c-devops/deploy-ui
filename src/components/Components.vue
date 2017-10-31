@@ -29,7 +29,7 @@
         </el-table-column>
         <el-table-column align="center" label="主机">
           <template scope="scope">
-            {{simpleHosts(scope.row.hosts)}}
+            {{simpleHosts(scope.row)}}
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作">
@@ -58,6 +58,7 @@ import ComponentDialog from './common/ComponentDialog'
 import { pop } from '../utils/alert'
 import { confirmation, promptOnDelete, promptOnAction } from '../utils/prompt'
 import { filter, map } from 'lodash'
+import {fetchComponentProperties} from 'vuexPath/modules/component'
 export default {
   components: {
     ComponentDialog
@@ -101,9 +102,9 @@ export default {
       this.install()
     },
     update(component) {
-      if (component.name !== 'loadbalancer') {
-        component.properties = {}
-      }
+      // if (component.name !== 'loadbalancer') {
+      //   component.properties = {}
+      // }
       this.updateComponent(this.clusterId, component, () => {
         pop('更新组件成功')
         this.dialogVisible = false
@@ -125,15 +126,13 @@ export default {
       }
       this.dialogVisible = true
     },
-    simpleHosts(hosts) {
-      if (hosts.length === 0) {
-        return "无"
-      }
-      var hostsStr = ""
-      hosts.forEach((item) => {
-        hostsStr += item.hostname + ","
-      })
-      return hostsStr.substring(0, hostsStr.length - 1)
+    simpleHosts(component) {
+      return "无"
+      // var hostsStr = ""
+      // hosts.forEach((item) => {
+      //   hostsStr += item.hostname + ","
+      // })
+      // return hostsStr.substring(0, hostsStr.length - 1)
     },
     properties(component) {
       if (!component.properties || component.properties === {}) {
@@ -189,6 +188,13 @@ export default {
       return this.cluster.state === 'initial'
     }
   },
+  watch: {
+    dialogVisible(newValue) {
+      if(newValue && !!this.component.name) {
+        this.fetchComponentProperties(this.component.name)
+      }
+    }
+  },
   data() {
     return {
       component: {},
@@ -225,7 +231,8 @@ export default {
       fetchHosts,
       deleteComponent,
       updateComponent,
-      deploy
+      deploy,
+      fetchComponentProperties
     },
     getters: {
       cluster: getCluster,

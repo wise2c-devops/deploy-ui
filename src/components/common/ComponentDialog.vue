@@ -122,6 +122,7 @@ export default {
   },
   beforeMount() {
     this.resetProperties()
+
   },
   methods: {
     close() {
