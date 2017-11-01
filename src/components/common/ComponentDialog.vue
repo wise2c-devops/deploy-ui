@@ -4,18 +4,12 @@
       <div class="form-group">
         <label for="componentType">组件类型</label>
         <br>
-        <el-select v-model="component.name" :disabled="!!component.id" @change="onChange">
-          <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
+        <v-select :disabled="!!component.id" :options="types" :on-change="onChange"></v-select>
       </div>
       <div class="form-group" v-for="(property, index) in properties" :key="index">
         <label for="ip">{{property.label}}</label><br>
         <div v-if="property.type==='enum'">
-          <el-select :placeholder="property.description" v-model="values[property.variable]">
-            <el-option v-for="(option, index) in property.options" :key="index" :label="option" :value="option">
-            </el-option>
-          </el-select>
+          <v-select v-model="values[property.variable]" :options="property.options" :placeholder="property.description"></v-select>
         </div>
         <div v-if="property.type==='string'">
           <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[property.variable]" :name="property.variable" v-if="property.required">
@@ -30,10 +24,7 @@
           <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[property.variable]" :name="property.variable" v-else>
         </div>
         <div v-if="property.type==='host'">
-          <el-select v-model="values[property.variable]" multiple :placeholder="property.description">
-            <el-option v-for="item in hosts" :key="item.id" :label="item.hostname" :value="item.id">
-            </el-option>
-          </el-select>
+          <v-select v-model="values[property.variable]" multiple :options="validHosts(hosts)" :placeholder="property.description" label="hostname"></v-select>
         </div>
         <i v-show="errors.has(property.variable)" class="error fa fa-warning">{{`请输入有效的${property.label}值`}}</i>
       </div>
@@ -47,9 +38,13 @@
 <script>
 import { validationError } from '../../mixin/error'
 import {popWarn} from '../../utils/alert'
+import vSelect from "vue-select"
 import {fetchComponentProperties, getComponentProperties, resetProperties} from 'vuexPath/modules/component'
 export default {
   mixins: [validationError],
+  components: {
+    vSelect
+  },
   props: {
     dialogVisible: {
       type: Boolean,
@@ -68,7 +63,7 @@ export default {
     component: {
       type: Object,
       default: {
-        name: '',
+        name: null,
         hosts: [],
         properties: {}
       }
@@ -95,10 +90,6 @@ export default {
           this.values[item.variable] = ''
         })
       }
-
-      console.log(this.values)
-    },
-    component(newComponent) {
     }
   },
   vuex: {
@@ -112,7 +103,8 @@ export default {
   },
   data() {
     return {
-      values: {}
+      values: {},
+      name: ''
     }
   },
   computed: {
@@ -128,11 +120,21 @@ export default {
       this.$emit('update:dialogVisible', false)
     },
     callMethod() {
+      Object.keys(this.values).map((objectKey, index)=> {
+        //处理值为主机的情况
+        if(this.values[objectKey] instanceof Array) {
+          let newArray = this.values[objectKey].map(item => {
+            return item.id
+          })
+          this.values[objectKey] = newArray
+        }
+      })
       // if(this.component.name !== 'loadbalancer' && this.component.hosts.length === 0) {
       //   popWarn('请选择主机后再保存')
       //   return
       // }
       this.component.properties = this.values
+
       if (!!this.component.id) {
         return this.updateComponent(this.component)
       }
@@ -150,10 +152,17 @@ export default {
     remove(index) {
       this.component.properties.vips.splice(index, 1)
     },
-    onChange(value) {
-      if(!!value && value !== '') {
-        this.fetchComponentProperties(value)
+    onChange(item) {
+      if(!!item && !!item.value && item.value !== '') {
+        this.fetchComponentProperties(item.value)
       }
+      this.component.name = item.value
+    },
+    validHosts(hosts) {
+      return hosts.map(host => {
+        host.value = host.id
+        return host
+      })
     }
   }
 }

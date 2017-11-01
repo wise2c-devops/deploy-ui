@@ -24,6 +24,9 @@ body {
   font-family: Avenir, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
   font-size: 12px;
   .container, .container-fluid {
+    .v-select {
+      width: 80%;
+    }
     .wrapper {
       padding: 0 30px;
     }

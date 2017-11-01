@@ -34,6 +34,7 @@
     "vue-multiselect": "2.0.0-beta.13",
     "vue-resource": "^0.9.3",
     "vue-router": "^3.0.1",
+    "vue-select": "github:sagalbot/vue-select",
     "vuex": "^1.0.1",
     "xterm": "^2.5.0"
   },

@@ -109,16 +109,8 @@ export default {
     },
     addComponentDialog() {
       this.component = {
-        name: "",
-        hosts: [],
-        properties: {
-          netInterface: "",
-          netMask: "",
-          vips: [{
-            type: '',
-            vip: ''
-          }]
-        }
+        name: null,
+        properties: {}
       }
       this.resetProperties()
       this.dialogVisible = true
