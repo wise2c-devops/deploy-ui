@@ -34,8 +34,8 @@
         </el-table-column>
         <el-table-column align="center" label="操作">
           <template scope="scope">
-            <el-button @click.native.prevent="editComponentDialog(scope.row)" type="primary" size="small" icon="edit"></el-button>
-            <el-button @click.native.prevent="remove(scope.$index, scope.row.id)" type="danger" size="small" icon="delete"></el-button>
+            <el-button @click.native.prevent="editComponentDialog(scope.row)" type="primary" size="small" icon="el-icon-edit"></el-button>
+            <el-button @click.native.prevent="remove(scope.$index, scope.row.id)" type="danger" size="small" icon="el-icon-delete"></el-button>
           </template>
         </el-table-column>
       </el-table>
