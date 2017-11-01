@@ -11,27 +11,26 @@
       </div>
       <div class="form-group" v-for="(property, index) in properties" :key="index">
         <label for="ip">{{property.label}}</label><br>
-        <input type="hidden" v-model="values[index].key" :value="property.variable">
         <div v-if="property.type==='enum'">
-          <el-select :placeholder="property.description" v-model="values[index].value">
+          <el-select :placeholder="property.description" v-model="values[property.variable]">
             <el-option v-for="(option, index) in property.options" :key="index" :label="option" :value="option">
             </el-option>
           </el-select>
         </div>
         <div v-if="property.type==='string'">
-          <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[index].value" :name="property.variable" v-if="property.required">
-          <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[index].value" :name="property.variable" v-else>
+          <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[property.variable]" :name="property.variable" v-if="property.required">
+          <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[property.variable]" :name="property.variable" v-else>
         </div>
         <div v-if="property.type==='int'">
-          <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model="values[index].value" :name="property.variable" v-if="property.required">
-          <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model="values[index].value" :name="property.variable" v-else>
+          <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model="values[property.variable]" :name="property.variable" v-if="property.required">
+          <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model="values[property.variable]" :name="property.variable" v-else>
         </div>
         <div v-if="property.type==='password'">
-          <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[index].value" :name="property.variable" v-if="property.required">
-          <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[index].value" :name="property.variable" v-else>
+          <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[property.variable]" :name="property.variable" v-if="property.required">
+          <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[property.variable]" :name="property.variable" v-else>
         </div>
         <div v-if="property.type==='host'">
-          <el-select v-model="values[index].value" multiple :placeholder="property.description">
+          <el-select v-model="values[property.variable]" multiple :placeholder="property.description">
             <el-option v-for="item in hosts" :key="item.id" :label="item.hostname" :value="item.id">
             </el-option>
           </el-select>
@@ -76,15 +75,30 @@ export default {
     }
   },
   watch: {
+    dialogVisible(newValue) {
+      if(newValue && !!this.component.name) {
+        this.fetchComponentProperties(this.component.name)
+      }
+    },
     properties(newProperties) {
-      this.values = []
+      this.values = {}
+      if(!!this.component.id) {
+        Object.keys(this.component.properties).map((key, index) => {
+          this.values[key] = this.component.properties[key]
+        })
+        console.log(this.values)
+        return
+      }
       newProperties.forEach((item) => {
         if(item.type === 'host') {
-          this.values.push({key: item.variable, value: []})
+          this.values[item.variable] = []
           return
         }
-        this.values.push({key: item.variable, value: ''})
+        this.values[item.variable] = ''
       })
+      console.log(this.values)
+    },
+    component(newComponent) {
     }
   },
   vuex: {
@@ -98,21 +112,7 @@ export default {
   },
   data() {
     return {
-      values:[],
-      vipTypes: [
-        {
-          value: 'k8s',
-          label: 'K8S'
-        },
-        {
-          value: 'es',
-          label: 'ElasticSearch'
-        },
-        {
-          value: 'other',
-          label: 'Other'
-        }
-      ]
+      values: {}
     }
   },
   computed: {
@@ -122,24 +122,17 @@ export default {
   },
   beforeMount() {
     this.resetProperties()
-
   },
   methods: {
     close() {
       this.$emit('update:dialogVisible', false)
     },
     callMethod() {
-      var tempObject = {}
-      this.values.forEach(item => {
-        tempObject[item.key] = item.value
-      })
-      console.log(tempObject)
       // if(this.component.name !== 'loadbalancer' && this.component.hosts.length === 0) {
       //   popWarn('请选择主机后再保存')
       //   return
       // }
-      this.component.properties = tempObject
-      console.log(this.component)
+      this.component.properties = this.values
       if (!!this.component.id) {
         return this.updateComponent(this.component)
       }

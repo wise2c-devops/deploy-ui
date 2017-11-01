@@ -58,7 +58,7 @@ import ComponentDialog from './common/ComponentDialog'
 import { pop } from '../utils/alert'
 import { confirmation, promptOnDelete, promptOnAction } from '../utils/prompt'
 import { filter, map } from 'lodash'
-import {fetchComponentProperties} from 'vuexPath/modules/component'
+import {resetProperties} from 'vuexPath/modules/component'
 export default {
   components: {
     ComponentDialog
@@ -82,10 +82,6 @@ export default {
     },
     editComponentDialog(component) {
       this.component = Object.assign({}, component)
-      var newHosts = map(this.component.hosts, (host) => {
-        return host.id
-      })
-      this.component.hosts = newHosts
       this.dialogVisible = true
     },
     remove(index, componentId) {
@@ -124,6 +120,7 @@ export default {
           }]
         }
       }
+      this.resetProperties()
       this.dialogVisible = true
     },
     simpleHosts(component) {
@@ -188,13 +185,6 @@ export default {
       return this.cluster.state === 'initial'
     }
   },
-  watch: {
-    dialogVisible(newValue) {
-      if(newValue && !!this.component.name) {
-        this.fetchComponentProperties(this.component.name)
-      }
-    }
-  },
   data() {
     return {
       component: {},
@@ -232,7 +222,7 @@ export default {
       deleteComponent,
       updateComponent,
       deploy,
-      fetchComponentProperties
+      resetProperties
     },
     getters: {
       cluster: getCluster,
