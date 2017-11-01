@@ -9,9 +9,9 @@
           <router-link to="">{{cluster.name}}</router-link>
         </li>
       </ol>
-      <el-button size="mini" type="primary" icon="caret-right" @click="install" class="status-icon" :disabled="components.length === 0">开始安装</el-button>
-      <el-button size="mini" type="warning" icon="warning" @click="reset" class="status-icon" :disabled="isInitial">重置</el-button>
-      <el-button size="small" type="primary" icon="plus" @click="addComponentDialog" class="pull-right">添加组件</el-button>
+      <el-button size="mini" type="primary" icon="el-icon-caret-right" @click="install" class="status-icon" :disabled="components.length === 0">开始安装</el-button>
+      <el-button size="mini" type="warning" icon="el-icon-warning" @click="reset" class="status-icon" :disabled="isInitial">重置</el-button>
+      <el-button size="small" type="primary" icon="el-icon-plus" @click="addComponentDialog" class="pull-right">添加组件</el-button>
     </div>
     <div class="row hosts-table">
       <el-table :data="components" :row-class-name="tableRowClassName" :stripe="true">

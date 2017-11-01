@@ -22,8 +22,8 @@
           <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[property.variable]" :name="property.variable" v-else>
         </div>
         <div v-if="property.type==='int'">
-          <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model="values[property.variable]" :name="property.variable" v-if="property.required">
-          <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model="values[property.variable]" :name="property.variable" v-else>
+          <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model.number="values[property.variable]" :name="property.variable" v-if="property.required">
+          <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model.number="values[property.variable]" :name="property.variable" v-else>
         </div>
         <div v-if="property.type==='password'">
           <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[property.variable]" :name="property.variable" v-if="property.required">

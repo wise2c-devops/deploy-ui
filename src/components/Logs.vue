@@ -1,13 +1,23 @@
 <template>
-  <div class="log-wrapper logs">
-    <div v-for="(log, index) in logs" :key="index" class="log">
-      <span class="line-number">{{index + 1}}</span>
-      <p v-html="getLog(log)"></p>
+  <div class="cluster-logs">
+    <ol class="breadcrumb">
+      <li>
+        <router-link to="/clusters">集群</router-link>
+      </li>
+      <li class="active-breadcrumb">
+        <router-link to="">{{cluster.name}}</router-link>
+      </li>
+    </ol>
+    <div class="log-wrapper logs">
+      <div v-for="(log, index) in logs" :key="index" class="log">
+        <span class="line-number">{{index + 1}}</span>
+        <p v-html="getLog(log)"></p>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import { fetchLogs, getLogs } from 'vuexPath/modules/cluster'
+import { fetchLogs, getLogs, getCluster } from "vuexPath/modules/cluster"
 export default {
   computed: {
     clusterId() {
@@ -16,12 +26,13 @@ export default {
   },
   methods: {
     getLog(log) {
-      return `${log.time}: [${log.stage}] [${log.host}]  task: ${log.task.name} - ${log.task.state},  message: ${log.data.msg}`
+      return `${log.time}: [${log.stage}] [${log.host}]  task: ${log.task
+        .name} - ${log.task.state},  message: ${log.data.msg}`
     }
   },
   mounted() {
     setTimeout(() => {
-      this.$root.$emit('clusterPage', 'logs')
+      this.$root.$emit("clusterPage", "logs")
     }, 100)
     this.fetchLogs(this.clusterId)
   },
@@ -30,19 +41,25 @@ export default {
       fetchLogs
     },
     getters: {
-      logs: getLogs
+      logs: getLogs,
+      cluster: getCluster
     }
   }
 }
 </script>
 <style lang="scss">
 @import "../assets/stylesheets/variables";
-.log-wrapper {
-  background: #fff;
-  padding: 20px;
-  border: 1px solid $border-color;
-  border-radius: 4px;
-  margin-top: 50px;
+.cluster-logs {
+  .logs{
+    margin: 50px 0;
+  }
+  // .log-wrapper {
+  //   background: #fff;
+  //   padding: 20px;
+  //   border: 1px solid $border-color;
+  //   border-radius: 4px;
+  //   margin-top: 50px;
+  // }
 }
 </style>
 
