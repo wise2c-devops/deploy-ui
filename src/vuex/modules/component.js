@@ -23,6 +23,7 @@ export const fetchComponentProperties = ({dispatch}, componentName, success = ()
     dispatch('SET_PROPERTIES', JSON.parse(response.text))
     success()
   }).catch(error => {
+    dispatch('SET_PROPERTIES', [])
     popWarn(`获取 ${componentName}组件属性失败`)
     console.error(error)
   })
