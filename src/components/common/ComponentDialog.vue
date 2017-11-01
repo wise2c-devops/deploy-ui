@@ -86,16 +86,16 @@ export default {
         Object.keys(this.component.properties).map((key, index) => {
           this.values[key] = this.component.properties[key]
         })
-        console.log(this.values)
-        return
+      }else {
+        newProperties.forEach((item) => {
+          if(item.type === 'host') {
+            this.values[item.variable] = []
+            return
+          }
+          this.values[item.variable] = ''
+        })
       }
-      newProperties.forEach((item) => {
-        if(item.type === 'host') {
-          this.values[item.variable] = []
-          return
-        }
-        this.values[item.variable] = ''
-      })
+
       console.log(this.values)
     },
     component(newComponent) {
