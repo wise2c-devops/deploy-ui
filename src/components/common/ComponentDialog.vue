@@ -4,7 +4,10 @@
       <div class="form-group">
         <label for="componentType">组件类型</label>
         <br>
-        <v-select :disabled="!!component.id" :options="types" :on-change="onChange"></v-select>
+        <el-select v-model="component.name" :disabled="!!component.id" @change="onChange">
+          <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
       </div>
       <div class="form-group" v-for="(property, index) in properties" :key="index">
         <label for="ip">{{property.label}}</label><br>
@@ -90,6 +93,7 @@ export default {
           this.values[item.variable] = ''
         })
       }
+      console.log(this.component, '---------after')
     }
   },
   vuex: {
@@ -103,8 +107,7 @@ export default {
   },
   data() {
     return {
-      values: {},
-      name: ''
+      values: {}
     }
   },
   computed: {
@@ -134,7 +137,7 @@ export default {
       //   return
       // }
       this.component.properties = this.values
-
+      // this.component.name = this.name
       if (!!this.component.id) {
         return this.updateComponent(this.component)
       }
@@ -143,20 +146,10 @@ export default {
     onSubmit(){
       this.callMethod()
     },
-    addVip() {
-      this.component.properties.vips.push({
-        type: '',
-        vip: ''
-      })
-    },
-    remove(index) {
-      this.component.properties.vips.splice(index, 1)
-    },
-    onChange(item) {
-      if(!!item && !!item.value && item.value !== '') {
-        this.fetchComponentProperties(item.value)
+    onChange(value) {
+      if(!!value && value !== '') {
+        this.fetchComponentProperties(value)
       }
-      this.component.name = item.value
     },
     validHosts(hosts) {
       return hosts.map(host => {
@@ -206,4 +199,3 @@ export default {
   }
 }
 </style>
-

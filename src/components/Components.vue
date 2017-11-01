@@ -27,12 +27,7 @@
             <div v-html="properties(scope.row)"></div>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="主机">
-          <template scope="scope">
-            {{simpleHosts(scope.row)}}
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="操作">
+        <el-table-column align="center" label="操作" width="200px">
           <template scope="scope">
             <el-button @click.native.prevent="editComponentDialog(scope.row)" type="primary" size="small" icon="el-icon-edit"></el-button>
             <el-button @click.native.prevent="remove(scope.$index, scope.row.id)" type="danger" size="small" icon="el-icon-delete"></el-button>
@@ -72,9 +67,6 @@ export default {
   },
   methods: {
     create(component) {
-      // if (component.name !== 'loadbalancer') {
-      //   component.properties = {}
-      // }
       this.createComponent(this.clusterId, component, () => {
         this.dialogVisible = false
         pop('创建服务组件成功')
@@ -98,9 +90,6 @@ export default {
       this.install()
     },
     update(component) {
-      // if (component.name !== 'loadbalancer') {
-      //   component.properties = {}
-      // }
       this.updateComponent(this.clusterId, component, () => {
         pop('更新组件成功')
         this.dialogVisible = false
