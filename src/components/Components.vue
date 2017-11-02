@@ -20,11 +20,16 @@
             {{scope.$index + 1}}
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="name" label="服务名称" width="250px">
+        <el-table-column align="center" prop="name" label="服务名称" width="300px">
         </el-table-column>
         <el-table-column align="left" label="属性">
           <template scope="scope">
             <div v-html="properties(scope.row)"></div>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="主机" width="300px">
+          <template scope="scope">
+            {{simpleHosts(scope.row.hosts)}}
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作" width="200px">
@@ -98,19 +103,21 @@ export default {
     },
     addComponentDialog() {
       this.component = {
-        name: null,
+        name: '',
         properties: {}
       }
       this.resetProperties()
       this.dialogVisible = true
     },
-    simpleHosts(component) {
-      return "无"
-      // var hostsStr = ""
-      // hosts.forEach((item) => {
-      //   hostsStr += item.hostname + ","
-      // })
-      // return hostsStr.substring(0, hostsStr.length - 1)
+    simpleHosts(hosts) {
+      if (hosts.length === 0) {
+        return "无"
+      }
+      var hostsStr = ""
+      hosts.forEach((item) => {
+        hostsStr += item.hostname + ","
+      })
+      return hostsStr.substring(0, hostsStr.length - 1)
     },
     properties(component) {
       if (!component.properties || component.properties === {}) {
@@ -168,7 +175,10 @@ export default {
   },
   data() {
     return {
-      component: {},
+      component: {
+        hosts: [],
+        properties: {}
+      },
       dialogVisible: false,
       types: [{
         value: 'loadbalancer',

@@ -4,7 +4,6 @@ import App from './App'
 
 import VueRouter from 'vue-router'
 import router from './router'
-import $ from 'jquery'
 import "spinkit/css/spinners/9-cube-grid.css"
 import moment from 'moment'
 import Element from 'element-ui'
@@ -46,7 +45,3 @@ new Vue({
 
 
 moment.locale('zh-cn')
-
-window.jQuery = window.$ = $
-require('bootstrap')
-$.fn.modal.Constructor.prototype.enforceFocus = function() {}

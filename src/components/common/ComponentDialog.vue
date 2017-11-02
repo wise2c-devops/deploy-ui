@@ -9,7 +9,15 @@
           </el-option>
         </el-select>
       </div>
-      <div class="form-group" v-for="(property, index) in properties" :key="index">
+      <div class="form-group" v-if="!!component.name">
+        <label for="ip">主机列表</label>
+        <br>
+        <el-select v-model="selectedHosts" multiple placeholder="请选择">
+          <el-option v-for="item in hosts" :key="item.id" :label="item.hostname" :value="item.id">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="form-group" v-for="(property, index) in properties" :key="index" v-if="property.type!=='host'">
         <label for="ip">{{property.label}}</label><br>
         <div v-if="property.type==='enum'">
           <v-select v-model="values[property.variable]" :options="property.options" :placeholder="property.description"></v-select>
@@ -26,14 +34,11 @@
           <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[property.variable]" :name="property.variable" v-if="property.required">
           <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[property.variable]" :name="property.variable" v-else>
         </div>
-        <div v-if="property.type==='host'">
-          <v-select v-model="values[property.variable]" multiple :options="validHosts(hosts)" :placeholder="property.description" label="hostname"></v-select>
-        </div>
         <i v-show="errors.has(property.variable)" class="error fa fa-warning">{{`请输入有效的${property.label}值`}}</i>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="close">取 消</el-button>
-        <el-button type="primary" @click.prevent="callMethod" :disabled="hasError" native-type="submit">确 定</el-button>
+        <el-button type="primary" @click.prevent="callMethod" :disabled="hasError || !component.name" native-type="submit">确 定</el-button>
       </div>
     </form>
   </el-dialog>
@@ -81,6 +86,9 @@ export default {
     properties(newProperties) {
       this.values = {}
       if(!!this.component.id) {
+        this.selectedHosts = this.component.hosts.map(item => {
+          return item.id
+        })
         Object.keys(this.component.properties).map((key, index) => {
           this.values[key] = this.component.properties[key]
         })
@@ -93,7 +101,6 @@ export default {
           this.values[item.variable] = ''
         })
       }
-      console.log(this.component, '---------after')
     }
   },
   vuex: {
@@ -107,7 +114,8 @@ export default {
   },
   data() {
     return {
-      values: {}
+      values: {},
+      selectedHosts: []
     }
   },
   computed: {
@@ -137,6 +145,7 @@ export default {
       //   return
       // }
       this.component.properties = this.values
+      this.component.hosts = this.selectedHosts
       // this.component.name = this.name
       if (!!this.component.id) {
         return this.updateComponent(this.component)
