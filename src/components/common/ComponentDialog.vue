@@ -93,6 +93,7 @@ export default {
           this.values[key] = this.component.properties[key]
         })
       }else {
+        this.selectedHosts = []
         newProperties.forEach((item) => {
           if(item.type === 'host') {
             this.values[item.variable] = []
