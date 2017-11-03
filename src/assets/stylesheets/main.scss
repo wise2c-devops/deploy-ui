@@ -24,7 +24,10 @@ body {
   font-family: Avenir, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
   font-size: 12px;
   .container, .container-fluid {
-    .v-select {
+    .form-control {
+      height: 40px;
+    }
+    .v-select, select.form-control {
       width: 80%;
     }
     .wrapper {

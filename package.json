@@ -14,8 +14,6 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "animejs": "^1.1.3",
-    "aos": "^2.0.4",
     "babel-polyfill": "^6.23.0",
     "babel-runtime": "^6.0.0",
     "bootstrap": "^3.3.6",
@@ -30,11 +28,8 @@
     "superagent-jsonapify": "^1.4.4",
     "vee-validate": "^2.0.0-rc.17",
     "vue": "^2.5.2",
-    "vue-image-crop-upload": "^1.3.14",
-    "vue-multiselect": "2.0.0-beta.13",
     "vue-resource": "^0.9.3",
     "vue-router": "^3.0.1",
-    "vue-select": "github:sagalbot/vue-select",
     "vuex": "^1.0.1",
     "xterm": "^2.5.0"
   },

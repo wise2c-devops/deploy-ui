@@ -20,7 +20,12 @@
       <div class="form-group" v-for="(property, index) in properties" :key="index" v-if="property.type!=='host'">
         <label for="ip">{{property.label}}</label><br>
         <div v-if="property.type==='enum'">
-          <v-select v-model="values[property.variable]" :options="property.options" :placeholder="property.description"></v-select>
+          <select class="form-control" v-validate="'required'" :name="property.variable" :placeholder="property.description" v-model="values[property.variable]" v-if="property.required">
+            <option v-for="(option, index) in property.options" :key="index">{{option}}</option>
+          </select>
+          <select class="form-control" :name="property.variable" :placeholder="property.description" v-model="values[property.variable]" v-else>
+            <option v-for="(option, index) in property.options" :key="index">{{option}}</option>
+          </select>
         </div>
         <div v-if="property.type==='string'">
           <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="values[property.variable]" :name="property.variable" v-if="property.required">
@@ -46,13 +51,9 @@
 <script>
 import { validationError } from '../../mixin/error'
 import {popWarn} from '../../utils/alert'
-import vSelect from "vue-select"
 import {fetchComponentProperties, getComponentProperties, resetProperties} from 'vuexPath/modules/component'
 export default {
   mixins: [validationError],
-  components: {
-    vSelect
-  },
   props: {
     dialogVisible: {
       type: Boolean,
@@ -132,26 +133,29 @@ export default {
       this.$emit('update:dialogVisible', false)
     },
     callMethod() {
-      Object.keys(this.values).map((objectKey, index)=> {
-        //处理值为主机的情况
-        if(this.values[objectKey] instanceof Array) {
-          let newArray = this.values[objectKey].map(item => {
-            return item.id
-          })
-          this.values[objectKey] = newArray
+      this.$validator.validateAll().then((result) => {
+        if(!result) {
+          popWarn('请填充必须参数后再进行提交')
+          return
         }
+        Object.keys(this.values).map((objectKey, index)=> {
+        //处理值为主机的情况
+          if(this.values[objectKey] instanceof Array) {
+            let newArray = this.values[objectKey].map(item => {
+              return item.id
+            })
+            this.values[objectKey] = newArray
+          }
+        })
+        this.component.properties = this.values
+        this.component.hosts = this.selectedHosts
+        // this.component.name = this.name
+        if (!!this.component.id) {
+          return this.updateComponent(this.component)
+        }
+        return this.addComponent(this.component)
       })
-      // if(this.component.name !== 'loadbalancer' && this.component.hosts.length === 0) {
-      //   popWarn('请选择主机后再保存')
-      //   return
-      // }
-      this.component.properties = this.values
-      this.component.hosts = this.selectedHosts
-      // this.component.name = this.name
-      if (!!this.component.id) {
-        return this.updateComponent(this.component)
-      }
-      return this.addComponent(this.component)
+
     },
     onSubmit(){
       this.callMethod()
