@@ -56,9 +56,6 @@ export default {
       this.cluster = cluster
       this.dialogVisible = true
     },
-    updateCluster(cluster) {
-
-    },
     showCluster(cluster) {
       this.$router.push({ name: "hosts", params: { id: cluster.id } })
     },

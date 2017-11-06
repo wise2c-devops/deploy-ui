@@ -120,11 +120,11 @@ export default {
       return hostsStr.substring(0, hostsStr.length - 1)
     },
     properties(component) {
-      if (!component.properties || component.properties === {}) {
+      if (!component.properties || Object.keys(component.properties).length === 0) {
         return "无"
       }
       var msg = ""
-      Object.keys(component.properties).map(function(objectKey, index) {
+      Object.keys(component.properties).map(function(objectKey) {
         let value = component.properties[objectKey]
         msg += `<p><b>${objectKey}</b>: ${value}</p>`
       })

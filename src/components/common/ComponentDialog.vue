@@ -90,7 +90,7 @@ export default {
         this.selectedHosts = this.component.hosts.map(item => {
           return item.id
         })
-        Object.keys(this.component.properties).map((key, index) => {
+        Object.keys(this.component.properties).map((key) => {
           this.values[key] = this.component.properties[key]
         })
       }else {
@@ -138,7 +138,7 @@ export default {
           popWarn('请填充必须参数后再进行提交')
           return
         }
-        Object.keys(this.values).map((objectKey, index)=> {
+        Object.keys(this.values).map((objectKey)=> {
         //处理值为主机的情况
           if(this.values[objectKey] instanceof Array) {
             let newArray = this.values[objectKey].map(item => {
