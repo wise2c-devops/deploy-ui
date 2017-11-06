@@ -3,7 +3,7 @@
     <form @submit.prevent="onSubmit">
       <div class="form-group">
         <label for="hostName">主机名称</label>
-        <input type="text" class="form-control" v-validate.initial="'required'" v-model="host.hostname" name="hostname" id="hostName" autofocus placeholder="主机名称">
+        <input type="text" class="form-control" v-validate="'required'" v-model="host.hostname" name="hostname" id="hostName" autofocus placeholder="主机名称">
         <i v-show="errors.has('hostname')" class="error fa fa-warning">请输入主机名称</i>
       </div>
       <div class="form-group">
@@ -24,6 +24,7 @@
 </template>
 <script>
 import {validationError} from '../../mixin/error'
+import {popWarn} from '../../utils/alert'
 export default {
   mixins: [validationError],
   props: {
@@ -47,10 +48,17 @@ export default {
       this.$emit('update:dialogVisible', false)
     },
     callMethod() {
-      if(!!this.host.id) {
-        return this.updateHost(this.host)
-      }
-      return this.addHost(this.host)
+      this.$validator.validateAll().then((result) => {
+        if(!result) {
+          popWarn('请填充必须参数后再进行提交')
+          return
+        }
+
+        if(!!this.host.id) {
+          return this.updateHost(this.host)
+        }
+        return this.addHost(this.host)
+      })
     },
     onSubmit() {
       this.callMethod()

@@ -3,7 +3,7 @@
     <form @submit.prevent="onSubmit">
       <div class="form-group">
         <label for="clusterName">集群名称</label>
-        <input type="text" class="form-control" v-validate.initial="'required'" v-model="cluster.name" name="cluster" id="clusterName" autofocus placeholder="请输入集群名字">
+        <input type="text" class="form-control" v-validate="'required'" v-model="cluster.name" name="cluster" id="clusterName" autofocus placeholder="请输入集群名字">
         <i v-show="errors.has('cluster')" class="error fa fa-warning">请输入集群名称</i>
       </div>
       <div class="form-group">
@@ -19,6 +19,7 @@
 </template>
 <script>
 import {validationError} from '../../mixin/error'
+import {popWarn} from '../../utils/alert'
 export default {
   mixins: [validationError],
   props: {
@@ -41,10 +42,18 @@ export default {
       this.$emit('update:dialogVisible', false)
     },
     callMethod() {
-      if(!!this.cluster.id) {
-        return this.updateCluster(this.cluster)
-      }
-      return this.addCluster(this.cluster)
+      this.$validator.validateAll().then((result) => {
+        if(!result) {
+          popWarn('请填充必须参数后再进行提交')
+          return
+        }
+
+        if(!!this.cluster.id) {
+          return this.updateCluster(this.cluster)
+        }
+        return this.addCluster(this.cluster)
+      })
+
     },
     onSubmit() {
       this.callMethod()
