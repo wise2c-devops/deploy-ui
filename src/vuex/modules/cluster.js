@@ -70,7 +70,7 @@ export const fetchHosts= ({dispatch}, clusterId, success = () =>{}) => {
 export const fetchComponents = ({dispatch}, clusterId, success = () =>{}) => {
   get(formatString(API.CLUSTER.COMPONENTS, clusterId)).then((response) => {
     dispatch('SET_COMPONENTS', response.body)
-    success()
+    success(response.body)
   }).catch(() => {
     popWarn('获取集群下服务组件列表失败')
   })
@@ -141,8 +141,8 @@ export const updateComponent = ({dispatch}, clusterId, component, success= ()=> 
   })
 }
 
-export const deploy = ({dispatch}, clusterId, type='install', success=()=>{}) => {
-  put(formatString(API.CLUSTER.DEPLOY, clusterId), {operation: type}).then(() => {
+export const deploy = ({dispatch}, clusterId, selectComponentstype, type='install', success=()=>{}) => {
+  put(formatString(API.CLUSTER.DEPLOY, clusterId), {operation: type, components: selectComponentstype}).then(() => {
     success()
   }).catch(error => {
     popWarn('无法执行部署命令，请稍后重试')

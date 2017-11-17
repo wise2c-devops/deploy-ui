@@ -32,7 +32,8 @@ import {fetchClusterDetail} from '../vuex/modules/cluster'
 export default {
   data() {
     return {
-      subMenu: 'hosts'
+      subMenu: 'hosts',
+      cluster: {}
     }
   },
   computed: {

@@ -12,7 +12,8 @@
       <el-button size="small" type="primary" icon="plus" @click="addHostDialog" class="pull-right">添加主机</el-button>
     </div>
     <div class="row hosts-table">
-      <el-table :data="hosts" :row-class-name="tableRowClassName" :stripe="true">
+      <el-table :data="hosts" :stripe="true">
+      <!-- <el-table :data="hosts" :row-class-name="tableRowClassName" :stripe="true"> -->
         <el-table-column align="center" prop="index" label="序号">
           <template scope="scope">
             {{scope.$index + 1}}

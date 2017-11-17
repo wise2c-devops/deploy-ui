@@ -14,7 +14,14 @@
       <el-button size="small" type="primary" icon="el-icon-plus" @click="addComponentDialog" class="pull-right">添加组件</el-button>
     </div>
     <div class="row hosts-table">
-      <el-table :data="components" :row-class-name="tableRowClassName" :stripe="true">
+      <el-table :data="components" :stripe="true" @select-all='selectRow' :reserve-selection="true"
+          @select='selectRow' ref="multipleTable">
+        <el-table-column
+          :select-all="true"
+          type="selection"
+          width="55">
+        </el-table-column>
+      <!-- <el-table :data="components" :row-class-name="tableRowClassName" :stripe="true"> -->
         <el-table-column align="center" prop="index" label="序号" width="100px">
           <template scope="scope">
             {{scope.$index + 1}}
@@ -44,7 +51,7 @@
     <div class="row">
       <div class="col-md-4 col-md-offset-4 buttons">
         <el-button size="large" icon="arrow-left" class="pull-left" @click="back">上一步</el-button>
-        <el-button size="large" type="success" class="pull-right" icon="arrow-right" @click="next" :disabled="components.length === 0">下一步</el-button>
+        <el-button size="large" type="success" class="pull-right" icon="arrow-right" @click="next" :disabled="selectComponents.length === 0">下一步</el-button>
       </div>
     </div>
     <component-dialog :dialog-visible.sync="dialogVisible" :add-component="create" :component="component" :types="validComponentTypes" :update-component="update" :hosts="hosts">
@@ -64,13 +71,30 @@ export default {
     ComponentDialog
   },
   mounted() {
-    this.fetchComponents(this.clusterId)
+    this.fetchComponents(this.clusterId, (data)=>{
+      this.selectComponents = data.map(item=>item.name)
+      this.checked()
+    })
     setTimeout(() => {
       this.$root.$emit('clusterPage', 'components')
-    }, 100)
+    }, 300)
     this.fetchHosts(this.clusterId)
   },
   methods: {
+    checked () {
+      this.$nextTick(()=>{
+        this.components.forEach(row=>{
+          this.$refs.multipleTable.toggleRowSelection(row)
+        })
+      })
+    },
+    selectRow(selection) {
+      if (selection.length) {
+        this.selectComponents = selection.map(item=>item.name)
+      }else {
+        this.selectComponents = []
+      }
+    },
     create(component) {
       this.createComponent(this.clusterId, component, () => {
         this.dialogVisible = false
@@ -139,7 +163,7 @@ export default {
       }
       //确认安装
       confirmation(this, '确认开始安装集群', () => {
-        this.deploy(this.clusterId, 'install', () => {
+        this.deploy(this.clusterId, this.selectComponents, 'install', () => {
           pop('开始安装')
           this.$router.push({
             path: `/clusters/${this.clusterId}/processing`
@@ -179,6 +203,7 @@ export default {
         hosts: [],
         properties: {}
       },
+      selectComponents: [],
       dialogVisible: false,
       types: [{
         value: 'loadbalancer',
