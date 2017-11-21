@@ -35,7 +35,6 @@ export default {
       return this.$route.params.id
     },
     validStages() {
-      console.log(this.slectComponents, 'this.slectComponents')
       return filter(this.stages, (stage) => {
         var target = findLast(this.slectComponents, (component) => {
           return component === stage.value
