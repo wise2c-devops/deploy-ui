@@ -35,9 +35,10 @@ export default {
       return this.$route.params.id
     },
     validStages() {
+      console.log(this.slectComponents, 'this.slectComponents')
       return filter(this.stages, (stage) => {
-        var target = findLast(this.cluster.components, (component) => {
-          return component.name === stage.value
+        var target = findLast(this.slectComponents, (component) => {
+          return component === stage.value
         })
         return !!target
       })
@@ -129,7 +130,8 @@ export default {
     },
     getters: {
       cluster: getCluster,
-      status: getClusterStatus
+      status: getClusterStatus,
+      slectComponents: state=>state.cluster.selectComponents
     }
   }
 }

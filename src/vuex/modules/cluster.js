@@ -8,7 +8,8 @@ const state = {
   components: [],
   cluster: {},
   logs: [],
-  status: {}
+  status: {},
+  selectComponents: []
 }
 
 const mutations = {
@@ -50,6 +51,9 @@ const mutations = {
   },
   SET_STATUS(state, status) {
     state.status = status
+  },
+  RESET_SELECT_COMPONENTS (state, selectComponents) {
+    state.selectComponents = selectComponents
   }
 }
 
@@ -141,8 +145,13 @@ export const updateComponent = ({dispatch}, clusterId, component, success= ()=> 
   })
 }
 
-export const deploy = ({dispatch}, clusterId, selectComponentstype, type='install', success=()=>{}) => {
-  put(formatString(API.CLUSTER.DEPLOY, clusterId), {operation: type, components: selectComponentstype}).then(() => {
+export const resetSlectComponents = ({dispatch}, selectComponents) => {
+  dispatch('RESET_SELECT_COMPONENTS', selectComponents)
+}
+
+
+export const deploy = ({dispatch}, clusterId, selectComponents, type='install', success=()=>{}) => {
+  put(formatString(API.CLUSTER.DEPLOY, clusterId), {operation: type, components: selectComponents}).then(() => {
     success()
   }).catch(error => {
     popWarn('无法执行部署命令，请稍后重试')

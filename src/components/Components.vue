@@ -9,7 +9,7 @@
           <router-link to="">{{cluster.name}}</router-link>
         </li>
       </ol>
-      <el-button size="mini" type="primary" icon="el-icon-caret-right" @click="install" class="status-icon" :disabled="components.length === 0">开始安装</el-button>
+      <el-button size="mini" type="primary" icon="el-icon-caret-right" @click="install" class="status-icon" :disabled="selectComponents.length === 0">开始安装</el-button>
       <el-button size="mini" type="warning" icon="el-icon-warning" @click="reset" class="status-icon" :disabled="isInitial">重置</el-button>
       <el-button size="small" type="primary" icon="el-icon-plus" @click="addComponentDialog" class="pull-right">添加组件</el-button>
     </div>
@@ -60,12 +60,12 @@
 </template>
 
 <script>
-import { getCluster, getComponents, fetchComponents, createComponent, fetchHosts, getHosts, deleteComponent, updateComponent, deploy } from 'vuexPath/modules/cluster'
+import { getCluster, getComponents, fetchComponents, createComponent, fetchHosts, getHosts, deleteComponent, updateComponent, deploy, resetSlectComponents } from 'vuexPath/modules/cluster'
 import ComponentDialog from './common/ComponentDialog'
 import { pop } from '../utils/alert'
 import { confirmation, promptOnDelete, promptOnAction } from '../utils/prompt'
 import { filter, map } from 'lodash'
-import {resetProperties} from 'vuexPath/modules/component'
+import { resetProperties } from 'vuexPath/modules/component'
 export default {
   components: {
     ComponentDialog
@@ -155,6 +155,7 @@ export default {
       return msg
     },
     install() {
+      this.resetSlectComponents(this.selectComponents)
       if (this.cluster.state === 'processing') {
         this.$router.push({
           path: `/clusters/${this.clusterId}/processing`
@@ -173,7 +174,7 @@ export default {
     },
     reset() {
       promptOnAction(this, "确认重置该集群到初始状态？", () => {
-        this.deploy(this.clusterId, 'reset', () => {
+        this.deploy(this.clusterId, this.selectComponents, 'reset', () => {
           pop('重置成功，系统需要一些时间处理请求，请稍后刷新页面查看。')
         })
       })
@@ -194,7 +195,7 @@ export default {
       })
     },
     isInitial() {
-      return this.cluster.state === 'initial'
+      return this.cluster.state === 'initial' || this.selectComponents.length === 0
     }
   },
   data() {
@@ -238,7 +239,8 @@ export default {
       deleteComponent,
       updateComponent,
       deploy,
-      resetProperties
+      resetProperties,
+      resetSlectComponents
     },
     getters: {
       cluster: getCluster,
