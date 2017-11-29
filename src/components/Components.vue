@@ -128,6 +128,7 @@ export default {
     addComponentDialog() {
       this.component = {
         name: '',
+        version: '',
         properties: {}
       }
       this.resetProperties()
@@ -202,6 +203,7 @@ export default {
     return {
       component: {
         hosts: [],
+        version: '',
         properties: {}
       },
       selectComponents: [],

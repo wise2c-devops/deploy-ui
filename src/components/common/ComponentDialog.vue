@@ -9,6 +9,14 @@
           </el-option>
         </el-select>
       </div>
+      <div class="form-group">
+        <label for="componentType">版本</label>
+        <br>
+        <el-select v-model="component.version">
+          <el-option key="v0.1" label="v0.1" value="v0.1">
+          </el-option>
+        </el-select>
+      </div>
       <div class="form-group" v-if="!!component.name">
         <label for="ip">主机列表</label>
         <br>
