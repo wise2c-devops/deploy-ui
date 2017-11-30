@@ -37,15 +37,15 @@
         </div>
         <div v-if="property.type==='string'">
           <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-if="property.required">
-          <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-else>
+          <input type="text" class="form-control" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-else>
         </div>
         <div v-if="property.type==='int'">
           <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model.number="property[property.variable]" :name="property.variable" v-if="property.required">
-          <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model.number="property[property.variable]" :name="property.variable" v-else>
+          <input type="number" class="form-control" v-validate="'numeric'" :placeholder="property.description" v-model.number="property[property.variable]" :name="property.variable" v-else>
         </div>
         <div v-if="property.type==='password'">
           <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-if="property.required">
-          <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-else>
+          <input type="password" class="form-control" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-else>
         </div>
         <div v-if="property.type==='bool'">
           <el-checkbox v-model="property[property.variable]"></el-checkbox>
@@ -56,7 +56,7 @@
             </el-option>
           </el-select>
         </div>
-        <i v-show="property.type!=='bool' && errors.has(property.variable)" class="error fa fa-warning">{{`请输入有效的${property.label}值`}}</i>
+        <i v-show="property.type!=='bool' && errors.has(property.variable)" class="error fa fa-warning">{{property.type==='host'? '至少选择一个主机': `请输入有效的${property.label}值`}}</i>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="close">取 消</el-button>
@@ -103,8 +103,9 @@ export default {
   },
   watch: {
     dialogVisible(newValue) {
-      if(newValue && !!this.component.name) {
+      if(newValue && !!this.component.name && !!this.component.version) {
         this.fetchComponentVersions(this.component.name)
+        this.fetchVersionProperties(this.component.name, this.component.version, {isEdit: true, component: this.component})
         // this.fetchComponentProperties(this.component.name)
       }
     }
@@ -168,6 +169,7 @@ export default {
           popWarn('请填充必须参数后再进行提交')
           return
         }
+        this.component.hosts = {}
         this.properties.forEach(item=>{
           if (item[item.variable] instanceof Array) {
             this.component.hosts[item.variable] = item[item.variable]
@@ -193,7 +195,8 @@ export default {
       }
     },
     changeVersion(value) {
-      this.fetchVersionProperties(this.component.name, value)
+      // this.resetProperties()
+      this.fetchVersionProperties(this.component.name, value, {})
     },
     validHosts(hosts) {
       return hosts.map(host => {

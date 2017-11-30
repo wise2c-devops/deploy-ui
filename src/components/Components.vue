@@ -73,21 +73,21 @@ export default {
     ComponentDialog
   },
   mounted() {
-    this.$nextTick(()=>{
-      this.fetchComponents(this.clusterId, (data)=>{
-        this.selectComponents = data.map(item=>item.name)
-        this.checked()
-      })
-      setTimeout(() => {
-        this.$root.$emit('clusterPage', 'components')
-      }, 300)
-      this.fetchHosts(this.clusterId)
+    this.fetchComponents(this.clusterId, (data)=>{
+      this.selectComponents = data.map(item=>item.name)
+      this.checked()
     })
+    setTimeout(() => {
+      this.$root.$emit('clusterPage', 'components')
+    }, 300)
+    this.fetchHosts(this.clusterId)
   },
   methods: {
     checked () {
-      this.components.forEach(row=>{
-        this.$refs.multipleTable.toggleRowSelection(row)
+      this.$nextTick(()=>{
+        this.components.forEach(row=>{
+          this.$refs.multipleTable.toggleRowSelection(row)
+        })
       })
     },
     selectRow(selection) {
@@ -144,7 +144,7 @@ export default {
       let msg = ''
       Object.keys(component.hosts).map((objectKey)=>{
         let value = component.hosts[objectKey].map(item=>item.hostname)
-        msg += `<p><b>${objectKey}</b>: ${value.join(', ')}</p>`
+        msg += `<p><b>${objectKey}</b>: ${value.join(', ') || '无'}</p>`
       })
       return msg
     },
@@ -155,7 +155,7 @@ export default {
       var msg = ""
       Object.keys(component.properties).map(function(objectKey) {
         let value = component.properties[objectKey]
-        msg += `<p><b>${objectKey}</b>: ${value}</p>`
+        msg += `<p><b>${objectKey}</b>: ${value || '无'}</p>`
       })
       return msg
     },

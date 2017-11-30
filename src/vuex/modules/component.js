@@ -15,16 +15,19 @@ const mutations = {
   SET_VERSIONS(state, versions) {
     state.versions = versions
   },
-  SET_PROPERTIES(state, properties) {
+  SET_PROPERTIES(state, properties, obj) {
     properties.forEach((item) => {
       if(item.type === 'host') {
+        if (obj.isEdit) {
+          const hosts = obj.component.hosts[item.variable].map(item=>item.id)
+          return item[item.variable] = hosts
+        }
         item[item.variable] = []
-        return
       }else if (item.type === 'bool') {
-        item[item.variable] = true
+        item[item.variable] = obj.isEdit? obj.component.properties[item.variable]: true
         return
       }
-      item[item.variable] = ''
+      item[item.variable] = obj.isEdit? obj.component.properties[item.variable]: ''
     })
     state.properties = properties
   }
@@ -56,9 +59,9 @@ export const fetchComponentVersions = ({dispatch}, componentName, success = () =
   })
 }
 
-export const fetchVersionProperties = ({dispatch}, componentName, version, success = () => {}) => {
+export const fetchVersionProperties = ({dispatch}, componentName, version, obj, success = () => {}) => {
   get(formatString(API.COMPONENT.PROPERTIES, componentName, version)).then(response => {
-    dispatch('SET_PROPERTIES', JSON.parse(response.text))
+    dispatch('SET_PROPERTIES', JSON.parse(response.text), obj)
     success()
   }).catch(error => {
     dispatch('SET_PROPERTIES', [])
