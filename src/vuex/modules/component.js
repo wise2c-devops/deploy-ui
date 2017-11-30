@@ -4,11 +4,28 @@ import {formatString} from '../../utils/string'
 import {popWarn} from '../../utils/alert'
 
 const state = {
-  properties: []
+  properties: [],
+  versions: []
 }
 
 const mutations = {
-  SET_PROPERTIES(state, properties){
+  // SET_PROPERTIES(state, properties){
+  //   state.properties = properties
+  // },
+  SET_VERSIONS(state, versions) {
+    state.versions = versions
+  },
+  SET_PROPERTIES(state, properties) {
+    properties.forEach((item) => {
+      if(item.type === 'host') {
+        item[item.variable] = []
+        return
+      }else if (item.type === 'bool') {
+        item[item.variable] = true
+        return
+      }
+      item[item.variable] = ''
+    })
     state.properties = properties
   }
 }
@@ -29,6 +46,27 @@ export const fetchComponentProperties = ({dispatch}, componentName, success = ()
   })
 }
 
+export const fetchComponentVersions = ({dispatch}, componentName, success = () => {}) => {
+  get(formatString(API.COMPONENT.VERSIONS, componentName)).then(response => {
+    dispatch('SET_VERSIONS', JSON.parse(response.text))
+    success()
+  }).catch(error => {
+    popWarn(`获取 ${componentName}版本信息失败`)
+    console.error(error)
+  })
+}
+
+export const fetchVersionProperties = ({dispatch}, componentName, version, success = () => {}) => {
+  get(formatString(API.COMPONENT.PROPERTIES, componentName, version)).then(response => {
+    dispatch('SET_PROPERTIES', JSON.parse(response.text))
+    success()
+  }).catch(error => {
+    dispatch('SET_PROPERTIES', [])
+    popWarn(`获取 ${componentName}组件属性失败`)
+    console.error(error)
+  })
+}
+
 export const resetProperties = ({dispatch}) => {
   dispatch('SET_PROPERTIES', [])
 }
@@ -36,4 +74,7 @@ export const resetProperties = ({dispatch}) => {
 
 export const getComponentProperties = (state) => {
   return state.component.properties
+}
+export const getComponentVersions = (state) => {
+  return state.component.versions
 }

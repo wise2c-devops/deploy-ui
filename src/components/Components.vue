@@ -29,14 +29,16 @@
         </el-table-column>
         <el-table-column align="center" prop="name" label="服务名称" width="300px">
         </el-table-column>
+        <el-table-column align="center" prop="version" label="版本" width="300px">
+        </el-table-column>
         <el-table-column align="left" label="属性">
           <template scope="scope">
             <div v-html="properties(scope.row)"></div>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="主机" width="300px">
+        <el-table-column align="left" label="主机">
           <template scope="scope">
-            {{simpleHosts(scope.row.hosts)}}
+            <div v-html="simpleHosts(scope.row)"></div>
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作" width="200px">
@@ -71,21 +73,21 @@ export default {
     ComponentDialog
   },
   mounted() {
-    this.fetchComponents(this.clusterId, (data)=>{
-      this.selectComponents = data.map(item=>item.name)
-      this.checked()
+    this.$nextTick(()=>{
+      this.fetchComponents(this.clusterId, (data)=>{
+        this.selectComponents = data.map(item=>item.name)
+        this.checked()
+      })
+      setTimeout(() => {
+        this.$root.$emit('clusterPage', 'components')
+      }, 300)
+      this.fetchHosts(this.clusterId)
     })
-    setTimeout(() => {
-      this.$root.$emit('clusterPage', 'components')
-    }, 300)
-    this.fetchHosts(this.clusterId)
   },
   methods: {
     checked () {
-      this.$nextTick(()=>{
-        this.components.forEach(row=>{
-          this.$refs.multipleTable.toggleRowSelection(row)
-        })
+      this.components.forEach(row=>{
+        this.$refs.multipleTable.toggleRowSelection(row)
       })
     },
     selectRow(selection) {
@@ -129,20 +131,22 @@ export default {
       this.component = {
         name: '',
         version: '',
-        properties: {}
+        properties: {},
+        hosts: {}
       }
       this.resetProperties()
       this.dialogVisible = true
     },
-    simpleHosts(hosts) {
-      if (hosts.length === 0) {
+    simpleHosts(component) {
+      if (!component.hosts || Object.keys(component.hosts).length === 0) {
         return "无"
       }
-      var hostsStr = ""
-      hosts.forEach((item) => {
-        hostsStr += item.hostname + ","
+      let msg = ''
+      Object.keys(component.hosts).map((objectKey)=>{
+        let value = component.hosts[objectKey].map(item=>item.hostname)
+        msg += `<p><b>${objectKey}</b>: ${value.join(', ')}</p>`
       })
-      return hostsStr.substring(0, hostsStr.length - 1)
+      return msg
     },
     properties(component) {
       if (!component.properties || Object.keys(component.properties).length === 0) {
@@ -202,7 +206,8 @@ export default {
   data() {
     return {
       component: {
-        hosts: [],
+        name: '',
+        hosts: {},
         version: '',
         properties: {}
       },
