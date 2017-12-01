@@ -44,7 +44,7 @@
         <el-table-column align="center" label="操作" width="200px">
           <template scope="scope">
             <el-button @click.native.prevent="editComponentDialog(scope.row)" type="primary" size="small" icon="el-icon-edit"></el-button>
-            <el-button @click.native.prevent="remove(scope.$index, scope.row.id)" type="danger" size="small" icon="el-icon-delete"></el-button>
+            <el-button @click.native.prevent="remove(scope.$index, scope.row)" type="danger" size="small" icon="el-icon-delete"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -109,8 +109,10 @@ export default {
       }
     },
     create(component) {
-      this.createComponent(this.clusterId, component, () => {
+      this.createComponent(this.clusterId, component, (data) => {
         this.dialogVisible = false
+        this.$refs.multipleTable.toggleRowSelection(data)
+        this.selectComponents.push(data.name)
         pop('创建服务组件成功')
       })
     },
@@ -118,9 +120,10 @@ export default {
       this.component = Object.assign({}, component)
       this.dialogVisible = true
     },
-    remove(index, componentId) {
+    remove(index, component) {
       promptOnDelete(this, "如确认删除该服务", () => {
-        this.deleteComponent(this.clusterId, componentId, index, () => {
+        this.deleteComponent(this.clusterId, component.id, index, () => {
+          this.selectComponents = this.selectComponents.filter(item=>item !== component.name)
           pop('删除主机成功')
         })
       })

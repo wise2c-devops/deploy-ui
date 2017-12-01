@@ -122,7 +122,7 @@ export const fetchClusterDetail = ({dispatch}, clusterId) => {
 export const createComponent = ({dispatch}, clusterId, component, success = ()=>{}) => {
   post(formatString(API.CLUSTER.COMPONENTS, clusterId), component).then((response) => {
     dispatch('ADD_COMPONENT', response.body)
-    success()
+    success(response.body)
   }).catch((error) => {
     popWarn('创建服务组件失败')
     console.error(error)
