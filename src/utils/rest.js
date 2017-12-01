@@ -15,7 +15,8 @@ export default {
     COMPONENT:  "/v1/clusters/$1/components/$2",
     DEPLOY: "/v1/clusters/$1/deployment",
     LOGS: "/v1/clusters/$1/logs",
-    STATUS: "/v1/clusters/$1/status"
+    STATUS: "/v1/clusters/$1/status",
+    COMPONENT_TYPES: '/v1/components'
   },
   COMPONENT_PROPERTIES: "/v1/components/$1/properties",
   COMPONENT: {

@@ -5,7 +5,7 @@
         <label for="componentType">组件类型</label>
         <br>
         <el-select v-model="component.name" :disabled="!!component.id" @change="changeComponent">
-          <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
+          <el-option v-for="item in types" :key="item" :label="item" :value="item">
           </el-option>
         </el-select>
       </div>
@@ -51,7 +51,11 @@
           <el-checkbox v-model="property[property.variable]"></el-checkbox>
         </div>
         <div v-if="property.type==='host'">
-          <el-select v-model="property[property.variable]" multiple placeholder="请选择">
+          <el-select v-model="property[property.variable]" multiple placeholder="请选择" v-validate="'required'" :name="property.variable"  v-if="property.required">
+            <el-option v-for="item in hosts" :key="item.id" :label="item.hostname" :value="item.id">
+            </el-option>
+          </el-select>
+          <el-select v-model="property[property.variable]" multiple placeholder="请选择" v-else>
             <el-option v-for="item in hosts" :key="item.id" :label="item.hostname" :value="item.id">
             </el-option>
           </el-select>
@@ -69,7 +73,6 @@
 import { validationError } from '../../mixin/error'
 import {popWarn} from '../../utils/alert'
 import {
-  fetchComponentProperties,
   getComponentProperties,
   resetProperties,
   fetchComponentVersions,
@@ -106,36 +109,11 @@ export default {
       if(newValue && !!this.component.name && !!this.component.version) {
         this.fetchComponentVersions(this.component.name)
         this.fetchVersionProperties(this.component.name, this.component.version, {isEdit: true, component: this.component})
-        // this.fetchComponentProperties(this.component.name)
       }
     }
-    // properties(newProperties) {
-    //   this.values = {}
-    //   if(!!this.component.id) {
-    //     this.selectedHosts = this.component.hosts.map(item => {
-    //       return item.id
-    //     })
-    //     Object.keys(this.component.properties).map((key) => {
-    //       this.values[key] = this.component.properties[key]
-    //     })
-    //   }else {
-    //     // this.selectedHosts = []
-    //     newProperties.forEach((item) => {
-    //       if(item.type === 'host') {
-    //         this.values[item.variable] = []
-    //         return
-    //       }else if (item.type === 'bool') {
-    //         this.values[item.variable] = true
-    //         return
-    //       }
-    //       this.values[item.variable] = ''
-    //     })
-    //   }
-    // }
   },
   vuex: {
     actions: {
-      // fetchComponentProperties,
       resetProperties,
       fetchComponentVersions,
       fetchVersionProperties
@@ -188,14 +166,12 @@ export default {
     },
     changeComponent(value) {
       if(!!value && value !== '') {
-        // this.fetchComponentProperties(value)
         this.component.version = ''
         this.resetProperties()
         this.fetchComponentVersions(value)
       }
     },
     changeVersion(value) {
-      // this.resetProperties()
       this.fetchVersionProperties(this.component.name, value, {})
     },
     validHosts(hosts) {

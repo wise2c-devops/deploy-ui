@@ -9,7 +9,8 @@ const state = {
   cluster: {},
   logs: [],
   status: {},
-  selectComponents: []
+  selectComponents: [],
+  types: []
 }
 
 const mutations = {
@@ -54,6 +55,9 @@ const mutations = {
   },
   RESET_SELECT_COMPONENTS (state, selectComponents) {
     state.selectComponents = selectComponents
+  },
+  SET_TYPES(state, types) {
+    state.types = types
   }
 }
 
@@ -194,6 +198,16 @@ export const fetchComponentProperties = ({dispatch}, clusterId, componentName, s
     success()
   }).catch(error => {
     popWarn('获取集群状态失败')
+    console.error(error)
+  })
+}
+
+export const fetchComponentTypes = ({dispatch}, success = () => {}) => {
+  get(API.CLUSTER.COMPONENT_TYPES).then(response => {
+    dispatch('SET_TYPES', response.body)
+    success()
+  }).catch(error => {
+    popWarn('获取组件类型失败')
     console.error(error)
   })
 }

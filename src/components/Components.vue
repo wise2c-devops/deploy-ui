@@ -22,14 +22,14 @@
           width="55">
         </el-table-column>
       <!-- <el-table :data="components" :row-class-name="tableRowClassName" :stripe="true"> -->
-        <el-table-column align="center" prop="index" label="序号" width="100px">
+        <el-table-column align="center" prop="index" label="序号" width="70px">
           <template scope="scope">
             {{scope.$index + 1}}
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="name" label="服务名称" width="300px">
+        <el-table-column align="center" prop="name" label="服务名称" width="120px">
         </el-table-column>
-        <el-table-column align="center" prop="version" label="版本" width="300px">
+        <el-table-column align="center" prop="version" label="版本" width="120px">
         </el-table-column>
         <el-table-column align="left" label="属性">
           <template scope="scope">
@@ -62,7 +62,17 @@
 </template>
 
 <script>
-import { getCluster, getComponents, fetchComponents, createComponent, fetchHosts, getHosts, deleteComponent, updateComponent, deploy, resetSlectComponents } from 'vuexPath/modules/cluster'
+import { getCluster,
+  getComponents,
+  fetchComponents,
+  createComponent,
+  fetchHosts,
+  getHosts,
+  deleteComponent,
+  updateComponent,
+  deploy,
+  resetSlectComponents,
+  fetchComponentTypes} from 'vuexPath/modules/cluster'
 import ComponentDialog from './common/ComponentDialog'
 import { pop } from '../utils/alert'
 import { confirmation, promptOnDelete, promptOnAction } from '../utils/prompt'
@@ -81,6 +91,7 @@ export default {
       this.$root.$emit('clusterPage', 'components')
     }, 300)
     this.fetchHosts(this.clusterId)
+    this.fetchComponentTypes()
   },
   methods: {
     checked () {
@@ -196,7 +207,7 @@ export default {
     },
     validComponentTypes() {
       return filter(this.types, (type) => {
-        return this.existedComponentTypes.indexOf(type.value) === -1
+        return this.existedComponentTypes.indexOf(type) === -1
       })
     },
     isInitial() {
@@ -212,30 +223,7 @@ export default {
         properties: {}
       },
       selectComponents: [],
-      dialogVisible: false,
-      types: [{
-        value: 'loadbalancer',
-        label: 'Load Balancer'
-      }, {
-        value: 'mysql',
-        label: 'MySql'
-      }, {
-        value: 'registry',
-        label: 'Registry'
-      }, {
-        value: 'etcd',
-        label: 'etcd'
-      }, {
-        value: 'k8smaster',
-        label: 'K8S master'
-      }, {
-        value: 'k8snode',
-        label: 'K8S node'
-      },
-      {
-        value: 'wisecloud',
-        label: 'WiseCloud'
-      }]
+      dialogVisible: false
     }
   },
   vuex: {
@@ -247,12 +235,14 @@ export default {
       updateComponent,
       deploy,
       resetProperties,
-      resetSlectComponents
+      resetSlectComponents,
+      fetchComponentTypes
     },
     getters: {
       cluster: getCluster,
       components: getComponents,
-      hosts: getHosts
+      hosts: getHosts,
+      types: state=>state.cluster.types
     }
   }
 }
