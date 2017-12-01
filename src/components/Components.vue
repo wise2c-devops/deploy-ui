@@ -19,7 +19,7 @@
         <el-table-column
           :select-all="true"
           type="selection"
-          width="55">
+          width="40">
         </el-table-column>
       <!-- <el-table :data="components" :row-class-name="tableRowClassName" :stripe="true"> -->
         <el-table-column align="center" prop="index" label="序号" width="70px">

@@ -9,9 +9,6 @@ const state = {
 }
 
 const mutations = {
-  // SET_PROPERTIES(state, properties){
-  //   state.properties = properties
-  // },
   SET_VERSIONS(state, versions) {
     state.versions = versions
   },
@@ -22,12 +19,13 @@ const mutations = {
           const hosts = obj.component.hosts[item.variable].map(item=>item.id)
           return item[item.variable] = hosts
         }
-        item[item.variable] = []
+        item[item.variable] = item.default || []
       }else if (item.type === 'bool') {
-        item[item.variable] = obj.isEdit? obj.component.properties[item.variable]: true
-        return
+        if (obj.isEdit) return item[item.variable] = obj.component.properties[item.variable]
+        item[item.variable] = item.default || true
+      }else {
+        item[item.variable] = obj.isEdit? obj.component.properties[item.variable]: item.default
       }
-      item[item.variable] = obj.isEdit? obj.component.properties[item.variable]: ''
     })
     state.properties = properties
   }
