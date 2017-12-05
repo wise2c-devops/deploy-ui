@@ -63,7 +63,8 @@ export default {
         { name: 'LoadBalance', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false },
         { name: 'K8sMaster', icon: 'wise-icon-kubernets', value: 'k8smaster', enabled: false },
         { name: 'K8sNode', icon: 'wise-icon-kubernets', value: 'k8snode', enabled: false },
-        { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: false }
+        { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: false },
+        { name: 'Docker', icon: 'wise-icon-docker-three', value: 'docker', enabled: false }
       ]
     }
   },
@@ -153,6 +154,15 @@ export default {
         position: relative;
         top: -30px;
         background: #f5f8fa;
+      }
+      &:last-child {
+        .box>div {
+          padding-right: 8px;
+          padding-top: 6px;
+          i {
+            font-size: 35px;
+          }
+        }
       }
       .box>div {
         margin: auto;
