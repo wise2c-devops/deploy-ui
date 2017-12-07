@@ -74,6 +74,9 @@ export default {
         this.dialogVisible = false
       })
     },
+    updateCluster() {
+      console.log('update')
+    },
     icon(cluster) {
       switch(cluster.state) {
         case 'initial':

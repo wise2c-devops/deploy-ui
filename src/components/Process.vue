@@ -35,12 +35,14 @@ export default {
       return this.$route.params.id
     },
     validStages() {
-      return filter(this.stages, (stage) => {
-        var target = findLast(this.slectComponents, (component) => {
-          return component === stage.value
-        })
-        return !!target
+      let arr = []
+      this.cluster.components.forEach(component=>{
+        const stage = this.stages.find(stage=>stage.value === component.name)
+        if (stage) {
+          arr.push(stage)
+        }
       })
+      return arr
     },
     isDone() {
       if (this.failed || (!!this.cluster && this.cluster.state === 'success')) {
@@ -130,8 +132,7 @@ export default {
     },
     getters: {
       cluster: getCluster,
-      status: getClusterStatus,
-      slectComponents: state=>state.cluster.selectComponents
+      status: getClusterStatus
     }
   }
 }

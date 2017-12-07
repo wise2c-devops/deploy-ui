@@ -174,7 +174,7 @@ export default {
       return msg
     },
     install() {
-      this.resetSlectComponents(this.selectComponents)
+      // this.resetSlectComponents(this.selectComponents)
       if (this.cluster.state === 'processing') {
         this.$router.push({
           path: `/clusters/${this.clusterId}/processing`
