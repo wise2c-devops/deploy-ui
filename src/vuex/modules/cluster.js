@@ -6,7 +6,9 @@ import {findIndex} from 'lodash'
 const state = {
   hosts: [],
   components: [],
-  cluster: {},
+  cluster: {
+    components: []
+  },
   logs: [],
   status: {},
   selectComponents: [],
