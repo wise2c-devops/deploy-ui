@@ -28,21 +28,21 @@
 <script>
 import { pop } from '../utils/alert'
 import { cancel, getCluster, fetchClusterDetail, getClusterStatus, fetchClusterStatus } from 'vuexPath/modules/cluster'
-import { findLast, filter, findIndex } from 'lodash'
+import { findLast, filter, findIndex, sortBy } from 'lodash'
 export default {
   computed: {
     clusterId() {
       return this.$route.params.id
     },
     validStages() {
-      let arr = []
-      this.cluster.components.forEach(component=>{
-        const stage = this.stages.find(stage=>stage.value === component.name)
-        if (stage) {
-          arr.push(stage)
-        }
+      const slectComponents = JSON.parse(localStorage.getItem('selectComponents'))
+      const tempArr = filter(this.stages, (stage) => {
+        var target = findLast(slectComponents, (component) => {
+          return component === stage.value
+        })
+        return !!target
       })
-      return arr
+      return sortBy(tempArr, v=>v.sort)
     },
     isDone() {
       if (this.failed || (!!this.cluster && this.cluster.state === 'success')) {
@@ -59,14 +59,14 @@ export default {
       failed: false,
       logs: [],
       stages: [
-        { name: 'Registry', icon: 'wise-icon-registry', value: 'registry', enabled: false },
-        { name: 'Etcd', icon: 'wise-icon-etcd', value: 'etcd', enabled: false },
-        { name: 'Mysql', icon: 'wise-icon-mysql', value: 'mysql', enabled: false },
-        { name: 'LoadBalance', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false },
-        { name: 'K8sMaster', icon: 'wise-icon-kubernets', value: 'k8smaster', enabled: false },
-        { name: 'K8sNode', icon: 'wise-icon-kubernets', value: 'k8snode', enabled: false },
-        { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: false },
-        { name: 'Docker', icon: 'wise-icon-docker-three', value: 'docker', enabled: false }
+        { name: 'Registry', icon: 'wise-icon-registry', value: 'registry', enabled: false, sort: 2 },
+        { name: 'Etcd', icon: 'wise-icon-etcd', value: 'etcd', enabled: false, sort: 3 },
+        { name: 'Mysql', icon: 'wise-icon-mysql', value: 'mysql', enabled: false, sort: 4 },
+        { name: 'LoadBalance', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false, sort: 5 },
+        { name: 'K8sMaster', icon: 'wise-icon-kubernets', value: 'k8smaster', enabled: false, sort: 6 },
+        { name: 'K8sNode', icon: 'wise-icon-kubernets', value: 'k8snode', enabled: false, sort: 7 },
+        { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: false, sort: 8 },
+        { name: 'Docker', icon: 'wise-icon-docker-three', value: 'docker', enabled: false, sort: 1 }
       ]
     }
   },
@@ -133,6 +133,7 @@ export default {
     getters: {
       cluster: getCluster,
       status: getClusterStatus
+      // selectComponents: state=>state.cluster.selectComponents
     }
   }
 }

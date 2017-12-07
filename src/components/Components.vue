@@ -174,6 +174,7 @@ export default {
       return msg
     },
     install() {
+      localStorage.setItem('selectComponents', JSON.stringify(this.selectComponents))
       // this.resetSlectComponents(this.selectComponents)
       if (this.cluster.state === 'processing') {
         this.$router.push({
