@@ -142,7 +142,7 @@ export default {
 .process-container {
   width: 80%;
   margin: 0 auto;
-  margin-top: 100px;
+  margin-top: 20px;
   .process {
     width: 76%;
     margin: 0 auto;
@@ -150,6 +150,7 @@ export default {
     li {
       border-top: 1px solid #cdd1d9;
       padding-left: 7%;
+      margin-top: 60px;
       .box {
         width: 70px;
         position: relative;
@@ -197,7 +198,7 @@ export default {
 
 .logs {
   width: 86%;
-  margin: 50px auto;
+  margin: 120px auto;
   padding: 20px;
   border-top: 30px solid #b3b3b3;
   background: lighten(#000, 15%);
