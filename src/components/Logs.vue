@@ -51,7 +51,7 @@ export default {
 @import "../assets/stylesheets/variables";
 .cluster-logs {
   .logs{
-    margin: 50px 0;
+    margin: 49px 0;
   }
   // .log-wrapper {
   //   background: #fff;
