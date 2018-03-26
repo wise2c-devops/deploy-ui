@@ -47,6 +47,10 @@ export default new VueRouter({
     {
       path: "*",
       component: require('./components/404.vue')
+    },
+    {
+      path: '/contact',
+      component: require('./components/Contact.vue')
     }
 
   ]

@@ -36,13 +36,24 @@ export default {
     },
     validStages() {
       const slectComponents = JSON.parse(localStorage.getItem('selectComponents'))
-      const tempArr = filter(this.stages, (stage) => {
-        var target = findLast(slectComponents, (component) => {
-          return component === stage.value
-        })
-        return !!target
+      let result = []
+      slectComponents.forEach(component=>{
+        var target = findLast(this.stages, stage=>stage.value === component)
+        if(target) {
+          result.push(target)
+        }else {
+          const obj = {
+            name: component,
+            icon: 'wise-icon-sys-operating--evn',
+            enabled: false,
+            sort: this.stages.length + 1
+          }
+          result.push(obj)
+          this.stages.push(obj)
+        }
       })
-      return sortBy(tempArr, v=>v.sort)
+      console.log(result, sortBy(result, v=>v.sort))
+      return sortBy(result, v=>v.sort)
     },
     isDone() {
       if (this.failed || (!!this.cluster && this.cluster.state === 'success')) {
@@ -63,7 +74,7 @@ export default {
         { name: 'Etcd', icon: 'wise-icon-etcd', value: 'etcd', enabled: false, sort: 3 },
         { name: 'Mysql', icon: 'wise-icon-mysql', value: 'mysql', enabled: false, sort: 4 },
         { name: 'LoadBalance', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false, sort: 5 },
-        { name: 'K8sMaster', icon: 'wise-icon-kubernets', value: 'k8smaster', enabled: false, sort: 6 },
+        { name: 'kubernetes', icon: 'wise-icon-kubernets', value: 'kubernetes', enabled: false, sort: 6 },
         { name: 'K8sNode', icon: 'wise-icon-kubernets', value: 'k8snode', enabled: false, sort: 7 },
         { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: false, sort: 8 },
         { name: 'Docker', icon: 'wise-icon-docker-three', value: 'docker', enabled: false, sort: 1 }
@@ -93,6 +104,7 @@ export default {
       const index = findIndex(this.stages, (stage) => {
         return stage.value === this.status.currentStage
       })
+      console.log(index, 'mounted')
       if(!!this.cluster && this.cluster.state !== 'success' && index > 0 ) {
         for(var tempIndex = 0; tempIndex < index; tempIndex ++) {
           this.stages[tempIndex].enabled = true
