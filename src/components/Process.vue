@@ -28,7 +28,7 @@
 <script>
 import { pop } from '../utils/alert'
 import { cancel, getCluster, fetchClusterDetail, getClusterStatus, fetchClusterStatus } from 'vuexPath/modules/cluster'
-import { findLast, filter, findIndex, sortBy } from 'lodash'
+import { findLast, findIndex, sortBy } from 'lodash'
 export default {
   computed: {
     clusterId() {
@@ -52,7 +52,6 @@ export default {
           this.stages.push(obj)
         }
       })
-      console.log(result, sortBy(result, v=>v.sort))
       return sortBy(result, v=>v.sort)
     },
     isDone() {
@@ -104,7 +103,6 @@ export default {
       const index = findIndex(this.stages, (stage) => {
         return stage.value === this.status.currentStage
       })
-      console.log(index, 'mounted')
       if(!!this.cluster && this.cluster.state !== 'success' && index > 0 ) {
         for(var tempIndex = 0; tempIndex < index; tempIndex ++) {
           this.stages[tempIndex].enabled = true
