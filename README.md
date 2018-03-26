@@ -46,16 +46,3 @@ docker build deployment-ui .
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
-## 容器化运行
-
-```
-docker run -it -p 9292:80 -e CONSUL=10.0.0.44:8500 nginx-proxy
-```
-
-## Rancher测试API KEY
-
-http://182.140.210.214:8080/v1/projects/1a11
-
-9E626ED85870F41F2134
-
-hHCfYtZGgHXnPzE9WCDrSnaG8oeBid1VnAP5kQkD
