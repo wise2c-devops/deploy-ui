@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="">
     <div class="col-md-2 col-lg-pr-2">
       <div class="app-item add-item" @click="addClusterDialog">
         <div class="add">

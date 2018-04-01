@@ -15,11 +15,11 @@
         <label for="description">描述信息</label>
         <input type="text" class="form-control" v-model="host.description" id="description" placeholder="描述信息">
       </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="close">取 消</el-button>
-        <el-button type="primary" @click.prevent="callMethod" :disabled="hasError" native-type="submit">确 定</el-button>
-      </div>
     </form>
+     <div slot="footer" class="dialog-footer">
+      <el-button @click="close">取 消</el-button>
+      <el-button type="primary" @click.prevent="callMethod" :disabled="hasError" native-type="submit">确 定</el-button>
+    </div>
   </el-dialog>
 </template>
 <script>

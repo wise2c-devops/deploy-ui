@@ -2,7 +2,7 @@
   <el-dialog title="服务组件" :visible="dialogVisible" size="small" :close-on-click-modal="false" :show-close="false">
     <form @submit.prevent="onSubmit">
       <div class="form-group">
-        <label for="componentType">组件类型</label>
+        <label for="componentType z" >组件类型</label>
         <br>
         <el-select v-model="component.name" :disabled="!!component.id" @change="changeComponent">
           <el-option v-for="item in types" :key="item" :label="item" :value="item">
@@ -26,7 +26,13 @@
         </el-select>
       </div> -->
       <div class="form-group" v-for="(property, index) in properties" :key="index">
-        <label for="ip">{{property.label}}</label><br>
+        <label for="ip">
+          {{property.label}}
+          <el-tooltip placement="top">
+            <div slot="content">{{property.description}}</div>
+            <i class="el-icon-question"></i>
+          </el-tooltip>
+        </label>
         <div v-if="property.type==='enum'">
           <select class="form-control" v-validate="'required'" :name="property.variable" :placeholder="property.description" v-model="property[property.variable]" v-if="property.required">
             <option v-for="(option, index) in property.options" :key="index">{{option}}</option>
@@ -47,26 +53,27 @@
           <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-if="property.required">
           <input type="password" class="form-control" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-else>
         </div>
-        <div v-if="property.type==='bool'">
+        <label v-if="property.type==='bool'" class="vip-checkbox">
           <el-checkbox v-model="property[property.variable]"></el-checkbox>
-        </div>
+        </label>
         <div v-if="property.type==='host'">
-          <el-select v-model="property[property.variable]" multiple placeholder="请选择" v-validate="'required'" :name="property.variable"  v-if="property.required">
+          <el-select v-model="property[property.variable]" multiple :placeholder="property.description" v-validate="'required'" :name="property.variable"  v-if="property.required">
             <el-option v-for="item in hosts" :key="item.id" :label="item.hostname" :value="item.id">
             </el-option>
           </el-select>
-          <el-select v-model="property[property.variable]" multiple placeholder="请选择" v-else>
+          <el-select v-model="property[property.variable]" multiple :placeholder="property.description" v-else>
             <el-option v-for="item in hosts" :key="item.id" :label="item.hostname" :value="item.id">
             </el-option>
           </el-select>
         </div>
         <i v-show="property.type!=='bool' && errors.has(property.variable)" class="error fa fa-warning">{{property.type==='host'? '至少选择一个主机': `请输入有效的${property.label}值`}}</i>
       </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="close">取 消</el-button>
-        <el-button type="primary" @click.prevent="callMethod" :disabled="hasError || !component.name || !component.version" native-type="submit">确 定</el-button>
-      </div>
+     
     </form>
+     <div slot="footer" class="dialog-footer">
+      <el-button @click="close">取 消</el-button>
+      <el-button type="primary" @click.prevent="callMethod" :disabled="hasError || !component.name || !component.version" native-type="submit">确 定</el-button>
+    </div>
   </el-dialog>
 </template>
 <script>
@@ -188,7 +195,9 @@ export default {
 .el-select {
   width: 80%;
 }
-
+.vip-checkbox{
+  padding-left: 20px;
+}
 .container-fluid {
   .form-group {
     input {

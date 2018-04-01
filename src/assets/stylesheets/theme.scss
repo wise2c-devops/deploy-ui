@@ -248,9 +248,17 @@ table .btn-sm, .time-content-btns .btn-sm{
   cursor: pointer;
 }
 
-.container, .container-fluid {
+.content-body{
   ul {
     &.nav-pills {
+      li > a {
+        padding-left: 20px;
+        border-radius: 0;
+        font-size: 18px;
+        i {
+          padding-right: 10px;
+        }
+      }
       li.active {
         a{
           background-color: $link-color;
@@ -258,5 +266,28 @@ table .btn-sm, .time-content-btns .btn-sm{
       }
     }
   }
-
+  .panel-body {
+    background: $white-color;
+    .hosts-table{
+      margin: 0;
+    }
+    .add-host {
+      margin-right: 0;
+    }
+    // .el-table {
+    //   margin: 0 15px;
+    // }
+  }
 }
+
+.el-dialog__wrapper {
+  .el-dialog__header{
+    background: #f3f5f8;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .el-dialog__footer{
+    background: #f3f5f8;
+    border-top: 1px solid #e5e5e5;
+  }
+}
+

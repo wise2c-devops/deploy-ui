@@ -1,45 +1,47 @@
 <template>
   <div id="app">
-    <div class="header">
+    <!-- <div class="contact-us">
       <a href="http://hk.mikecrm.com/Sf9KvOR" target="_blank">联系我们</a>
+    </div> -->
+    <div class="content">
+      <router-view class="content-body"></router-view>
+      <div class="footer">
+        开发人员：华相（<a>huaxiang@wise2c.com</a>）、 Ann（<a>weisy@wise2c.com</a>）
+      </div>
     </div>
-    <router-view ></router-view>
     <loading></loading>
-    <div class="footer">
-      开发人员：华相（<a>huaxiang@wise2c.com</a>）、 Ann（<a>weisy@wise2c.com</a>）
-    </div>
   </div>
 </template>
 <style lang="scss">
   #app {
-    margin-top: 100px;
-  }
-  .header {
-    height: 50px;
-    border-bottom: 1px solid #ccc;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: white;
-    a {
-      display: inline-block;
-      color: #545454;
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    position: relative;
+    min-width: 290px;
+    overflow: hidden;
+    // .contact-us {
+    //   position: absolute;
+    // }
+    .content {
       position: absolute;
-      width: 150px;
-      right: 0;
-      text-align: center;
-      font-size: 16px;
-      border-left: 1px solid #ccc;
-      line-height: 50px;
+      left: 0;
+      top: 0px;
+      right: 0px;
+      bottom: 0;
+      width: auto;
+      > .content-body {
+        height: 95%;
+        padding: 20px;
+      }
     }
   }
   .footer {
+    line-height: 31px;
+    width: 100%;
     text-align: center;
-    position: fixed;
-    bottom: 15px;
-    left: 0;
-    right: 0;
+    position: relative;
+    bottom: 0;
   }
 </style>
 <script type="text/javascript">

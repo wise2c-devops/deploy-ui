@@ -23,24 +23,24 @@ body {
   background: $body-background-color;
   font-family: Avenir, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
   font-size: 12px;
-  .container, .container-fluid {
-    .form-control {
-      height: 40px;
-    }
-    .v-select, select.form-control {
-      width: 80%;
-    }
-    .wrapper {
-      padding: 0 30px;
-    }
-    .buttons {
-      margin-top: 80px;
-    }
+  .content-body{
+  //   .form-control {
+  //     height: 40px;
+  //   }
+  //   .v-select, select.form-control {
+  //     width: 80%;
+  //   }
+  //   .wrapper {
+  //     padding: 0 30px;
+  //   }
+  //   .buttons {
+  //     margin-top: 80px;
+  //   }
 
-    margin-top: 30px;
-    a {
-      color: $link-color;
-    }
+  //   margin-top: 30px;
+  //   a {
+  //     color: $link-color;
+  //   }
     .breadcrumb {
       font-size: 16px;
       background-color: $body-background-color;
@@ -54,9 +54,9 @@ body {
     .error {
       color: $red-color;
     }
-    .dialog-footer {
-      text-align: right;
-    }
+  //   .dialog-footer {
+  //     text-align: right;
+  //   }
   }
 }
 .clear-style {
@@ -80,3 +80,14 @@ body {
 .pt-sm {padding-top: 15px;}
 .pb-sm {padding-bottom: 15px;}
 .bg-white {background: #fff;}
+
+.el-dialog__wrapper {
+  .el-dialog__header{
+    background: #f3f5f8;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .el-dialog__footer{
+    background: #f3f5f8;
+    border-top: 1px solid #e5e5e5;
+  }
+}

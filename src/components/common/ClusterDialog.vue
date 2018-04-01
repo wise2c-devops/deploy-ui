@@ -10,11 +10,11 @@
         <label for="clusterDescrtipion">集群描述</label>
         <input type="text" class="form-control" v-model="cluster.description" id="clusterDescrtipion" placeholder="描述">
       </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="close">取 消</el-button>
-        <el-button type="primary" @click.prevent="callMethod" :disabled="hasError" native-type="submit">确 定</el-button>
-      </div>
     </form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="close">取 消</el-button>
+      <el-button type="primary" @click.prevent="callMethod" :disabled="hasError" native-type="submit">确 定</el-button>
+    </div>
   </el-dialog>
 </template>
 <script>

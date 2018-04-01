@@ -51,15 +51,8 @@ export default {
 @import "../assets/stylesheets/variables";
 .cluster-logs {
   .logs{
-    margin: 50px 0;
+    margin: 20px 0;
   }
-  // .log-wrapper {
-  //   background: #fff;
-  //   padding: 20px;
-  //   border: 1px solid $border-color;
-  //   border-radius: 4px;
-  //   margin-top: 50px;
-  // }
 }
 </style>
 
