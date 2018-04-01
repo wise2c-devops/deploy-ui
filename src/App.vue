@@ -6,7 +6,9 @@
     <div class="content">
       <router-view class="content-body"></router-view>
       <div class="footer">
-        开发人员：华相（<a>huaxiang@wise2c.com</a>）、 Ann（<a>weisy@wise2c.com</a>）
+        开发人员：华相（huaxiang@wise2c.com）、 Ann（weisy@wise2c.com）
+        <span class="split-line">|</span>
+        &nbsp;&nbsp;<a href="http://hk.mikecrm.com/Sf9KvOR" target="_blank"> 联系我们</a>
       </div>
     </div>
     <loading></loading>
@@ -30,9 +32,15 @@
       right: 0px;
       bottom: 0;
       width: auto;
+      height: 100%;
+      overflow-y: auto;
       > .content-body {
-        height: 95%;
         padding: 20px;
+        height: auto;
+        width: auto;
+        min-height: 95%;
+        min-width: 100%;
+        overflow: visible;
       }
     }
   }
@@ -42,6 +50,12 @@
     text-align: center;
     position: relative;
     bottom: 0;
+    // background: rgb(40, 51, 57);
+    // color: #fff;
+    z-index: 1;
+    .split-line {
+      color: #ccc;
+    }
   }
 </style>
 <script type="text/javascript">

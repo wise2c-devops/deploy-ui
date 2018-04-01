@@ -257,7 +257,7 @@ export default {
 
   .component-container {
     .buttons {
-    margin-top: 100px;
+    margin-top: 50px;
   }
 
   .status-icon {

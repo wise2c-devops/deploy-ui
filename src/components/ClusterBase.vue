@@ -13,7 +13,8 @@
   @import "../assets/stylesheets/variables";
   .host-index{
     .nav-pills {
-      position: absolute;
+      position: fixed;
+      z-index: 3;
       left: 0;
       top: 0;
       bottom: 0;

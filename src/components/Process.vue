@@ -157,7 +157,7 @@ export default {
   .process {
     width: 76%;
     margin: 0 auto;
-    height: 150px;
+    height: auto;
     li {
       border-top: 1px solid #cdd1d9;
       padding-left: 7%;
@@ -208,8 +208,8 @@ export default {
 }
 
 .logs {
-  width: 86%;
-  margin: 120px auto;
+  width: 80%;
+  margin: 50px auto;
   padding: 20px;
   border-top: 30px solid #b3b3b3;
   background: lighten(#000, 15%);
