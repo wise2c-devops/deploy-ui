@@ -96,19 +96,23 @@ export default {
       return [item.icon, item.enabled ? "enabled" : ""]
     }
   },
-  mounted() {
+  created() {
     this.fetchClusterDetail(this.clusterId)
-    this.fetchClusterStatus(this.clusterId, () => {
-      //显示那些组件已经安装了
-      const index = findIndex(this.stages, (stage) => {
-        return stage.value === this.status.currentStage
-      })
-      if(!!this.cluster && this.cluster.state !== 'success' && index > 0 ) {
-        for(var tempIndex = 0; tempIndex < index; tempIndex ++) {
-          this.stages[tempIndex].enabled = true
+  },
+  mounted() {
+    if (this.cluster.state === 'processing'){
+      this.fetchClusterStatus(this.clusterId, () => {
+        //显示那些组件已经安装了
+        const index = findIndex(this.stages, (stage) => {
+          return stage.value === this.status.currentStage
+        })
+        if(!!this.cluster && this.cluster.state !== 'success' && index > 0 ) {
+          for(var tempIndex = 0; tempIndex < index; tempIndex ++) {
+            this.stages[tempIndex].enabled = true
+          }
         }
-      }
-    })
+      })
+    }
     var url = `${process.env.WEBSOCKET_HOST}/v1/stats`
     if (process.env.NODE_ENV === 'production') {
       url = `ws://${location.host}/v1/stats`
