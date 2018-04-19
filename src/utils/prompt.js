@@ -1,12 +1,9 @@
-export const promptOnDelete = function (vue, description = '确认删除', callback = {}) {
-  if(description === null) description = '确认删除'
-  vue.$prompt(`${description}，请输入OK`, '确认删除', {
-    inputErrorMessage: '输入不正确',
-    inputValidator(value) {
-      if (value === null) return false
-      if ('ok' === value.toLowerCase()) return true
-      return false
-    }
+export const promptOnDelete = function (vue, description = '提示', callback = {}) {
+  if(description === null) description = '提示'
+  vue.$confirm(description, vue.$t('layer.tips'), {
+    confirmButtonText: vue.$t('tipsButton.ok'),
+    cancelButtonText: vue.$t('tipsButton.cancel'),
+    type: 'warning'
   }).then(value => {
     callback(value)
   }).catch((value) => {

@@ -2,7 +2,7 @@
   <div class="cluster-logs">
     <ol class="breadcrumb">
       <li>
-        <router-link to="/clusters">集群</router-link>
+        <router-link to="/clusters">{{$t("clusters.routerName")}}</router-link>
       </li>
       <li class="active-breadcrumb">
         <router-link to="">{{cluster.name}}</router-link>

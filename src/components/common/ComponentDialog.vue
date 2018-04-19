@@ -1,8 +1,8 @@
 <template>
-  <el-dialog title="服务组件" :visible="dialogVisible" size="small" :close-on-click-modal="false" :show-close="false">
+  <el-dialog :title="$t('componets.componentModal.modalTile')" :visible="dialogVisible" size="small" :close-on-click-modal="false" :show-close="false">
     <form @submit.prevent="onSubmit">
       <div class="form-group">
-        <label for="componentType z" >组件类型</label>
+        <label for="componentType " class="required">{{$t('componets.componentModal.componentType')}}</label>
         <br>
         <el-select v-model="component.name" :disabled="!!component.id" @change="changeComponent">
           <el-option v-for="item in types" :key="item" :label="item" :value="item">
@@ -10,7 +10,7 @@
         </el-select>
       </div>
       <div class="form-group">
-        <label for="componentType">版本</label>
+        <label for="componentType " class="required">{{$t('componets.componentModal.version')}}</label>
         <br>
         <el-select v-model="component.version" @change="changeVersion">
           <el-option v-for="version in versions" :key="version" :label="version" :value="version">
@@ -26,7 +26,7 @@
         </el-select>
       </div> -->
       <div class="form-group" v-for="(property, index) in properties" :key="index">
-        <label for="ip">
+        <label for="ip" :class="property.required? 'required': ''">
           {{property.label}}
           <el-tooltip placement="top">
             <div slot="content">{{property.description}}</div>
@@ -66,13 +66,13 @@
             </el-option>
           </el-select>
         </div>
-        <i v-show="property.type!=='bool' && errors.has(property.variable)" class="error fa fa-warning">{{property.type==='host'? '至少选择一个主机': `请输入有效的${property.label}值`}}</i>
+        <i v-show="property.type!=='bool' && errors.has(property.variable)" class="error fa fa-warning">{{validateTips(property)}}</i>
       </div>
-     
+
     </form>
      <div slot="footer" class="dialog-footer">
-      <el-button @click="close">取 消</el-button>
-      <el-button type="primary" @click.prevent="callMethod" :disabled="hasError || !component.name || !component.version" native-type="submit">确 定</el-button>
+      <el-button @click="close">{{$t('tipsButton.cancel')}}</el-button>
+      <el-button type="primary" @click.prevent="callMethod" :disabled="hasError || !component.name || !component.version" native-type="submit">{{$t('tipsButton.ok')}}</el-button>
     </div>
   </el-dialog>
 </template>
@@ -148,10 +148,17 @@ export default {
     close() {
       this.$emit('update:dialogVisible', false)
     },
+    validateTips(property) {
+      if (property.type==='host') {
+        return this.$t('componets.componentModal.hostTips')
+      }else {
+        return this.$t('componets.componentModal.tips') +`${property.label}`
+      }
+    },
     callMethod() {
       this.$validator.validateAll().then((result) => {
         if(!result) {
-          popWarn('请填充必须参数后再进行提交')
+          popWarn(this.$t('layer.warnTips'))
           return
         }
         this.component.hosts = {}

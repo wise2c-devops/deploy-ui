@@ -1,19 +1,19 @@
 <template>
-  <el-dialog title="添加集群" :visible="dialogVisible" size="small" :close-on-click-modal="false" :show-close="false">
+  <el-dialog :title="$t('clusters.add.modalTile')" :visible="dialogVisible" size="small" :close-on-click-modal="false" :show-close="false">
     <form @submit.prevent="onSubmit">
-      <div class="form-group">
-        <label for="clusterName">集群名称</label>
-        <input type="text" class="form-control" v-validate="'required'" v-model="cluster.name" name="cluster" id="clusterName" autofocus placeholder="请输入集群名字">
-        <i v-show="errors.has('cluster')" class="error fa fa-warning">请输入集群名称</i>
+      <div class="form-group" >
+        <label for="clusterName" class="required">{{$t("clusters.add.clusterName")}}</label>
+        <input type="text" class="form-control" v-validate="'required'" v-model="cluster.name" name="cluster" id="clusterName" autofocus :placeholder="$t('clusters.add.clusterNameTips')">
+        <i v-show="errors.has('cluster')" class="error fa fa-warning">{{$t("clusters.add.clusterNameTips")}}</i>
       </div>
       <div class="form-group">
-        <label for="clusterDescrtipion">集群描述</label>
-        <input type="text" class="form-control" v-model="cluster.description" id="clusterDescrtipion" placeholder="描述">
+        <label for="clusterDescrtipion">{{$t("clusters.add.clusterDescrtipion")}}</label>
+        <input type="text" class="form-control" v-model="cluster.description" id="clusterDescrtipion" :placeholder="$t('clusters.add.clusterDescrtipion')">
       </div>
     </form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="close">取 消</el-button>
-      <el-button type="primary" @click.prevent="callMethod" :disabled="hasError" native-type="submit">确 定</el-button>
+      <el-button @click="close">{{$t("tipsButton.cancel")}}</el-button>
+      <el-button type="primary" @click.prevent="callMethod" :disabled="hasError" native-type="submit">{{$t("tipsButton.ok")}}</el-button>
     </div>
   </el-dialog>
 </template>
@@ -44,7 +44,7 @@ export default {
     callMethod() {
       this.$validator.validateAll().then((result) => {
         if(!result) {
-          popWarn('请填充必须参数后再进行提交')
+          popWarn(this.$t('layer.warnTips'))
           return
         }
 

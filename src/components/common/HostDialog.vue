@@ -1,24 +1,24 @@
 <template>
-  <el-dialog title="主机" :visible="dialogVisible" size="small" :close-on-click-modal="false" :show-close="false">
+  <el-dialog :title="$t('host.hostModal.modalTile')" :visible="dialogVisible" size="small" :close-on-click-modal="false" :show-close="false">
     <form @submit.prevent="onSubmit">
       <div class="form-group">
-        <label for="hostName">主机名称</label>
-        <input type="text" class="form-control" v-validate="'required'" v-model="host.hostname" name="hostname" id="hostName" autofocus placeholder="主机名称">
-        <i v-show="errors.has('hostname')" class="error fa fa-warning">请输入主机名称</i>
+        <label for="hostName" class="required">{{$t('host.hostModal.hostName')}}</label>
+        <input type="text" class="form-control" v-validate="'required'" v-model="host.hostname" name="hostname" id="hostName" autofocus :placeholder="$t('host.hostModal.hostName')">
+        <i v-show="errors.has('hostname')" class="error fa fa-warning">{{$t('host.hostModal.hostNameTips')}}</i>
       </div>
       <div class="form-group">
-        <label for="ip">主机 IP</label>
+        <label for="ip" class="required">{{$t('host.hostModal.hostIp')}}</label>
         <input type="text" class="form-control" v-model="host.ip" v-validate="'required|ip'" name="ip" id="ip" placeholder="10.0.0.2">
-        <i v-show="errors.has('ip')" class="error fa fa-warning">请输入有效的IP地址</i>
+        <i v-show="errors.has('ip')" class="error fa fa-warning">{{$t('host.hostModal.hostIpTips')}}</i>
       </div>
       <div class="form-group">
-        <label for="description">描述信息</label>
-        <input type="text" class="form-control" v-model="host.description" id="description" placeholder="描述信息">
+        <label for="description">{{$t('host.hostModal.hostDescrtipion')}}</label>
+        <input type="text" class="form-control" v-model="host.description" id="description" :placeholder="$t('host.hostModal.hostDescrtipion')">
       </div>
     </form>
      <div slot="footer" class="dialog-footer">
-      <el-button @click="close">取 消</el-button>
-      <el-button type="primary" @click.prevent="callMethod" :disabled="hasError" native-type="submit">确 定</el-button>
+      <el-button @click="close">{{$t('tipsButton.cancel')}}</el-button>
+      <el-button type="primary" @click.prevent="callMethod" :disabled="hasError" native-type="submit">{{$t('tipsButton.ok')}}</el-button>
     </div>
   </el-dialog>
 </template>
@@ -50,7 +50,7 @@ export default {
     callMethod() {
       this.$validator.validateAll().then((result) => {
         if(!result) {
-          popWarn('请填充必须参数后再进行提交')
+          popWarn(this.$t('layer.warnTips'))
           return
         }
 

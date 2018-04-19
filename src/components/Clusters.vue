@@ -46,9 +46,9 @@ export default {
   },
   methods: {
     remove(index, id) {
-      promptOnDelete(this, "如确认删除该集群", () => {
+      promptOnDelete(this, this.$t('clusters.delteTips'), () => {
         this.deleteCluster(id, index, () => {
-          pop('删除集群成功')
+          pop(this.$t('layer.deleteSuccess'))
         })
       })
     },
@@ -70,7 +70,7 @@ export default {
     create(cluster) {
       var newCluster = Object.assign({}, cluster)
       this.createCluster(newCluster, () => {
-        pop("创建集群成功")
+        pop(this.$t('layer.createSuccess'))
         this.dialogVisible = false
       })
     },

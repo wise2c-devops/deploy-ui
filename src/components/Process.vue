@@ -18,9 +18,9 @@
     </div>
     <div class="btn-wrapper row">
       <div class="col-md-3 col-md-offset-5">
-        <el-button size="large" icon="arrow-left" class="pull-left " @click="back">返回</el-button>
-        <el-button size="large" icon="close" type="danger" @click="cancelDeployment" v-if="!isDone">取消</el-button>
-        <el-button size="large" icon="check" type="primary" @click="back" v-if="isDone">完成</el-button>
+        <el-button size="large" icon="arrow-left" class="pull-left " @click="back">{{$t('tipsButton.back')}}</el-button>
+        <el-button size="large" icon="close" type="danger" @click="cancelDeployment" v-if="!isDone">{{$t('tipsButton.cancel')}}</el-button>
+        <el-button size="large" icon="check" type="primary" @click="back" v-if="isDone">{{$t('tipsButton.done')}}</el-button>
       </div>
     </div>
   </div>
@@ -88,7 +88,8 @@ export default {
     },
     cancelDeployment() {
       this.cancel(this.clusterId, () => {
-        pop('取消安装成功')
+        const msg = this.$i18n.locale === 'zh'? '取消安装成功': 'Uninstall success'
+        pop(msg)
         this.back()
       })
     },

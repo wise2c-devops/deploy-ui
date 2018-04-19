@@ -6,9 +6,14 @@
     <div class="content">
       <router-view class="content-body"></router-view>
       <div class="footer">
-        开发人员：华相（huaxiang@wise2c.com）、 Ann（weisy@wise2c.com）
+        {{$t("Index.developers")}}：华相（huaxiang@wise2c.com）、 Ann（weisy@wise2c.com）
         <span class="split-line">|</span>
-        &nbsp;&nbsp;<a href="http://hk.mikecrm.com/Sf9KvOR" target="_blank"> 联系我们</a>
+        &nbsp;&nbsp;
+        <a href="http://hk.mikecrm.com/Sf9KvOR" target="_blank"> {{$t("Index.contact")}}</a>
+        &nbsp;&nbsp;
+        <span class="split-line">|</span>
+        &nbsp;
+        <span type="" class="btn " @click="changeI18n">中文 / EN</span>
       </div>
     </div>
     <loading></loading>
@@ -90,6 +95,25 @@
         this.showContactUs = flag
         this.$router.push({
           path: path
+        })
+      },
+      changeI18n() {
+        this.$confirm(this.$t('layer.toggle'), this.$t('layer.tips'), {
+          confirmButtonText: this.$t('tipsButton.ok'),
+          cancelButtonText: this.$t('tipsButton.cancel'),
+          type: 'warning'
+        }).then(() => {
+          const local = localStorage.getItem('DEPLOYMENT_LANGUAGE')
+          if (!local || local === 'zh') {
+            localStorage.setItem('DEPLOYMENT_LANGUAGE', 'en')
+          }else {
+            localStorage.setItem('DEPLOYMENT_LANGUAGE', 'zh')
+          }
+          this.$i18n.locale = localStorage.getItem('DEPLOYMENT_LANGUAGE')
+        }).catch(() => {
+          // this.$message({
+          //   type: 'info',
+          // })
         })
       }
     },

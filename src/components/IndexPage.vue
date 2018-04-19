@@ -2,8 +2,8 @@
   <div>
     <div class="welcome middle">
       <img src="../assets/images/index.png" alt="" width="100%">
-      <h1 class="heading">欢迎使用 Wisecloud 组件部署系统</h1>
-      <router-link to="/clusters"  class="btn btn-primary btn-lg">开始</router-link>
+      <h1 class="heading">{{$t("Index.title")}}</h1>
+      <router-link to="/clusters"  class="btn btn-primary btn-lg">{{$t("Index.button")}}</router-link>
     </div>
   </div>
 </template>

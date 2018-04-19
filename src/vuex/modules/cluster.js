@@ -126,7 +126,7 @@ export const createComponent = ({dispatch}, clusterId, component, success = ()=>
     dispatch('ADD_COMPONENT', response.body)
     success(response.body)
   }).catch((error) => {
-    popWarn('创建服务组件失败')
+    // popWarn('创建服务组件失败')
     console.error(error)
   })
 }
@@ -160,6 +160,7 @@ export const deploy = ({dispatch}, clusterId, selectComponents, type='install', 
   put(formatString(API.CLUSTER.DEPLOY, clusterId), {operation: type, components: selectComponents}).then(() => {
     success()
   }).catch(error => {
+    console.log(this, 'error')
     popWarn('无法执行部署命令，请稍后重试')
     console.error(error)
   })

@@ -3,15 +3,15 @@
     <div class="row add-host">
       <ol class="breadcrumb pull-left">
         <li>
-          <router-link to="/clusters">集群</router-link>
+          <router-link to="/clusters">{{$t("clusters.routerName")}}</router-link>
         </li>
         <li class="active-breadcrumb">
           <router-link to="">{{cluster.name}}</router-link>
         </li>
       </ol>
-      <el-button size="mini" type="primary" icon="el-icon-caret-right" @click="install" class="status-icon" :disabled="selectComponents.length === 0">开始安装</el-button>
-      <el-button size="mini" type="warning" icon="el-icon-warning" @click="reset" class="status-icon" :disabled="isInitial">重置</el-button>
-      <el-button size="small" type="primary" icon="el-icon-plus" @click="addComponentDialog" class="pull-right">添加组件</el-button>
+      <el-button size="mini" type="primary" icon="el-icon-caret-right" @click="install" class="status-icon" :disabled="selectComponents.length === 0">{{$t('componets.startInstallButton')}}</el-button>
+      <el-button size="mini" type="warning" icon="el-icon-warning" @click="reset" class="status-icon" :disabled="isInitial">{{$t('componets.resets')}}</el-button>
+      <el-button size="small" type="primary" icon="el-icon-plus" @click="addComponentDialog" class="pull-right">{{$t('componets.addComponentsButton')}}</el-button>
     </div>
     <div class="panel-body">
       <div class="row hosts-table">
@@ -23,26 +23,26 @@
             width="40">
           </el-table-column>
         <!-- <el-table :data="components" :row-class-name="tableRowClassName" :stripe="true"> -->
-          <el-table-column align="center" prop="index" label="序号" width="70px">
+          <el-table-column align="center" prop="index" :label="$t('componets.table.num')" width="80px">
             <template scope="scope">
               {{scope.$index + 1}}
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="name" label="服务名称" width="120px">
+          <el-table-column align="center" prop="name" :label="$t('componets.table.serviceName')" width="120px">
           </el-table-column>
-          <el-table-column align="center" prop="version" label="版本" width="120px">
+          <el-table-column align="center" prop="version" :label="$t('componets.table.version')" width="120px">
           </el-table-column>
-          <el-table-column align="left" label="属性">
+          <el-table-column align="left" :label="$t('componets.table.attribute')">
             <template scope="scope">
               <div v-html="properties(scope.row)"></div>
             </template>
           </el-table-column>
-          <el-table-column align="left" label="主机">
+          <el-table-column align="left" :label="$t('componets.table.host')">
             <template scope="scope">
               <div v-html="simpleHosts(scope.row)"></div>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="操作" width="200px">
+          <el-table-column align="center" :label="$t('componets.table.operate')" width="200px">
             <template scope="scope">
               <el-button @click.native.prevent="editComponentDialog(scope.row)" type="primary" size="small" icon="el-icon-edit"></el-button>
               <el-button @click.native.prevent="remove(scope.$index, scope.row)" type="danger" size="small" icon="el-icon-delete"></el-button>
@@ -53,8 +53,8 @@
 
       <div class="row">
         <div class="col-md-4 col-md-offset-4 buttons">
-          <el-button size="large" icon="arrow-left" class="pull-left" @click="back">上一步</el-button>
-          <el-button size="large" type="success" class="pull-right" icon="arrow-right" @click="next" :disabled="selectComponents.length === 0">下一步</el-button>
+          <el-button size="large" icon="arrow-left" class="pull-left" @click="back">{{$t('tipsButton.prev')}}</el-button>
+          <el-button size="large" type="success" class="pull-right" icon="arrow-right" @click="next" :disabled="selectComponents.length === 0">{{$t('tipsButton.next')}}</el-button>
         </div>
       </div>
     </div>
@@ -77,7 +77,7 @@ import { getCluster,
   fetchComponentTypes} from 'vuexPath/modules/cluster'
 import ComponentDialog from './common/ComponentDialog'
 import { pop } from '../utils/alert'
-import { confirmation, promptOnDelete, promptOnAction } from '../utils/prompt'
+import { confirmation, promptOnDelete } from '../utils/prompt'
 import { filter, map } from 'lodash'
 import { resetProperties } from 'vuexPath/modules/component'
 export default {
@@ -115,7 +115,7 @@ export default {
         this.dialogVisible = false
         this.$refs.multipleTable.toggleRowSelection(data)
         this.selectComponents.push(data.name)
-        pop('创建服务组件成功')
+        pop(this.$t('layer.createSuccess'))
       })
     },
     editComponentDialog(component) {
@@ -123,10 +123,10 @@ export default {
       this.dialogVisible = true
     },
     remove(index, component) {
-      promptOnDelete(this, "如确认删除该服务", () => {
+      promptOnDelete(this, this.$t('componets.delteTips'), () => {
         this.deleteComponent(this.clusterId, component.id, index, () => {
           this.selectComponents = this.selectComponents.filter(item=>item !== component.name)
-          pop('删除服务成功')
+          pop(this.$t('layer.deleteSuccess'))
         })
       })
     },
@@ -138,7 +138,7 @@ export default {
     },
     update(component) {
       this.updateComponent(this.clusterId, component, () => {
-        pop('更新组件成功')
+        pop(this.$t('layer.editSuccess'))
         this.dialogVisible = false
       })
 
@@ -185,9 +185,9 @@ export default {
         return
       }
       //确认安装
-      confirmation(this, '确认开始安装集群', () => {
-        this.deploy(this.clusterId, this.selectComponents, 'install', () => {
-          pop('开始安装')
+      promptOnDelete(this, this.$t('componets.startInstallCulsterTips'), () => {
+        this.deploy(this.clusterId, this.selectComponents, 'reset', () => {
+          pop(this.$t('componets.startInstallButton'))
           this.$router.push({
             path: `/clusters/${this.clusterId}/processing`
           })
@@ -195,9 +195,9 @@ export default {
       })
     },
     reset() {
-      promptOnAction(this, "确认重置该集群到初始状态？", () => {
+      promptOnDelete(this, this.$t('componets.resetTips'), () => {
         this.deploy(this.clusterId, this.selectComponents, 'reset', () => {
-          pop('重置成功，系统需要一些时间处理请求，请稍后刷新页面查看。')
+          pop(this.$t('componets.resetSuccessMsg'))
         })
       })
     }

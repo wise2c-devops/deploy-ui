@@ -291,3 +291,12 @@ table .btn-sm, .time-content-btns .btn-sm{
   }
 }
 
+label.required:after {
+  content: ' *';
+  color: #D43340;
+  font-size: 20px;
+  position: relative;
+  top: 6px;
+  line-height: 18px;
+}
+
