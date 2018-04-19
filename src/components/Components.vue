@@ -77,7 +77,7 @@ import { getCluster,
   fetchComponentTypes} from 'vuexPath/modules/cluster'
 import ComponentDialog from './common/ComponentDialog'
 import { pop } from '../utils/alert'
-import { confirmation, promptOnDelete } from '../utils/prompt'
+import { promptOnDelete } from '../utils/prompt'
 import { filter, map } from 'lodash'
 import { resetProperties } from 'vuexPath/modules/component'
 export default {
@@ -155,23 +155,23 @@ export default {
     },
     simpleHosts(component) {
       if (!component.hosts || Object.keys(component.hosts).length === 0) {
-        return "无"
+        return "--"
       }
       let msg = ''
       Object.keys(component.hosts).map((objectKey)=>{
         let value = component.hosts[objectKey].map(item=>item.hostname)
-        msg += `<p><b>${objectKey}</b>: ${value.join(', ') || '无'}</p>`
+        msg += `<p><b>${objectKey}</b>: ${value.join(', ') || '--'}</p>`
       })
       return msg
     },
     properties(component) {
       if (!component.properties || Object.keys(component.properties).length === 0) {
-        return "无"
+        return "--"
       }
       var msg = ""
       Object.keys(component.properties).map(function(objectKey) {
         let value = component.properties[objectKey]
-        msg += `<p><b>${objectKey}</b>: ${value || '无'}</p>`
+        msg += `<p><b>${objectKey}</b>: ${value || '--'}</p>`
       })
       return msg
     },

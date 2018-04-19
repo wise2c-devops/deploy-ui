@@ -45,8 +45,8 @@ router.afterEach(() => {
 })
 
 
-
-new Vue({
+//全局可取
+window.vue = new Vue({
   el: '#app',
   router,
   i18n,

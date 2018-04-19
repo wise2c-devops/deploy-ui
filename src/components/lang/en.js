@@ -63,6 +63,7 @@ const componets = {
     tips: 'Please enter a valid'
   }
 }
+
 module.exports ={
   slectEmpty: 'empty',
   layer: {

@@ -63,6 +63,7 @@ const componets = {
     tips: '请输入有效的'
   }
 }
+
 module.exports ={
   slectEmpty: '无数据',
   layer: {

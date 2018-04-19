@@ -75,7 +75,7 @@ export default {
       })
     },
     updateCluster() {
-      console.log('update')
+      // console.log('update')
     },
     icon(cluster) {
       switch(cluster.state) {
