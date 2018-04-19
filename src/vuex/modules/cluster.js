@@ -3,8 +3,7 @@ import API from '../../utils/rest'
 import {formatString} from '../../utils/string'
 import {popWarn} from '../../utils/alert'
 import {findIndex} from 'lodash'
-
-const lang = window.vue.$i18n.locale
+const lang = localStorage.getItem('DEPLOYMENT_LANGUAGE') || 'zh'
 const state = {
   hosts: [],
   components: [],
