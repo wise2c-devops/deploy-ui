@@ -1,5 +1,5 @@
 const Index = {
-  title: 'Welcome to use the Wisecloud component deployment system',
+  title: 'Welcome to use the kubernetes component deployment system',
   button: 'start',
   developers: 'Developer',
   contact: 'Contact us'
