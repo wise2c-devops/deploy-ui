@@ -1,4 +1,4 @@
-FROM generik/ansible:v2.3
+FROM alpine:3.7
 
 WORKDIR /root
 
