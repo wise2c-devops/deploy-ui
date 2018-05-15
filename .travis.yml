@@ -7,7 +7,7 @@ before_install:
 - docker pull node:9
 
 script:
-- docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:9 bash -c "npm install -g cnpm --registry=https://registry.npm.taobao.org && cnpm install && npm run build"
+- docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:9 bash -c "npm install -g cnpm && cnpm install && npm run build"
 - docker build -t wise2c/deploy-ui:latest .
 
 deploy:
