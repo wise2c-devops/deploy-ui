@@ -9,7 +9,5 @@ before_install:
 script:
 - docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:9 bash -c "npm install && npm run build"
 - docker build -t wise2c/deploy-ui:latest .
-
-deploy:
-  provider: script
-  script: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD && docker push wise2c/deploy-ui:latest
+- docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+- docker push wise2c/deploy-ui:latest
