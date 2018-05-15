@@ -1,0 +1,15 @@
+sudo: required
+
+services:
+- docker
+
+before_install:
+- docker pull node:9
+
+script:
+- docker run -t --rm ${PWD}/deploy-ui:/deploy-ui bash -c "npm install -g cnpm --registry=https://registry.npm.taobao.org && cnpm install && npm run build"
+- docker build -t wise2c/deploy-ui:latest .
+
+deploy:
+  provider: script
+  script: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD && docker push wise2c/deploy-ui:latest
