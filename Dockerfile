@@ -2,6 +2,8 @@ FROM alpine:3.7
 
 WORKDIR /root
 
+COPY repositories /etc/apk/
+RUN apk update 
 RUN apk add curl bash gnupg caddy --no-cache
 
 ADD dist/ /root/ui
