@@ -1,0 +1,302 @@
+.input-container {
+  margin: 0 auto;
+  .search-logo {
+    position: absolute;
+    font-size: 18px;
+    color: #999;
+    top: 7px;
+    left: 10px
+  }
+  input {
+    padding-left: 30px
+  }
+}
+
+.nav-tabs > li > a  {
+  color: #666;
+  &:hover {
+    border: none;
+  }
+}
+.prompt {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  color: $error-color;
+}
+table .btn-sm, .time-content-btns .btn-sm{
+  padding: 3px 10px;
+}
+.time-content-btns .btn-sm {
+  background: $blue-color;
+  border-color: $blue-color;
+  color: $white-color;
+}
+
+//nav-tabs切换菜单公共样式
+.wb-nav-tabs {
+  background: $default-bg;
+  border-bottom: 1px solid $border-color;
+  display: inline-block;
+  width: 100%;
+  > li {
+    float: left;
+    > a {
+      display: inline-block;
+      min-width: 104px;
+      color: #545454;
+      text-align: center;
+      padding: 12px;
+      font-size: 14px;
+      position: relative;
+      text-decoration: none;
+      &:hover {
+        color: $blue-color;
+      }
+    }
+    &.active, &.router-link-active {
+      background: $white-color;
+      border-right: 1px solid $border-color;
+      border-left: 1px solid $border-color;
+      > a{
+        color: $blue-color;
+        position: relative;
+        top: 1px;
+        border-bottom: 1px solid $white-color;
+      }
+    }
+    &:first-child.active, &:first-child.router-link-active {
+      border-left: 0;
+    }
+  }
+}
+//下拉菜单
+.wb-dropdown {
+  a.dropdown-toggle {
+    color: $main-font-color;
+    &:hover {
+      color: $blue-color;
+      transition: all .4s;
+    }
+  }
+  .dropdown-menu {
+    border: 1px solid $border-color;
+    border-top: 0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    left: -1px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    .dropdown-toggle {
+      color: $main-font-color;
+    }
+    li.active > a {
+      color: $blue-color;
+      background: $default-bg;
+    }
+    li > a {
+      padding: 10px 20px;
+      &:hover, &.router-link-active {
+        color: $blue-color;
+        background: $default-bg;
+      }
+    }
+  }
+}
+
+//全局的 panel 样式
+.system-setting-container, .setting-team-container {
+  .account-container, .empty-view {
+    border-bottom: none;
+    background: $white-color;
+  }
+  .team-members-list {
+    .condition-wrapper {
+      padding: 15px;
+      background-color: #f5f6fa;
+      border-left: 1px solid $border-color;
+      border-top: 1px solid $border-color;
+      border-right: 1px solid $border-color;
+      .btn-add-user {
+        top: 20px;
+      }
+      h3 {
+        font-size: 16px;
+        padding-bottom: 20px;
+      }
+    }
+    .panel {
+      padding: 20px 15px 0 15px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+
+  .empty-view {
+    min-height: 400px
+  }
+
+  .panel-heading {
+    padding: 15px;
+  }
+  .panel-body{
+    padding: 15px;
+    margin-top: 15px;
+    min-height: 150px;
+    .table {
+      border: 0
+    }
+  }
+  .account-container {
+    .panel-body {
+      border: 0;
+      p {
+        padding: 0 15px;
+      }
+    }
+  }
+  .empty-view, .teams-empty-view{
+    .panel-heading, .panel-body {
+      border: 0;
+    }
+    .panel-heading {
+      padding-bottom: 20px;
+      border-bottom: 1px dotted $border-color;
+    }
+    .panel-body {
+      margin-top: 10px;
+    }
+  }
+
+  .el-switch {
+    float: right
+  }
+}
+//form表单样式设置
+.wb-form {
+  background: $white-color;
+  .form-group {
+    position: relative;
+    label {
+      font-weight: normal;
+      text-align: left;
+      padding-bottom: 5px;
+    }
+  }
+  h4 {
+    font-size: 12px;
+    font-weight: bold;
+    // padding-left: 30px;
+  }
+  .dotted-border-bottom {
+    border-bottom: 1px dashed $border-color;
+  }
+  .item-tool-delete-btn {
+    position: absolute;
+    right: -15px;
+    top: 8px;
+    font-size: 14px;
+    color: $error-color;
+    cursor: pointer;
+  }
+  .item-tool-add-btn {
+    font-size: 18px;
+    cursor: pointer;
+    position: relative;
+    top: 3px;
+  }
+  .title .add-btn {
+    right: 40px;
+    top: 4px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+}
+.form-nav-wrapper {
+    background: #fff;
+  }
+// 覆盖原生的ELE 组件提示框样式
+.el-message {
+  top: 5px !important;
+}
+
+// 分割线
+.split-line {
+  height: 1px;
+  border-top: 1px solid #ddd;
+  text-align: center;
+  // margin-top: 15px;
+  margin-top: 22px;
+  span{
+    position: relative;
+    top: -12px;
+    background: $body-background-color;
+    padding: 0 20px;
+    color: #aab2bd;
+  }
+}
+.svg-icon {
+  display: inline-block;
+  margin: 0;
+  height: 16px;
+  width: 16px;
+  vertical-align: middle;
+  fill: currentColor;
+}
+
+.table-row-pre-action {
+  width: 16px;
+  cursor: pointer;
+}
+
+.content-body{
+  ul {
+    &.nav-pills {
+      li > a {
+        padding-left: 20px;
+        border-radius: 0;
+        font-size: 18px;
+        i {
+          padding-right: 10px;
+        }
+      }
+      li.active {
+        a{
+          background-color: $link-color;
+        }
+      }
+    }
+  }
+  .panel-body {
+    background: $white-color;
+    .hosts-table{
+      margin: 0;
+    }
+    .add-host {
+      margin-right: 0;
+    }
+    // .el-table {
+    //   margin: 0 15px;
+    // }
+  }
+}
+
+.el-dialog__wrapper {
+  .el-dialog__header{
+    background: #f3f5f8;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .el-dialog__footer{
+    background: #f3f5f8;
+    border-top: 1px solid #e5e5e5;
+  }
+}
+
+label.required:after {
+  content: ' *';
+  color: #D43340;
+  font-size: 20px;
+  position: relative;
+  top: 6px;
+  line-height: 18px;
+}
+

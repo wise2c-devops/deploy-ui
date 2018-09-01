@@ -1,0 +1,93 @@
+@import "variables";
+
+//style for big screen
+@media (min-width: 1440px) {
+  .container {
+    width: 1380px !important;
+    .app-item {
+      height: 240px;
+      i.app-icon {
+        margin-top: 70px;
+      }
+    }
+    .add-item {
+      line-height: 230px;
+    }
+  }
+
+}
+
+//这里放置全局通用样式
+body {
+  color: $main-font-color;
+  background: $body-background-color;
+  font-family: Avenir, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
+  font-size: 12px;
+  .content-body{
+  //   .form-control {
+  //     height: 40px;
+  //   }
+  //   .v-select, select.form-control {
+  //     width: 80%;
+  //   }
+  //   .wrapper {
+  //     padding: 0 30px;
+  //   }
+  //   .buttons {
+  //     margin-top: 80px;
+  //   }
+
+  //   margin-top: 30px;
+  //   a {
+  //     color: $link-color;
+  //   }
+    .breadcrumb {
+      font-size: 16px;
+      background-color: $body-background-color;
+    }
+    .active-breadcrumb  a{
+      color: $main-font-color;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    .error {
+      color: $red-color;
+    }
+  //   .dialog-footer {
+  //     text-align: right;
+  //   }
+  }
+}
+.clear-style {
+  list-style: none;
+  padding-left: 0;
+}
+//垂直、左右居中
+.middle {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -ms-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+.m0 {margin: 0}
+.mb-lg {margin-bottom: 30px;}
+.mt-sm {margin-top: 15px;}
+.mt-lg {margin-top: 30px;}
+.pt-sm {padding-top: 15px;}
+.pb-sm {padding-bottom: 15px;}
+.bg-white {background: #fff;}
+
+.el-dialog__wrapper {
+  .el-dialog__header{
+    background: #f3f5f8;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .el-dialog__footer{
+    background: #f3f5f8;
+    border-top: 1px solid #e5e5e5;
+  }
+}
