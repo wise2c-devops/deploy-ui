@@ -10,7 +10,7 @@ echo "PUBLISH VERSION"$VERSION
 cd $ROOT_PATH
 cnpm install
 npm run build
-docker build --build-arg buildInfo=$(date +'%Y%m%d-%H%M%S') -t registry.cn-hangzhou.aliyuncs.com/wise2c/wisebuild-fronted:$VERSION .
-docker login -u="zhengyl@aliyun.com" -p="wise2c2017" registry.cn-hangzhou.aliyuncs.com
-docker push registry.cn-hangzhou.aliyuncs.com/wise2c/wisebuild-fronted:$VERSION
+docker build --build-arg buildInfo=$(date +'%Y%m%d-%H%M%S') -t registry.cn-hangzhou.aliyuncs.com/wise2c-dev/deploy-ui:$VERSION .
+docker login -u="wise2cdev" -p="Wise2c2017" registry.cn-hangzhou.aliyuncs.com
+docker push registry.cn-hangzhou.aliyuncs.com/wise2c-dev/deploy-ui:$VERSION
 echo "===========SUCCESS=========="
