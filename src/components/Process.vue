@@ -46,6 +46,7 @@ export default {
             name: component,
             icon: 'wise-icon-sys-operating--evn',
             enabled: false,
+            value: component,
             sort: this.stages.length + 1
           }
           result.push(obj)
@@ -130,7 +131,7 @@ export default {
 
       this.logs.push(`${json.time}: [${json.stage}] [${json.host}]  task: ${json.task.name} - ${json.task.state},  message: ${json.data.msg}`)
       if (json.state === 'ok') {
-        var stage = findLast(this.stages, (stage) => {
+        var stage = findLast(this.validStages, (stage) => {
           return stage.value === json.stage
         })
         if (!!stage) {

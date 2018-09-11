@@ -9,9 +9,9 @@
           <router-link to="">{{cluster.name}}</router-link>
         </li>
       </ol>
-      <el-button size="mini" type="primary" icon="el-icon-caret-right" @click.stop.prevent="install" class="status-icon" :disabled="selectComponents.length === 0">{{$t('componets.startInstallButton')}}</el-button>
-      <el-button size="mini" type="warning" icon="el-icon-warning" @click.stop.prevent="reset" class="status-icon" :disabled="isInitial">{{$t('componets.resets')}}</el-button>
-      <el-button size="small" type="primary" icon="el-icon-plus" @click.stop.prevent="addComponentDialog" class="pull-right">{{$t('componets.addComponentsButton')}}</el-button>
+      <el-button size="mini" type="primary" icon="el-icon-caret-right" @click.native.stop.prevent="install" class="status-icon" :disabled="selectComponents.length === 0">{{$t('componets.startInstallButton')}}</el-button>
+      <el-button size="mini" type="warning" icon="el-icon-warning" @click.native.stop.prevent="reset" class="status-icon" :disabled="isInitial">{{$t('componets.resets')}}</el-button>
+      <el-button size="small" type="primary" icon="el-icon-plus" @click.native.stop.prevent="addComponentDialog" class="pull-right">{{$t('componets.addComponentsButton')}}</el-button>
     </div>
     <div class="panel-body">
       <div class="row hosts-table">
