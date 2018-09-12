@@ -59,9 +59,9 @@ export default {
       if (this.failed || (!!this.cluster && this.cluster.state === 'success')) {
         return true
       }
-      if (this.validStages.length > 0) {
-        return this.validStages[this.validStages.length - 1].enabled
-      }
+      // if (this.validStages.length > 0) {
+      //   return this.validStages.filter(stage => stage.enabled).length === this.validStages.length
+      // }
       return false
     }
   },
