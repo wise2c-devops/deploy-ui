@@ -1,0 +1,6 @@
+build/*.js
+config/*.js
+src/assets/plugin/
+src/utils/tosca.js
+src/utils/validator.js
+src/utils/myinput.js

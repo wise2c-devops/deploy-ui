@@ -1,0 +1,18 @@
+0.0.0.0:80 {
+  root /root/ui
+  timeouts none
+  gzip
+  log stdout
+  errors stdout
+}
+
+# 代理华相的 API
+0.0.0.0:80/v1 {
+  proxy /  127.0.0.1:8080/v1 {
+    transparent
+    websocket
+  }
+  gzip
+  log stdout
+  errors stdout
+}

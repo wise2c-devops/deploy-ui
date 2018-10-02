@@ -1,0 +1,67 @@
+@import "variables";
+.btn-success, .btn-danger, .btn-primary {
+  color: #fff
+}
+.btn:focus {
+  outline: none !important;
+}
+.btn-primary {
+  background-color: $blue-color;
+  border-color: $blue-color;
+  &:hover, &:focus, &:active {
+    background-color: #4294e2 !important;
+    border-color: #4294e2 !important;
+    outline: none;
+  }
+}
+.btn-success {
+  background-color: $green-color;
+  border-color: $green-color;
+  &:hover, &:focus, &:active {
+    background-color: darken($green-color, 10%) !important;
+    border-color: darken($green-color, 10%) !important;
+    outline: none;
+  }
+}
+.btn-danger {
+  border-color: $error-color;
+  background-color: $error-color;
+  &:hover, &:focus, &:active {
+    background-color: #ea4945 !important;
+    border-color: #ea4945 !important;
+    outline: none;
+  }
+}
+
+
+i.edit-btn:hover {
+  color: $green-color
+}
+i.delete-btn:hover {
+  color: $error-color
+}
+.btn-primary:hover, .btn-danger:hover, .btn-success:hover, .btn-primary:focus, .btn-danger:focus, .btn-success:focus {
+  color: $white-color !important
+}
+
+//btn hover 全局样式
+
+a.btn-group{
+  i{
+    padding: 6px;
+  }
+  i.edit-btn:hover {
+    color: $white-color;
+    background-color: $btn-success-color;
+    border: 1px solid $btn-success-color
+  }
+  i.delete-btn:hover {
+    color: $white-color;
+    background-color: $btn-danger-color;
+    border: 1px solid $btn-danger-color
+  }
+}
+
+.btn-sm {
+  padding: 6px 10px;
+}
