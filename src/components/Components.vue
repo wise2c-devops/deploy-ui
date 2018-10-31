@@ -171,6 +171,9 @@ export default {
       var msg = ""
       Object.keys(component.properties).map(function(objectKey) {
         let value = component.properties[objectKey]
+        if (objectKey.includes('password') || objectKey.includes('pwd')) {
+          value = '*****'
+        }
         msg += `<p><b>${objectKey}</b>: ${value || '--'}</p>`
       })
       return msg
@@ -186,7 +189,7 @@ export default {
       }
       //确认安装
       promptOnDelete(this, this.$t('componets.startInstallCulsterTips'), () => {
-        this.deploy(this.clusterId, this.selectComponents, 'install', () => {
+        this.deploy(this.clusterId, this.q, 'install', () => {
           pop(this.$t('componets.startInstallButton'))
           this.$router.push({
             path: `/clusters/${this.clusterId}/processing`
