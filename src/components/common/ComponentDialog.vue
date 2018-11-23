@@ -41,7 +41,7 @@
             <option v-for="(option, index) in property.options" :key="index">{{option}}</option>
           </select>
         </div>
-        <div v-if="property.type==='string'">
+        <div v-if="property.type==='string' && !property.label.includes('password')">
           <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-if="property.required">
           <input type="text" class="form-control" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-else>
         </div>
@@ -49,7 +49,7 @@
           <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model.number="property[property.variable]" :name="property.variable" v-if="property.required">
           <input type="number" class="form-control" v-validate="'numeric'" :placeholder="property.description" v-model.number="property[property.variable]" :name="property.variable" v-else>
         </div>
-        <div v-if="property.type==='password'">
+        <div v-if="property.type==='password' || !!property.label.includes('password')">
           <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-if="property.required">
           <input type="password" class="form-control" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-else>
         </div>
