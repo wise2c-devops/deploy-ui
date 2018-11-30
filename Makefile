@@ -1,6 +1,6 @@
 REPO=registry.cn-hangzhou.aliyuncs.com/wise2c-dev/deploy-ui
 VERSION=latest
-DEV_VERSION=v0.5
+DEV_VERSION=v0.5.2
 
 .PHONY:build push
 build:

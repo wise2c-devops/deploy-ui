@@ -179,7 +179,6 @@ export default {
       return msg
     },
     install() {
-      localStorage.setItem('selectComponents', JSON.stringify(this.selectComponents))
       // this.resetSlectComponents(this.selectComponents)
       if (this.cluster.state === 'processing') {
         this.$router.push({
@@ -187,6 +186,7 @@ export default {
         })
         return
       }
+      localStorage.setItem('selectComponents', JSON.stringify(this.selectComponents))
       //确认安装
       promptOnDelete(this, this.$t('componets.startInstallCulsterTips'), () => {
         this.deploy(this.clusterId, this.selectComponents, 'install', () => {

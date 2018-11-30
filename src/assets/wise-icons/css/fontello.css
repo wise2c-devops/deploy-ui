@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'fontello';
-  src: url('../font/fontello.eot?74083353');
-  src: url('../font/fontello.eot?74083353#iefix') format('embedded-opentype'),
-       url('../font/fontello.woff2?74083353') format('woff2'),
-       url('../font/fontello.woff?74083353') format('woff'),
-       url('../font/fontello.ttf?74083353') format('truetype'),
-       url('../font/fontello.svg?74083353#fontello') format('svg');
+  src: url('../font/fontello.eot?22492079');
+  src: url('../font/fontello.eot?22492079#iefix') format('embedded-opentype'),
+       url('../font/fontello.woff2?22492079') format('woff2'),
+       url('../font/fontello.woff?22492079') format('woff'),
+       url('../font/fontello.ttf?22492079') format('truetype'),
+       url('../font/fontello.svg?22492079#fontello') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontello';
-    src: url('../font/fontello.svg?74083353#fontello') format('svg');
+    src: url('../font/fontello.svg?22492079#fontello') format('svg');
   }
 }
 */
@@ -55,50 +55,21 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
  
-.wise-icon-copy:before { content: '\e800'; } /* '' */
-.wise-icon-stream:before { content: '\e801'; } /* '' */
-.wise-icon-username:before { content: '\e802'; } /* '' */
-.wise-icon-sshkey:before { content: '\e803'; } /* '' */
-.wise-icon-public:before { content: '\e804'; } /* '' */
-.wise-icon-sys-team:before { content: '\e805'; } /* '' */
-.wise-icon-save:before { content: '\e806'; } /* '' */
-.wise-icon-deploy:before { content: '\e807'; } /* '' */
-.wise-icon-testbuild:before { content: '\e808'; } /* '' */
-.wise-icon-imagebuild:before { content: '\e809'; } /* '' */
-.wise-icon-sys-image:before { content: '\e80a'; } /* '' */
-.wise-icon-time:before { content: '\e80b'; } /* '' */
 .wise-icon-sys-setting:before { content: '\e80c'; } /* '' */
-.wise-icon-delete:before { content: '\e80d'; } /* '' */
-.wise-icon-release:before { content: '\e80e'; } /* '' */
-.wise-icon-size:before { content: '\e80f'; } /* '' */
-.wise-icon-sys-project:before { content: '\e810'; } /* '' */
-.wise-icon-sys-ldap:before { content: '\e811'; } /* '' */
-.wise-icon-sys-build-image:before { content: '\e812'; } /* '' */
-.wise-icon-sys-role:before { content: '\e813'; } /* '' */
 .wise-icon-sys-operating--evn:before { content: '\e814'; } /* '' */
-.wise-icon-business-service-cron-job:before { content: '\e815'; } /* '' */
-.wise-icon-business-service-job:before { content: '\e816'; } /* '' */
-.wise-icon-ingress-service:before { content: '\e817'; } /* '' */
 .wise-icon-emo-grin:before { content: '\e818'; } /* '' */
 .wise-icon-user:before { content: '\e819'; } /* '' */
 .wise-icon-lb-service:before { content: '\e81d'; } /* '' */
-.wise-icon-business-service-without-status:before { content: '\e81e'; } /* '' */
-.wise-icon-business-service-with-status:before { content: '\e81f'; } /* '' */
 .wise-icon-github:before { content: '\e820'; } /* '' */
 .wise-icon-docker-one:before { content: '\e821'; } /* '' */
-.wise-icon-external-service:before { content: '\e822'; } /* '' */
 .wise-icon-docker-two:before { content: '\e823'; } /* '' */
-.wise-icon-svn:before { content: '\e824'; } /* '' */
 .wise-icon-mysql:before { content: '\e82a'; } /* '' */
 .wise-icon-etcd:before { content: '\e82b'; } /* '' */
 .wise-icon-registry:before { content: '\e82c'; } /* '' */
-.wise-icon-test:before { content: '\e832'; } /* '' */
-.wise-icon-code-check:before { content: '\e833'; } /* '' */
 .wise-icon-docker-three:before { content: '\e837'; } /* '' */
-.wise-icon-dockerfile:before { content: '\e839'; } /* '' */
 .wise-icon-kubernets:before { content: '\e848'; } /* '' */
 .wise-icon-rancher:before { content: '\e849'; } /* '' */
-.wise-icon-bp-cronjob:before { content: '\e84c'; } /* '' */
-.wise-icon-bp-service:before { content: '\e84d'; } /* '' */
-.wise-icon-bp-batch:before { content: '\e84e'; } /* '' */
 .wise-icon-wisecloud:before { content: '\e853'; } /* '' */
+.wise-icon-consul:before { content: '\e899'; } /* '' */
+.wise-icon-redis:before { content: '\e89b'; } /* '' */
+.wise-icon-rabbitmq:before { content: '\e89c'; } /* '' */
