@@ -6,7 +6,7 @@
     <div class="content">
       <router-view class="content-body"></router-view>
       <div class="footer">
-        {{$t("Index.developers")}}：华相（huaxiang@wise2c.com）、 Ann（weisy@wise2c.com）
+        {{$t("Index.developers")}}：睿云智合（wise2c）
         <span class="split-line">|</span>
         &nbsp;&nbsp;
         <a href="http://hk.mikecrm.com/Sf9KvOR" target="_blank"> {{$t("Index.contact")}}</a>
