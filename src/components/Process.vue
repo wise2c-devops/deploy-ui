@@ -27,7 +27,12 @@
 </template>
 <script>
 import { pop } from '../utils/alert'
-import { cancel, getCluster, fetchClusterDetail, getClusterStatus, fetchClusterStatus } from 'vuexPath/modules/cluster'
+import { cancel,
+  getCluster,
+  fetchClusterDetail,
+  getClusterStatus,
+  fetchClusterStatus,
+  fetchComponentTypes } from 'vuexPath/modules/cluster'
 import { findLast, findIndex, sortBy } from 'lodash'
 export default {
   computed: {
@@ -152,11 +157,13 @@ export default {
     actions: {
       cancel,
       fetchClusterDetail,
-      fetchClusterStatus
+      fetchClusterStatus,
+      fetchComponentTypes
     },
     getters: {
       cluster: getCluster,
-      status: getClusterStatus
+      status: getClusterStatus,
+      componentTypes: state=>state.cluster.types
       // selectComponents: state=>state.cluster.selectComponents
     }
   }
