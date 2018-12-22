@@ -1,7 +1,7 @@
 const Index = {
   title: '欢迎使用 Kubernetes 组件部署系统',
   button: '开始',
-  developers: '开发者',
+  developers: '开发人员',
   contact: '联系我们'
 }
 const clusters = {

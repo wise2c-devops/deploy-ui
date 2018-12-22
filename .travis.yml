@@ -8,6 +8,6 @@ before_install:
 
 script:
 - docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:9 bash -c "npm install && npm run build"
-- docker build -t wise2c/deploy-ui:$TRAVIS_BRANCH .
+- docker build -t wise2ck8s/deploy-ui:$TRAVIS_BRANCH .
 - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-- docker push wise2c/deploy-ui:$TRAVIS_BRANCH
+- docker push wise2ck8s/deploy-ui:$TRAVIS_BRANCH

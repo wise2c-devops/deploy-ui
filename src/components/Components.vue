@@ -9,9 +9,9 @@
           <router-link to="">{{cluster.name}}</router-link>
         </li>
       </ol>
-      <el-button size="mini" type="primary" icon="el-icon-caret-right" @click="install" class="status-icon" :disabled="selectComponents.length === 0">{{$t('componets.startInstallButton')}}</el-button>
-      <el-button size="mini" type="warning" icon="el-icon-warning" @click="reset" class="status-icon" :disabled="isInitial">{{$t('componets.resets')}}</el-button>
-      <el-button size="small" type="primary" icon="el-icon-plus" @click="addComponentDialog" class="pull-right">{{$t('componets.addComponentsButton')}}</el-button>
+      <el-button size="mini" type="primary" icon="el-icon-caret-right" @click.native.stop.prevent="install" class="status-icon" :disabled="selectComponents.length === 0">{{$t('componets.startInstallButton')}}</el-button>
+      <el-button size="mini" type="warning" icon="el-icon-warning" @click.native.stop.prevent="reset" class="status-icon" :disabled="isInitial">{{$t('componets.resets')}}</el-button>
+      <el-button size="small" type="primary" icon="el-icon-plus" @click.native.stop.prevent="addComponentDialog" class="pull-right">{{$t('componets.addComponentsButton')}}</el-button>
     </div>
     <div class="panel-body">
       <div class="row hosts-table">
@@ -171,12 +171,14 @@ export default {
       var msg = ""
       Object.keys(component.properties).map(function(objectKey) {
         let value = component.properties[objectKey]
+        if (objectKey.includes('password') || objectKey.includes('pwd')) {
+          value = '*****'
+        }
         msg += `<p><b>${objectKey}</b>: ${value || '--'}</p>`
       })
       return msg
     },
     install() {
-      localStorage.setItem('selectComponents', JSON.stringify(this.selectComponents))
       // this.resetSlectComponents(this.selectComponents)
       if (this.cluster.state === 'processing') {
         this.$router.push({
@@ -184,6 +186,7 @@ export default {
         })
         return
       }
+      localStorage.setItem('selectComponents', JSON.stringify(this.selectComponents))
       //确认安装
       promptOnDelete(this, this.$t('componets.startInstallCulsterTips'), () => {
         this.deploy(this.clusterId, this.selectComponents, 'install', () => {

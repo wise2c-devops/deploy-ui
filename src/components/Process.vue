@@ -27,7 +27,12 @@
 </template>
 <script>
 import { pop } from '../utils/alert'
-import { cancel, getCluster, fetchClusterDetail, getClusterStatus, fetchClusterStatus } from 'vuexPath/modules/cluster'
+import { cancel,
+  getCluster,
+  fetchClusterDetail,
+  getClusterStatus,
+  fetchClusterStatus,
+  fetchComponentTypes } from 'vuexPath/modules/cluster'
 import { findLast, findIndex, sortBy } from 'lodash'
 export default {
   computed: {
@@ -46,6 +51,7 @@ export default {
             name: component,
             icon: 'wise-icon-sys-operating--evn',
             enabled: false,
+            value: component,
             sort: this.stages.length + 1
           }
           result.push(obj)
@@ -58,9 +64,9 @@ export default {
       if (this.failed || (!!this.cluster && this.cluster.state === 'success')) {
         return true
       }
-      if (this.validStages.length > 0) {
-        return this.validStages[this.validStages.length - 1].enabled
-      }
+      // if (this.validStages.length > 0) {
+      //   return this.validStages.filter(stage => stage.enabled).length === this.validStages.length
+      // }
       return false
     }
   },
@@ -69,14 +75,19 @@ export default {
       failed: false,
       logs: [],
       stages: [
-        { name: 'Registry', icon: 'wise-icon-registry', value: 'registry', enabled: false, sort: 2 },
-        { name: 'Etcd', icon: 'wise-icon-etcd', value: 'etcd', enabled: false, sort: 3 },
-        { name: 'Mysql', icon: 'wise-icon-mysql', value: 'mysql', enabled: false, sort: 4 },
-        { name: 'LoadBalance', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false, sort: 5 },
-        { name: 'kubernetes', icon: 'wise-icon-kubernets', value: 'kubernetes', enabled: false, sort: 6 },
-        { name: 'K8sNode', icon: 'wise-icon-kubernets', value: 'k8snode', enabled: false, sort: 7 },
-        { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: false, sort: 8 },
-        { name: 'Docker', icon: 'wise-icon-docker-three', value: 'docker', enabled: false, sort: 1 }
+        { name: 'Docker', icon: 'wise-icon-docker-three', value: 'docker', enabled: false, sort: 1 },
+        { name: 'Harbor', icon: 'wise-icon-harbor', value: 'harbor', enabled: false, sort: 2 },
+        { name: 'LoadBalance', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false, sort: 3 },
+        { name: 'Etcd', icon: 'wise-icon-etcd', value: 'etcd', enabled: false, sort: 4 },
+        { name: 'Mysql', icon: 'wise-icon-mysql', value: 'mysql', enabled: false, sort: 5 },
+        { name: 'Kubernetes', icon: 'wise-icon-kubernets', value: 'kubernetes', enabled: false, sort: 6 },
+        { name: 'Prometheus', icon: 'wise-icon-prometheus', value: 'prometheus', enabled: false, sort: 7 },
+        { name: 'Redis', icon: 'wise-icon-redis', value: 'redis', enabled: false, sort: 8 },
+        { name: 'Consul', icon: 'wise-icon-consul', value: 'consul', enabled: false, sort: 9 },
+        { name: 'Rabbitmq', icon: 'wise-icon-rabbitmq', value: 'rabbitmq', enabled: false, sort: 10 },
+        { name: 'Nats', icon: 'wise-icon-sys-operating--evn', value: 'nats', enabled: false, sort: 11 },
+        { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: false, sort: 12 },
+        { name: 'K8sNode', icon: 'wise-icon-kubernets', value: 'k8snode', enabled: false, sort: 13 }
       ]
     }
   },
@@ -95,6 +106,33 @@ export default {
     },
     getIconClass(item) {
       return [item.icon, item.enabled ? "enabled" : ""]
+    },
+    listenSoket() {
+      var url = `${process.env.WEBSOCKET_HOST}/v1/stats`
+      if (process.env.NODE_ENV === 'production') {
+        url = `ws://${location.host}/v1/stats`
+      }
+      var socket = new WebSocket(url)
+      socket.onopen = (event) => {
+        console.info('Success link to backend server', event)
+      }
+      socket.onmessage = (event) => {
+        var json = JSON.parse(event.data)
+        if (json.state === 'failed') {
+          this.failed = true
+        }
+
+        this.logs.push(`${json.time}: [${json.stage}] [${json.host}]  task: ${json.task.name} - ${json.task.state},  message: ${json.data.msg}`)
+        if (json.state === 'ok') {
+          console.log(json.stage, 'json.stage==>>>>')
+          var stage = findLast(this.validStages, (stage) => {
+            return stage.value === json.stage
+          })
+          if (!!stage) {
+            stage.enabled = true
+          }
+        }
+      }
     }
   },
   created() {
@@ -114,40 +152,19 @@ export default {
         }
       })
     }
-    var url = `${process.env.WEBSOCKET_HOST}/v1/stats`
-    if (process.env.NODE_ENV === 'production') {
-      url = `ws://${location.host}/v1/stats`
-    }
-    var socket = new WebSocket(url)
-    socket.onopen = (event) => {
-      console.info('Success link to backend server', event)
-    }
-    socket.onmessage = (event) => {
-      var json = JSON.parse(event.data)
-      if (json.state === 'failed') {
-        this.failed = true
-      }
-
-      this.logs.push(`${json.time}: [${json.stage}] [${json.host}]  task: ${json.task.name} - ${json.task.state},  message: ${json.data.msg}`)
-      if (json.state === 'ok') {
-        var stage = findLast(this.stages, (stage) => {
-          return stage.value === json.stage
-        })
-        if (!!stage) {
-          stage.enabled = true
-        }
-      }
-    }
+    this.listenSoket()
   },
   vuex: {
     actions: {
       cancel,
       fetchClusterDetail,
-      fetchClusterStatus
+      fetchClusterStatus,
+      fetchComponentTypes
     },
     getters: {
       cluster: getCluster,
-      status: getClusterStatus
+      status: getClusterStatus,
+      componentTypes: state=>state.cluster.types
       // selectComponents: state=>state.cluster.selectComponents
     }
   }
