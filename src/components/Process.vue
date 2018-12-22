@@ -77,7 +77,7 @@ export default {
       stages: [
         { name: 'Docker', icon: 'wise-icon-docker-three', value: 'docker', enabled: false, sort: 1 },
         { name: 'Harbor', icon: 'wise-icon-harbor', value: 'harbor', enabled: false, sort: 2 },
-        { name: 'LoadBalance', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false, sort: 3 },
+        { name: 'LoadBalancer', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false, sort: 3 },
         { name: 'Etcd', icon: 'wise-icon-etcd', value: 'etcd', enabled: false, sort: 4 },
         { name: 'Mysql', icon: 'wise-icon-mysql', value: 'mysql', enabled: false, sort: 5 },
         { name: 'Kubernetes', icon: 'wise-icon-kubernets', value: 'kubernetes', enabled: false, sort: 6 },
