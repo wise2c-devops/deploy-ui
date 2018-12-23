@@ -87,7 +87,7 @@ export default {
         { name: 'Rabbitmq', icon: 'wise-icon-rabbitmq', value: 'rabbitmq', enabled: false, sort: 10 },
         { name: 'Nats', icon: 'wise-icon-sys-operating--evn', value: 'nats', enabled: false, sort: 11 },
         { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: false, sort: 12 },
-        { name: 'K8sNode', icon: 'wise-icon-kubernets', value: 'k8snode', enabled: false, sort: 13 }
+        { name: 'WorkerNode', icon: 'wise-icon-kubernets', value: 'workernode', enabled: false, sort: 13 }
       ]
     }
   },
