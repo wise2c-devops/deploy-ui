@@ -33,32 +33,13 @@ import { cancel,
   getClusterStatus,
   fetchClusterStatus,
   fetchComponentTypes } from 'vuexPath/modules/cluster'
-import { findLast, findIndex, sortBy } from 'lodash'
+import { findLast, findIndex } from 'lodash'
+let intervalId
+
 export default {
   computed: {
     clusterId() {
       return this.$route.params.id
-    },
-    validStages() {
-      const slectComponents = JSON.parse(localStorage.getItem('selectComponents'))
-      let result = []
-      slectComponents.forEach(component=>{
-        var target = findLast(this.stages, stage=>stage.value === component)
-        if(target) {
-          result.push(target)
-        }else {
-          const obj = {
-            name: component,
-            icon: 'wise-icon-sys-operating--evn',
-            enabled: false,
-            value: component,
-            sort: this.stages.length + 1
-          }
-          result.push(obj)
-          this.stages.push(obj)
-        }
-      })
-      return sortBy(result, v=>v.sort)
     },
     isDone() {
       if (this.failed || (!!this.cluster && this.cluster.state === 'success')) {
@@ -74,10 +55,11 @@ export default {
     return {
       failed: false,
       logs: [],
+      validStages: [],
       stages: [
         { name: 'Docker', icon: 'wise-icon-docker-three', value: 'docker', enabled: false, sort: 1 },
         { name: 'Registry', icon: 'wise-icon-registry', value: 'registry', enabled: false, sort: 2 },
-        { name: 'LoadBalance', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false, sort: 3 },
+        { name: 'loadbalancer', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false, sort: 3 },
         { name: 'Etcd', icon: 'wise-icon-etcd', value: 'etcd', enabled: false, sort: 4 },
         { name: 'Mysql', icon: 'wise-icon-mysql', value: 'mysql', enabled: false, sort: 5 },
         { name: 'kubernetes', icon: 'wise-icon-kubernets', value: 'kubernetes', enabled: false, sort: 6 },
@@ -123,34 +105,50 @@ export default {
 
         this.logs.push(`${json.time}: [${json.stage}] [${json.host}]  task: ${json.task.name} - ${json.task.state},  message: ${json.data.msg}`)
         if (json.state === 'ok') {
-          var stage = findLast(this.validStages, (stage) => {
-            return stage.value === json.stage
-          })
+          var stage = findLast(this.validStages, stage => stage.name.toLowerCase() === json.stage.toLowerCase())
           if (!!stage) {
             stage.enabled = true
           }
         }
       }
+    },
+    formatStages() {
+      const slectComponents = JSON.parse(localStorage.getItem('selectComponents'))
+      this.componentTypes.forEach(componentType=>{
+        var target = findLast(slectComponents, slectComponent=>slectComponent === componentType)
+        if(target) {
+          const newStage = this.stages.find(stage => stage.name.toLowerCase() === target.toLowerCase())
+          this.validStages.push({
+            name: target,
+            icon: newStage.icon || 'wise-icon-sys-operating--evn',
+            enabled: false
+          })
+        }
+      })
     }
   },
   created() {
+    this.fetchComponentTypes(()=>{
+      this.formatStages()
+    })
     this.fetchClusterDetail(this.clusterId)
   },
   mounted() {
     if (this.cluster.state === 'processing'){
       this.fetchClusterStatus(this.clusterId, () => {
         //显示那些组件已经安装了
-        const index = findIndex(this.stages, (stage) => {
-          return stage.value === this.status.currentStage
-        })
+        const index = findIndex(this.componentTypes, type => type.toLowerCase() === this.status.currentStage.toLowerCase())
         if(!!this.cluster && this.cluster.state !== 'success' && index > 0 ) {
           for(var tempIndex = 0; tempIndex < index; tempIndex ++) {
-            this.stages[tempIndex].enabled = true
+            this.validStages[tempIndex].enabled = true
           }
         }
       })
     }
     this.listenSoket()
+    intervalId = setInterval(()=>{
+      this.fetchClusterDetail(this.clusterId)
+    }, 1500)
   },
   vuex: {
     actions: {
@@ -165,6 +163,14 @@ export default {
       componentTypes: state=>state.cluster.types
       // selectComponents: state=>state.cluster.selectComponents
     }
+  },
+  watch: {
+    'cluster.state': function(val) {
+      if (val === 'success') clearInterval(intervalId)
+    }
+  },
+  beforeDestroy () {
+    clearInterval(intervalId)
   }
 }
 </script>
