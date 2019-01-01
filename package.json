@@ -2,7 +2,7 @@
   "name": "deployment-ui",
   "version": "1.0.0",
   "description": "deployment ui",
-  "author": "Wise2c",
+  "author": "jwzhao@wise2c.com",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",

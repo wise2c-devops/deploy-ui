@@ -38,7 +38,7 @@
     </div>
     <div class="bg-white row ml0 mr0 mt-lg foot">
       <ul class="clear-style m0">
-        <li class="pull-left pt-sm pb-sm" v-for="item in changeInstall" :key="item">
+        <li class="pull-left pt-sm pb-sm" v-for="item in changeInstall">
           <el-checkbox class="m0"></el-checkbox> <label class="m0">{{item}}</label>
         </li>
       </ul>
