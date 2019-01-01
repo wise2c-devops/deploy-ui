@@ -69,14 +69,18 @@ export default {
       failed: false,
       logs: [],
       stages: [
-        { name: 'Registry', icon: 'wise-icon-registry', value: 'registry', enabled: false, sort: 2 },
-        { name: 'Etcd', icon: 'wise-icon-etcd', value: 'etcd', enabled: false, sort: 3 },
-        { name: 'Mysql', icon: 'wise-icon-mysql', value: 'mysql', enabled: false, sort: 4 },
-        { name: 'LoadBalance', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false, sort: 5 },
-        { name: 'kubernetes', icon: 'wise-icon-kubernets', value: 'kubernetes', enabled: false, sort: 6 },
-        { name: 'K8sNode', icon: 'wise-icon-kubernets', value: 'k8snode', enabled: false, sort: 7 },
-        { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: false, sort: 8 },
-        { name: 'Docker', icon: 'wise-icon-docker-three', value: 'docker', enabled: false, sort: 1 }
+        { name: 'Docker', icon: 'wise-icon-docker-three', value: 'docker', enabled: false, sort: 1 },
+        { name: 'Harbor', icon: 'wise-icon-harbor', value: 'harbor', enabled: false, sort: 2 },
+        { name: 'LoadBalancer', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false, sort: 3 },
+        { name: 'Etcd', icon: 'wise-icon-etcd', value: 'etcd', enabled: false, sort: 4 },
+        { name: 'Kubernetes', icon: 'wise-icon-kubernets', value: 'kubernetes', enabled: false, sort: 5 },
+        { name: 'Prometheus', icon: 'wise-icon-prometheus', value: 'prometheus', enabled: false, sort: 6 },
+        { name: 'Mysql', icon: 'wise-icon-mysql', value: 'mysql', enabled: false, sort: 7 },
+        { name: 'Redis', icon: 'wise-icon-redis', value: 'redis', enabled: false, sort: 8 },
+        { name: 'Consul', icon: 'wise-icon-consul', value: 'consul', enabled: false, sort: 9 },
+        { name: 'Rabbitmq', icon: 'wise-icon-rabbitmq', value: 'rabbitmq', enabled: false, sort: 10 },
+        { name: 'Nats', icon: 'wise-icon-sys-operating--evn', value: 'nats', enabled: false, sort: 11 },
+        { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: false, sort: 12 }
       ]
     }
   },
