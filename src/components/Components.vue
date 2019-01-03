@@ -76,7 +76,7 @@ import { getCluster,
   resetSlectComponents,
   fetchComponentTypes} from 'vuexPath/modules/cluster'
 import ComponentDialog from './common/ComponentDialog'
-import { pop } from '../utils/alert'
+import { pop, popWarn } from '../utils/alert'
 import { promptOnDelete } from '../utils/prompt'
 import { filter, map } from 'lodash'
 import { resetProperties } from 'vuexPath/modules/component'
@@ -144,6 +144,9 @@ export default {
 
     },
     addComponentDialog() {
+      if (this.validComponentTypes && this.validComponentTypes.length === 0) {
+        return popWarn(this.$t('componets.addComponentsTips'))
+      }
       this.component = {
         name: '',
         version: '',

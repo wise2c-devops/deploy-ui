@@ -52,7 +52,10 @@ body {
       }
     }
     .error {
-      color: $red-color;
+      color: $error-color;
+    }
+    .warn {
+      color: $warn-color;
     }
   //   .dialog-footer {
   //     text-align: right;

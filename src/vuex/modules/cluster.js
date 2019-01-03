@@ -1,7 +1,7 @@
 import {get, post, put, destroy} from '../../utils/rest'
 import API from '../../utils/rest'
 import {formatString} from '../../utils/string'
-import {popWarn} from '../../utils/alert'
+import {popWarn, popError, pop} from '../../utils/alert'
 import {findIndex} from 'lodash'
 const lang = localStorage.getItem('DEPLOYMENT_LANGUAGE') || 'zh'
 const state = {
@@ -160,7 +160,8 @@ export const deploy = ({dispatch}, clusterId, selectComponents, type='install', 
   put(formatString(API.CLUSTER.DEPLOY, clusterId), {operation: type, components: selectComponents}).then(() => {
     success()
   }).catch(error => {
-    popWarn(lang === 'zh'? '无法执行部署命令，请稍后重试': 'The deployment command cannot be executed. Please try again late')
+    popError(error)
+    // popWarn(lang === 'zh'? '无法执行部署命令，请稍后重试': 'The deployment command cannot be executed. Please try again late')
     console.error(error)
   })
 }
@@ -189,7 +190,7 @@ export const fetchClusterStatus = ({dispatch}, clusterId, success = ()=>{}) => {
     dispatch('SET_STATUS', response.body)
     success()
   }).catch(error => {
-    popWarn(lang === 'zh'? '获取集群状态失败': 'Getting cluster state failure')
+    // pop(lang === 'zh'? '正在获取组件状态': 'Getting cluster status')
     console.error(error)
   })
 }

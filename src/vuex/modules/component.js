@@ -22,7 +22,7 @@ const mutations = {
         item[item.variable] = item.default || []
       }else if (item.type === 'bool') {
         if (obj.isEdit) return item[item.variable] = obj.component.properties[item.variable]
-        item[item.variable] = item.default || true
+        item[item.variable] = item.default
       }else {
         item[item.variable] = obj.isEdit? obj.component.properties[item.variable]: item.default
       }

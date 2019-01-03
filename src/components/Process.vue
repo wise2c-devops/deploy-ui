@@ -3,10 +3,8 @@
     <ul class="clear-style row m0 process">
       <li class="pull-left" v-for="(item, index) in validStages" :key="index">
         <div class="box">
-          <div class="text-center">
-            <!-- <img :src="`static/${item.name}/${item.name}.svg`" width="45px" height="45px" alt=""> -->
-            <svg-filler :path="`/static/${item.name}/${item.name}.svg`" :fill="getFill(item)" width="45px" height="45px"/>
-            <!-- <i :class="getIconClass(item)"></i> -->
+          <div :class="'text-center ' + item.state">
+            <svg-filler :path="`/static/components/${item.name}-playbook/${item.name}.svg`" :fill="getFill(item)" width="45px" height="45px"/>
             <p class="title">{{item.name}}</p>
           </div>
         </div>
@@ -21,7 +19,7 @@
     <div class="btn-wrapper row">
       <div class="col-md-3 col-md-offset-5">
         <el-button size="large" icon="arrow-left" class="pull-left " @click="back">{{$t('tipsButton.back')}}</el-button>
-        <el-button size="large" icon="close" type="danger" @click="cancelDeployment" v-if="!isDone && !failed">{{$t('tipsButton.cancel')}}</el-button>
+        <el-button size="large" icon="close" type="default" @click="cancelDeployment" v-if="!isDone && !failed">{{$t('tipsButton.cancel')}}</el-button>
         <el-button size="large" icon="close" type="danger" @click="back" v-if="failed">{{$t('tipsButton.fail')}}</el-button>
         <el-button size="large" icon="check" type="primary" @click="back" v-if="isDone">{{$t('tipsButton.done')}}</el-button>
       </div>
@@ -73,7 +71,10 @@ export default {
       })
     },
     getFill(item) {
-      return item.enabled ? "#4CAF50" : '#cdd1d9'
+      if (item.state === 'ok') return '#2ACD98'
+      else if (item.state === 'failed') return '#f16a64'
+      return '#cdd1d9'
+      // return item.enabled ? "#4CAF50" : '#cdd1d9'
     },
     listenSoket() {
       var url = `${process.env.WEBSOCKET_HOST}/v1/stats`
@@ -85,16 +86,21 @@ export default {
         console.info('Success link to backend server', event)
       }
       socket.onmessage = (event) => {
-        var json = JSON.parse(event.data)
+
+        const json = JSON.parse(event.data)
+        const stage = findLast(this.validStages, stage => stage.name.toLowerCase() === json.stage.toLowerCase())
+
         if (json.state === 'failed') {
           this.failed = true
+          stage.state = 'failed'
         }
 
         this.logs.push(`${json.time}: [${json.stage}] [${json.host}]  task: ${json.task.name} - ${json.task.state},  message: ${json.data.msg}`)
         if (json.state === 'ok') {
-          var stage = findLast(this.validStages, stage => stage.name.toLowerCase() === json.stage.toLowerCase())
+          // var stage = findLast(this.validStages, stage => stage.name.toLowerCase() === json.stage.toLowerCase())
           if (!!stage) {
-            stage.enabled = true
+            stage.state = 'ok'
+            // stage.enabled = true
           }
         }
       }
@@ -106,7 +112,7 @@ export default {
         if(target) {
           this.validStages.push({
             name: target,
-            enabled: false
+            state: ''
           })
         }
       })
@@ -117,7 +123,7 @@ export default {
         const index = findIndex(this.validStages, stage => stage.name.toLowerCase() === this.status.currentStage.toLowerCase())
         if(!!this.cluster && this.cluster.state !== 'success' && index > 0 ) {
           for(var tempIndex = 0; tempIndex < index; tempIndex ++) {
-            this.validStages[tempIndex].enabled = true
+            this.validStages[tempIndex].state = 'ok'
           }
         }
       })
@@ -132,20 +138,13 @@ export default {
   mounted() {
     if (this.cluster.state === 'processing'){
       this.computedStageState()
-    //   this.fetchClusterStatus(this.clusterId, () => {
-    //     //显示那些组件已经安装了
-    //     const index = findIndex(this.validStages, stage => stage.name.toLowerCase() === this.status.currentStage.toLowerCase())
-    //     if(!!this.cluster && this.cluster.state !== 'success' && index > 0 ) {
-    //       for(var tempIndex = 0; tempIndex < index; tempIndex ++) {
-    //         this.validStages[tempIndex].enabled = true
-    //       }
-    //     }
-    //   })
     }
     this.listenSoket()
+
     intervalId = setInterval(()=>{
       this.fetchClusterDetail(this.clusterId)
-    }, 1500)
+    }, 3000)
+
   },
   vuex: {
     actions: {
@@ -158,13 +157,14 @@ export default {
       cluster: getCluster,
       status: getClusterStatus,
       componentTypes: state=>state.cluster.types
-      // selectComponents: state=>state.cluster.selectComponents
     }
   },
   watch: {
     'cluster.state': function(val) {
-      if (val === 'success') clearInterval(intervalId)
-      else if ( !!val) this.computedStageState()
+      if (val === 'success' || val === 'failed') clearInterval(intervalId)
+      else if ( !!val && val === 'processing') {
+        this.computedStageState()
+      }
     }
   },
   beforeDestroy () {
@@ -207,6 +207,12 @@ export default {
         height: 60px;
         border-radius: 50%;
         border: 2px solid #cdd1d9;
+        &.ok {
+          border: 2px solid $green-color;
+        }
+        &.failed {
+          border: 2px solid $error-color;
+        }
         p.title {
           color: $main-font-color;
           font-size: 14px;

@@ -12,3 +12,11 @@ export function popWarn(msg) {
 
   Message.warning({message: msg})
 }
+export function popError(msg) {
+  if(typeof(msg) === 'object' && !!msg.response) {
+    Message.error({message: msg.response.body.error})
+    return
+  }
+
+  Message.error({message: msg})
+}

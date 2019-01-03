@@ -43,9 +43,10 @@ const componets = {
   startInstallButton: 'Start install',
   resets: 'Reset',
   addComponentsButton: 'Add component',
+  addComponentsTips: 'No components are available for adding',
   delteTips: 'Are you sure you want to delete the service ?',
-  startInstallCulsterTips: 'Confirm the start of the installation of the cluster',
-  resetTips: 'Confirm that the cluster is reset to the initial state?',
+  startInstallCulsterTips: 'Confirm to start installing the cluster',
+  resetTips: 'Confirm resetting the cluster to its initial state?',
   resetSuccessMsg: 'Resetting is successful. The system needs some time to process the request. Please refresh the page later',
   table: {
     num: 'Number',
@@ -72,7 +73,7 @@ module.exports ={
     deleteSuccess: 'Delete completed',
     createSuccess: 'Create completed',
     editSuccess: 'Update completed',
-    warnTips: 'Please fill in the required parameters and submit it'
+    warnTips: 'Please fill in the required parameters before submitting'
   },
   tipsButton: {
     ok: 'Ok',
