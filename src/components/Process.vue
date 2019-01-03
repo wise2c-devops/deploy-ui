@@ -4,6 +4,7 @@
       <li class="pull-left" v-for="(item, index) in validStages" :key="index">
         <div class="box">
           <div class="text-center">
+            <!-- <img :src="`static/${item.name}/${item.name}.svg`" width="45px" height="45px" alt=""> -->
             <svg-filler :path="`/static/${item.name}/${item.name}.svg`" :fill="getFill(item)" width="45px" height="45px"/>
             <!-- <i :class="getIconClass(item)"></i> -->
             <p class="title">{{item.name}}</p>
@@ -20,7 +21,8 @@
     <div class="btn-wrapper row">
       <div class="col-md-3 col-md-offset-5">
         <el-button size="large" icon="arrow-left" class="pull-left " @click="back">{{$t('tipsButton.back')}}</el-button>
-        <el-button size="large" icon="close" type="danger" @click="cancelDeployment" v-if="!isDone">{{$t('tipsButton.cancel')}}</el-button>
+        <el-button size="large" icon="close" type="danger" @click="cancelDeployment" v-if="!isDone && !failed">{{$t('tipsButton.cancel')}}</el-button>
+        <el-button size="large" icon="close" type="danger" @click="back" v-if="failed">{{$t('tipsButton.fail')}}</el-button>
         <el-button size="large" icon="check" type="primary" @click="back" v-if="isDone">{{$t('tipsButton.done')}}</el-button>
       </div>
     </div>
@@ -44,13 +46,7 @@ export default {
       return this.$route.params.id
     },
     isDone() {
-      if (this.failed || (!!this.cluster && this.cluster.state === 'success')) {
-        return true
-      }
-      // if (this.validStages.length > 0) {
-      //   return this.validStages.filter(stage => stage.enabled).length === this.validStages.length
-      // }
-      return false
+      return !!this.cluster && this.cluster.state === 'success'
     }
   },
   components: {
@@ -114,6 +110,17 @@ export default {
           })
         }
       })
+    },
+    computedStageState() {
+      this.fetchClusterStatus(this.clusterId, () => {
+        //显示那些组件已经安装了
+        const index = findIndex(this.validStages, stage => stage.name.toLowerCase() === this.status.currentStage.toLowerCase())
+        if(!!this.cluster && this.cluster.state !== 'success' && index > 0 ) {
+          for(var tempIndex = 0; tempIndex < index; tempIndex ++) {
+            this.validStages[tempIndex].enabled = true
+          }
+        }
+      })
     }
   },
   created() {
@@ -124,15 +131,16 @@ export default {
   },
   mounted() {
     if (this.cluster.state === 'processing'){
-      this.fetchClusterStatus(this.clusterId, () => {
-        //显示那些组件已经安装了
-        const index = findIndex(this.componentTypes, type => type.toLowerCase() === this.status.currentStage.toLowerCase())
-        if(!!this.cluster && this.cluster.state !== 'success' && index > 0 ) {
-          for(var tempIndex = 0; tempIndex < index; tempIndex ++) {
-            this.validStages[tempIndex].enabled = true
-          }
-        }
-      })
+      this.computedStageState()
+    //   this.fetchClusterStatus(this.clusterId, () => {
+    //     //显示那些组件已经安装了
+    //     const index = findIndex(this.validStages, stage => stage.name.toLowerCase() === this.status.currentStage.toLowerCase())
+    //     if(!!this.cluster && this.cluster.state !== 'success' && index > 0 ) {
+    //       for(var tempIndex = 0; tempIndex < index; tempIndex ++) {
+    //         this.validStages[tempIndex].enabled = true
+    //       }
+    //     }
+    //   })
     }
     this.listenSoket()
     intervalId = setInterval(()=>{
@@ -156,6 +164,7 @@ export default {
   watch: {
     'cluster.state': function(val) {
       if (val === 'success') clearInterval(intervalId)
+      else if ( !!val) this.computedStageState()
     }
   },
   beforeDestroy () {
@@ -164,7 +173,7 @@ export default {
 }
 </script>
 <style lang="scss">
-@import "../assets/stylesheets/variables";
+@import "~assets/stylesheets/variables";
 .process-container {
   width: 80%;
   margin: 0 auto;
@@ -180,7 +189,7 @@ export default {
       .box {
         width: 70px;
         position: relative;
-        top: -30px;
+        top: -35px;
         background: #f5f8fa;
       }
       &:last-child {
@@ -200,8 +209,11 @@ export default {
         border: 2px solid #cdd1d9;
         p.title {
           color: $main-font-color;
-          margin-top: 10px;
           font-size: 14px;
+          position: absolute;
+          bottom: -30px;
+          transform: translateX(-50%);
+          left: 50%;
         }
       }
       &:first-child {

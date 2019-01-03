@@ -80,7 +80,8 @@ module.exports ={
     next: '下一步',
     prev: '上一步',
     back: '返 回',
-    done: '完 成'
+    done: '完 成',
+    fail: '失败'
   },
   Index: Index,
   clusters: clusters,
