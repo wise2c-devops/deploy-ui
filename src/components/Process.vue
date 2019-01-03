@@ -4,7 +4,8 @@
       <li class="pull-left" v-for="(item, index) in validStages" :key="index">
         <div class="box">
           <div class="text-center">
-            <i :class="getIconClass(item)"></i>
+            <svg-filler :path="`/static/${item.name}/${item.name}.svg`" :fill="getFill(item)" width="45px" height="45px"/>
+            <!-- <i :class="getIconClass(item)"></i> -->
             <p class="title">{{item.name}}</p>
           </div>
         </div>
@@ -26,6 +27,7 @@
   </div>
 </template>
 <script>
+import SvgFiller from 'vue-svg-filler'
 import { pop } from '../utils/alert'
 import { cancel,
   getCluster,
@@ -51,25 +53,14 @@ export default {
       return false
     }
   },
+  components: {
+    SvgFiller
+  },
   data() {
     return {
       failed: false,
       logs: [],
-      validStages: [],
-      stages: [
-        { name: 'Docker', icon: 'wise-icon-docker-three', value: 'docker', enabled: false, sort: 1 },
-        { name: 'Registry', icon: 'wise-icon-registry', value: 'registry', enabled: false, sort: 2 },
-        { name: 'loadbalancer', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false, sort: 3 },
-        { name: 'Etcd', icon: 'wise-icon-etcd', value: 'etcd', enabled: false, sort: 4 },
-        { name: 'Mysql', icon: 'wise-icon-mysql', value: 'mysql', enabled: false, sort: 5 },
-        { name: 'kubernetes', icon: 'wise-icon-kubernets', value: 'kubernetes', enabled: false, sort: 6 },
-        { name: 'Redis', icon: 'wise-icon-redis', value: 'redis', enabled: false, sort: 7 },
-        { name: 'Consul', icon: 'wise-icon-consul', value: 'consul', enabled: false, sort: 8 },
-        { name: 'Rabbitmq', icon: 'wise-icon-rabbitmq', value: 'rabbitmq', enabled: false, sort: 9 },
-        { name: 'Nats', icon: 'wise-icon-sys-operating--evn', value: 'nats', enabled: false, sort: 10 },
-        // { name: 'K8sNode', icon: 'wise-icon-kubernets', value: 'k8snode', enabled: false, sort: 7 },
-        { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: false, sort: 11 }
-      ]
+      validStages: []
     }
   },
   methods: {
@@ -85,8 +76,8 @@ export default {
         this.back()
       })
     },
-    getIconClass(item) {
-      return [item.icon, item.enabled ? "enabled" : ""]
+    getFill(item) {
+      return item.enabled ? "#4CAF50" : '#cdd1d9'
     },
     listenSoket() {
       var url = `${process.env.WEBSOCKET_HOST}/v1/stats`
@@ -117,10 +108,8 @@ export default {
       this.componentTypes.forEach(componentType=>{
         var target = findLast(slectComponents, slectComponent=>slectComponent === componentType)
         if(target) {
-          const newStage = this.stages.find(stage => stage.name.toLowerCase() === target.toLowerCase())
           this.validStages.push({
             name: target,
-            icon: newStage.icon || 'wise-icon-sys-operating--evn',
             enabled: false
           })
         }
@@ -209,13 +198,6 @@ export default {
         height: 60px;
         border-radius: 50%;
         border: 2px solid #cdd1d9;
-        color: #cdd1d9;
-        i {
-          font-size: 40px;
-          &.enabled {
-            color: $green-color;
-          }
-        }
         p.title {
           color: $main-font-color;
           margin-top: 10px;
