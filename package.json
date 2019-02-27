@@ -32,7 +32,7 @@
     "vue-resource": "^0.9.3",
     "vue-router": "^3.0.1",
     "vuex": "^1.0.1",
-    "xterm": "^2.5.0"
+    "xterm": "^3.8.1"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
