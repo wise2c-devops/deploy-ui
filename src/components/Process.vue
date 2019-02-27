@@ -82,11 +82,11 @@ export default {
         { name: 'Nats', icon: 'wise-icon-sys-operating--evn', value: 'nats', enabled: false, sort: 11 },
         { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: false, sort: 12 },
         { name: 'Helm', icon: 'wise-icon-helm', value: 'helm', enabled: false, sort: 13 },
-        { name: 'Helm', icon: 'wise-icon-contour', value: 'contour', enabled: false, sort: 14 },
-        { name: 'Helm', icon: 'wise-icon-istio', value: 'istio', enabled: false, sort: 15 },
-        { name: 'Helm', icon: 'wise-icon-jaeger', value: 'jaeger', enabled: false, sort: 16 },
-        { name: 'Helm', icon: 'wise-icon-kong', value: 'kong', enabled: false, sort: 17 },
-        { name: 'Helm', icon: 'wise-icon-ambassador', value: 'ambassador', enabled: false, sort: 18 }
+        { name: 'Contour', icon: 'wise-icon-contour', value: 'contour', enabled: false, sort: 14 },
+        { name: 'Istio', icon: 'wise-icon-istio', value: 'istio', enabled: false, sort: 15 },
+        { name: 'Jaeger', icon: 'wise-icon-jaeger', value: 'jaeger', enabled: false, sort: 16 },
+        { name: 'Kong', icon: 'wise-icon-kong', value: 'kong', enabled: false, sort: 17 },
+        { name: 'Ambassador', icon: 'wise-icon-ambassador', value: 'ambassador', enabled: false, sort: 18 }
       ]
     }
   },
