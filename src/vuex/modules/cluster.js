@@ -3,7 +3,7 @@ import API from '../../utils/rest'
 import {formatString} from '../../utils/string'
 import {popWarn} from '../../utils/alert'
 import {findIndex} from 'lodash'
-const lang = localStorage.getItem('DEPLOYMENT_LANGUAGE') || 'zh'
+
 const state = {
   hosts: [],
   components: [],
@@ -72,8 +72,8 @@ export const fetchHosts= ({dispatch}, clusterId, success = () =>{}) => {
   get(formatString(API.CLUSTER.HOSTS, clusterId)).then((response) => {
     dispatch('SET_HOSTS', response.body)
     success()
-  }).catch((thvueis) => {
-    popWarn(lang === 'zh'? '获取集群下主机列表失败': 'Getting the host list failure under the cluster')
+  }).catch(() => {
+    popWarn('errGetHostList')
   })
 }
 
@@ -82,7 +82,7 @@ export const fetchComponents = ({dispatch}, clusterId, success = () =>{}) => {
     dispatch('SET_COMPONENTS', response.body)
     success(response.body)
   }).catch(() => {
-    popWarn(lang === 'zh'? '获取集群下服务组件列表失败': 'Getting the list of service components in the cluster failed')
+    popWarn('errGetCmponentList')
   })
 }
 
@@ -91,7 +91,7 @@ export const addHost = ({dispatch}, clusterId, host, success = () =>{}) => {
     dispatch('ADD_HOST', response.body)
     success()
   }).catch(() => {
-    popWarn(lang === 'zh'? '添加主机失败': 'Add host failure')
+    popWarn('errAddHost')
   })
 }
 
@@ -100,7 +100,7 @@ export const deleteHost = ({dispatch}, clusterId, hostId, index, success = () =>
     dispatch('DELETE_HOST', index)
     success()
   }).catch(() => {
-    popWarn(lang === 'zh'? '删除主机失败': 'Delete host failure')
+    popWarn('errDelHost')
   })
 }
 
@@ -109,7 +109,7 @@ export const updateHost = ({dispatch}, clusterId, host, success = ()=>{}) => {
     dispatch('UPDATE_HOST', response.body)
     success()
   }).catch(() => {
-    popWarn(lang === 'zh'? '更新主机失败': 'Update host failure')
+    popWarn('errUpdateHost')
   })
 }
 
@@ -117,7 +117,7 @@ export const fetchClusterDetail = ({dispatch}, clusterId) => {
   get(formatString(API.CLUSTER.DETAIL, clusterId)).then((response) => {
     dispatch('SET_CLUSTER', response.body)
   }).catch(() => {
-    popWarn(lang === 'zh'? '获取集群详情失败': 'Failure to get cluster details')
+    popWarn('errGetCulsterDetail')
   })
 }
 
@@ -126,7 +126,7 @@ export const createComponent = ({dispatch}, clusterId, component, success = ()=>
     dispatch('ADD_COMPONENT', response.body)
     success(response.body)
   }).catch((error) => {
-    popWarn(lang === 'zh'? '创建服务组件失败': 'Failure to create a service component')
+    popWarn('errAddComponent')
     console.error(error)
   })
 }
@@ -136,7 +136,7 @@ export const deleteComponent = ({dispatch}, clusterId, componentId, index, succe
     dispatch('DELETE_COMPONENT', index)
     success()
   }).catch((error) => {
-    popWarn(lang === 'zh'? '删除组件失败': 'Delete component failure')
+    popWarn('errDeleteComponent')
     console.error(error)
   })
 }
@@ -146,7 +146,7 @@ export const updateComponent = ({dispatch}, clusterId, component, success= ()=> 
     dispatch('UPDATE_COMPONENT', response.body)
     success()
   }).catch((error) => {
-    popWarn(lang === 'zh'? '更新组件失败': 'Update component failure')
+    popWarn('errUpdateComponent')
     console.error(error)
   })
 }
@@ -160,7 +160,7 @@ export const deploy = ({dispatch}, clusterId, selectComponents, type='install', 
   put(formatString(API.CLUSTER.DEPLOY, clusterId), {operation: type, components: selectComponents}).then(() => {
     success()
   }).catch(error => {
-    popWarn(lang === 'zh'? '无法执行部署命令，请稍后重试': 'The deployment command cannot be executed. Please try again late')
+    popWarn('errDeploy')
     console.error(error)
   })
 }
@@ -169,7 +169,7 @@ export const cancel = ({dispatch}, clusterId, success=()=>{}) => {
   destroy(formatString(API.CLUSTER.DEPLOY, clusterId), {}).then(() => {
     success()
   }).catch(error => {
-    popWarn(lang === 'zh'? '无法执行部署命令，请稍后重试': 'The deployment command cannot be executed. Please try again late')
+    popWarn('errDeploy')
     console.error(error)
   })
 }
@@ -179,7 +179,7 @@ export const fetchLogs = ({dispatch}, clusterId, success = ()=>{}) =>{
     dispatch('SET_LOGS', response.body)
     success()
   }).catch(error => {
-    popWarn(lang === 'zh'? '获取集群安装日志失败': 'Getting cluster installation log failed')
+    popWarn('errGetInstallCulsterLog')
     console.error(error)
   })
 }
@@ -189,7 +189,7 @@ export const fetchClusterStatus = ({dispatch}, clusterId, success = ()=>{}) => {
     dispatch('SET_STATUS', response.body)
     success()
   }).catch(error => {
-    popWarn(lang === 'zh'? '获取集群状态失败': 'Getting cluster state failure')
+    popWarn('errGetCulsterState')
     console.error(error)
   })
 }
@@ -199,7 +199,7 @@ export const fetchComponentProperties = ({dispatch}, clusterId, componentName, s
     dispatch('SET_COMPONENT', response.body)
     success()
   }).catch(error => {
-    popWarn(lang === 'zh'? '获取集群状态失败': 'Getting cluster state failure')
+    popWarn('errGetCulsterState')
     console.error(error)
   })
 }
@@ -209,7 +209,7 @@ export const fetchComponentTypes = ({dispatch}, success = () => {}) => {
     dispatch('SET_TYPES', response.body)
     success()
   }).catch(error => {
-    popWarn(lang === 'zh'? '获取组件类型失败': 'Getting component type failure')
+    popWarn('errGetComponentType')
     console.error(error)
   })
 }

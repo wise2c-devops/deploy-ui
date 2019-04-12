@@ -24,7 +24,7 @@ export const fetchClusters = ({dispatch}, success = ()=> {}) => {
     dispatch('UPDATE_CLUSTERS', response.body)
     success()
   }).catch(() => {
-    popWarn('获取集群失败')
+    popWarn('errGetCluster')
   })
 }
 
@@ -32,8 +32,8 @@ export const createCluster = ({dispatch}, cluster, success = ()=>{}) => {
   post(API.CLUSTERS, cluster).then((response) => {
     dispatch('ADD_CLUSTER', response.body)
     success()
-  }).catch((error) => {
-    popWarn(error)
+  }).catch(() => {
+    popWarn('errAddCluster')
   })
 }
 
@@ -46,6 +46,6 @@ export const deleteCluster = ({dispatch}, id, index, success = ()=> {}) => {
     dispatch('DELETE_CLUSTER', index)
     success()
   }).catch(() => {
-    popWarn('删除集群失败')
+    popWarn('errDeleteCluster')
   })
 }

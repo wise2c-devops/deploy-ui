@@ -51,9 +51,8 @@ export const fetchComponentVersions = ({dispatch}, componentName, success = () =
   get(formatString(API.COMPONENT.VERSIONS, componentName)).then(response => {
     dispatch('SET_VERSIONS', JSON.parse(response.text))
     success()
-  }).catch(error => {
-    popWarn(`获取 ${componentName}版本信息失败`)
-    console.error(error)
+  }).catch(() => {
+    popWarn('errGetComponentVersion')
   })
 }
 
@@ -61,10 +60,9 @@ export const fetchVersionProperties = ({dispatch}, componentName, version, obj, 
   get(formatString(API.COMPONENT.PROPERTIES, componentName, version)).then(response => {
     dispatch('SET_PROPERTIES', JSON.parse(response.text), obj)
     success()
-  }).catch(error => {
+  }).catch(() => {
     dispatch('SET_PROPERTIES', [])
-    popWarn(`获取 ${componentName}组件属性失败`)
-    console.error(error)
+    popWarn('errGetComponentProperties')
   })
 }
 

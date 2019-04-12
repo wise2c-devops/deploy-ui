@@ -64,7 +64,32 @@ const componets = {
   }
 }
 
-module.exports ={
+const errorMsg = {
+  errGetCluster: 'Failed to get cluster',
+  errAddCluster: 'Adding a cluster failed',
+  errDeleteCluster: 'Failed to delete cluster',
+  errGetCulsterDetail: 'Failed to get cluster details',
+  errGetHostList: 'Failed to get the host list under the cluster',
+  errGetCmponentList: 'Failed to get the list of service components under the cluster',
+  errGetCulsterState: 'Failed to get cluster status',
+
+  errAddHost: 'Add host failed',
+  errDelHost: 'Deleting a host failed',
+  errUpdateHost: 'Update host failed',
+
+  errAddComponent: 'Create service component failed',
+  errDeleteComponent: 'Failed to delete component',
+  errUpdateComponent: 'Update component failed',
+  errGetComponentType: 'Failed to get component type',
+  errGetComponentVersion: 'Failed to get component version information',
+  errGetComponentProperties: 'Failed to get component properties',
+
+  errDeploy: 'Unable to execute deployment command, please try again later',
+  errGetInstallCulsterLog: 'Failed to get cluster installation log'
+}
+
+module.exports = {
+  slectPlaceholder: 'please choose',
   slectEmpty: 'empty',
   layer: {
     toggle: 'Do you determine the handover language',
@@ -82,8 +107,9 @@ module.exports ={
     back: 'Back',
     done: 'Done'
   },
-  Index: Index,
-  clusters: clusters,
-  host: host,
-  componets: componets
+  Index,
+  clusters,
+  host,
+  componets,
+  errorMsg
 }
