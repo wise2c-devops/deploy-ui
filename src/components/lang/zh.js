@@ -64,7 +64,32 @@ const componets = {
   }
 }
 
-module.exports ={
+const errorMsg = {
+  errGetCluster: '获取集群失败',
+  errAddCluster: '添加集群失败',
+  errDeleteCluster: '删除集群失败',
+  errGetCulsterDetail: '获取集群详情失败',
+  errGetHostList: '获取集群下主机列表失败',
+  errGetCmponentList: '获取集群下服务组件列表失败',
+  errGetCulsterState: '获取集群状态失败',
+
+  errAddHost: '添加主机失败',
+  errDelHost: '删除主机失败',
+  errUpdateHost: '更新主机失败',
+
+  errAddComponent: '创建服务组件失败',
+  errDeleteComponent: '删除组件失败',
+  errUpdateComponent: '更新组件失败',
+  errGetComponentType: '获取组件类型失败',
+  errGetComponentVersion: '获取组件版本信息失败',
+  errGetComponentProperties: '获取组件属性失败',
+
+  errDeploy: '无法执行部署命令，请稍后重试',
+  errGetInstallCulsterLog: '获取集群安装日志失败'
+}
+
+module.exports = {
+  slectPlaceholder: '请选择',
   slectEmpty: '无数据',
   layer: {
     toggle: '确定切换语言吗',
@@ -82,8 +107,9 @@ module.exports ={
     back: '返 回',
     done: '完 成'
   },
-  Index: Index,
-  clusters: clusters,
-  host: host,
-  componets: componets
+  Index,
+  clusters,
+  host,
+  componets,
+  errorMsg
 }

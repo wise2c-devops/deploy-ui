@@ -10,9 +10,11 @@ import Element from 'element-ui'
 import VeeValidate from 'vee-validate'
 import ZH from './components/lang/zh'
 import EN from './components/lang/en'
+import FR from './components/lang/fr'
 import './assets/wise-icons/css/fontello.css'
 import 'element-ui/lib/theme-chalk/index.css'
 import VueI18n from 'vue-i18n'
+import {getDocmentTitle, getDefaultLang} from 'utils/string'
 
 Vue.prototype.$config = Vue.prototype.$config || require('../config/sysconfig.json')
 Vue.use(Element)
@@ -27,16 +29,18 @@ Vue.use(VueRouter)
 Vue.use(VeeValidate)
 Vue.use(VueI18n)
 
+const defaultLang = getDefaultLang()
 const i18n = new VueI18n({
-  locale: localStorage.getItem('DEPLOYMENT_LANGUAGE')? localStorage.getItem('DEPLOYMENT_LANGUAGE'): 'zh', // 语言标识
+  locale: defaultLang, // 语言标识
   messages: {
-    zh: ZH,
-    en: EN
+    'zh': ZH,
+    'en': EN,
+    'fr': FR
   }
 })
 
 router.beforeEach((to,from,next) => {
-  document.title ="Kubernetes部署中心"
+  document.title = `Kubernetes ${getDocmentTitle(defaultLang)}`
   next()
 })
 
