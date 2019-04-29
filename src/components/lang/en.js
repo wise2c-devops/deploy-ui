@@ -16,12 +16,12 @@ const clusters = {
     serviceComponents: 'Service components',
     installLog: 'Install logs'
   },
-  delteTips: 'Are you sure you want to delete the cluster ?',
+  delteTips: 'Are you sure you want to delete the cluster?',
   routerName: 'Cluster'
 }
 const host = {
   addHostButton: 'Add host',
-  delteTips: 'Are you sure you want to delete the host ?',
+  delteTips: 'Are you sure you want to delete the host?',
   table: {
     num: 'Number',
     name: 'Host name',
@@ -43,10 +43,10 @@ const componets = {
   startInstallButton: 'Start install',
   resets: 'Reset',
   addComponentsButton: 'Add component',
-  delteTips: 'Are you sure you want to delete the service ?',
-  startInstallCulsterTips: 'Confirm the start of the installation of the cluster',
-  resetTips: 'Confirm that the cluster is reset to the initial state ?',
-  resetSuccessMsg: 'It will take some time to complete the resetting process. Please refresh the "Install Logs" page from time to time.',
+  delteTips: 'Are you sure you want to delete the service?',
+  startInstallCulsterTips: 'Are you sure you want to start the installation? Existing cluster data will probably be overwritten.',
+  resetTips: 'Are you sure you want to reset/remove those selected components?',
+  resetSuccessMsg: 'It will take some time to complete the resetting process. Please refresh the "Install Logs" page to get the results from time to time.',
   table: {
     num: 'Number',
     serviceName: 'Service name',
