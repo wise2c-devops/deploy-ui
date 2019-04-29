@@ -1,5 +1,5 @@
 const Index = {
-  title: 'Welcome to Breeze! (The kubernetes components deployment system)',
+  title: 'Welcome to Breeze - kubernetes components deployment system',
   button: 'start',
   developers: 'Developer',
   contact: 'Contact us'
