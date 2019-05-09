@@ -1,5 +1,5 @@
 const Index = {
-  title: '欢迎使用 Kubernetes 组件部署系统',
+  title: '欢迎使用Breeze（Kubernetes组件部署系统）',
   button: '开始',
   developers: '开发者',
   contact: '联系我们'
@@ -46,7 +46,7 @@ const componets = {
   delteTips: '确定要删除该服务吗',
   startInstallCulsterTips: '确认开始安装集群',
   resetTips: '确认重置该集群到初始状态？',
-  resetSuccessMsg: '重置成功，系统需要一些时间处理请求，请稍后刷新页面查看',
+  resetSuccessMsg: '重置正在进行，系统需要一些时间处理请求，请不时地刷新安装日志页面查看重置进度',
   table: {
     num: '序号',
     serviceName: '服务名称',
@@ -97,7 +97,7 @@ module.exports = {
     deleteSuccess: '删除成功',
     createSuccess: '创建成功',
     editSuccess: '更新成功',
-    warnTips: '请填充必须参数后再进行提交'
+    warnTips: '请填充必选参数后再进行提交'
   },
   tipsButton: {
     ok: '确 定',
