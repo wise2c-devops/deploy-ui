@@ -8,7 +8,8 @@ export function pop(msg) {
   Message.success({message: msg})
 }
 
-export function popWarn(msg) {
+export function popWarn(msg, showMsg) {
+  if (showMsg) return Message.warning({message: msg})
   const lang = getDefaultLang()
   // if(typeof(msg) === 'object' && !!msg.response) {
   //   Message.warning({message: msg.response.body.error})
