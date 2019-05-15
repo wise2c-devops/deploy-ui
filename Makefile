@@ -1,4 +1,4 @@
-REPO=registry.cn-hangzhou.aliyuncs.com/wise2c-dev/deploy-ui
+REPO?=registry.cn-hangzhou.aliyuncs.com/wise2c-dev/deploy-ui
 VERSION=latest
 DEV_VERSION=v0.5.2
 
