@@ -174,7 +174,7 @@ export default {
       var msg = ""
       Object.keys(component.properties).map(function(objectKey) {
         let value = component.properties[objectKey]
-        if ((objectKey.includes('password') || objectKey.includes('pwd'))) || (objectKey.includes('Password') {
+        if (objectKey.includes('password') || objectKey.includes('pwd') || objectKey.includes('Password')) {
           value = '*****'
         }
         msg += `<p><b>${objectKey}</b>: ${value || '--'}</p>`
