@@ -4,7 +4,7 @@
       <div class="form-group">
         <label for="componentType " class="required">{{$t('componets.componentModal.componentType')}}</label>
         <br>
-        <el-select v-model="component.name" :disabled="!!component.id" @change="changeComponent" :no-data-text="$t('slectEmpty')" :placeholder="$t('slectPlaceholder')">
+        <el-select v-model="component.name" :disabled="!!component.id" @change="changeComponent">
           <el-option v-for="item in types" :key="item" :label="item" :value="item">
           </el-option>
         </el-select>
@@ -12,7 +12,7 @@
       <div class="form-group">
         <label for="componentType " class="required">{{$t('componets.componentModal.version')}}</label>
         <br>
-        <el-select v-model="component.version" @change="changeVersion" :no-data-text="$t('slectEmpty')" :placeholder="$t('slectPlaceholder')">
+        <el-select v-model="component.version" @change="changeVersion">
           <el-option v-for="version in versions" :key="version" :label="version" :value="version">
           </el-option>
         </el-select>
@@ -34,34 +34,34 @@
           </el-tooltip>
         </label>
         <div v-if="property.type==='enum'">
-          <el-select v-validate="'required'" :name="property.variable" :placeholder="property.description" v-model="property[property.variable]" v-if="property.required" :no-data-text="$t('slectEmpty')">
-            <el-option v-for="(option, index) in property.options" :key="index">{{option}}</el-option>
-          </el-select>
-          <el-select :name="property.variable" :placeholder="property.description" v-model="property[property.variable]" v-else :no-data-text="$t('slectEmpty')">
-            <el-option v-for="(option, index) in property.options" :key="index">{{option}}</el-option>
-          </el-select>
+          <select class="form-control" v-validate="'required'" :name="property.variable" :placeholder="property.description" v-model="property[property.variable]" v-if="property.required">
+            <option v-for="(option, index) in property.options" :key="index">{{option}}</option>
+          </select>
+          <select class="form-control" :name="property.variable" :placeholder="property.description" v-model="property[property.variable]" v-else>
+            <option v-for="(option, index) in property.options" :key="index">{{option}}</option>
+          </select>
         </div>
-        <div v-if="property.type==='string'">
-          <el-input type="text" v-validate="'required'" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-if="property.required"></el-input>
-          <el-input type="text" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-else></el-input>
+        <div v-if="property.type==='string' && !property.label.includes('password')">
+          <input type="text" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-if="property.required">
+          <input type="text" class="form-control" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-else>
         </div>
         <div v-if="property.type==='int'">
-          <el-input type="number" v-validate="'required|numeric'" :placeholder="property.description" v-model.number="property[property.variable]" :name="property.variable" v-if="property.required"></el-input>
-          <el-input type="number" v-validate="'numeric'" :placeholder="property.description" v-model.number="property[property.variable]" :name="property.variable" v-else></el-input>
+          <input type="number" class="form-control" v-validate="'required|numeric'" :placeholder="property.description" v-model.number="property[property.variable]" :name="property.variable" v-if="property.required">
+          <input type="number" class="form-control" v-validate="'numeric'" :placeholder="property.description" v-model.number="property[property.variable]" :name="property.variable" v-else>
         </div>
-        <div v-if="property.type==='password'">
-          <el-input type="password" v-validate="'required'" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-if="property.required"></el-input>
-          <el-input type="password" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-else></el-input>
+        <div v-if="property.type==='password' || !!property.label.includes('password')">
+          <input type="password" class="form-control" v-validate="'required'" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-if="property.required">
+          <input type="password" class="form-control" :placeholder="property.description" v-model="property[property.variable]" :name="property.variable" v-else>
         </div>
         <label v-if="property.type==='bool'" class="vip-checkbox">
           <el-checkbox v-model="property[property.variable]"></el-checkbox>
         </label>
         <div v-if="property.type==='host'">
-          <el-select v-model="property[property.variable]" multiple :placeholder="property.description" v-validate="'required'" :name="property.variable"  v-if="property.required" :no-data-text="$t('slectEmpty')">
+          <el-select v-model="property[property.variable]" multiple :placeholder="property.description" v-validate="'required'" :name="property.variable"  v-if="property.required">
             <el-option v-for="item in hosts" :key="item.id" :label="item.hostname" :value="item.id">
             </el-option>
           </el-select>
-          <el-select v-model="property[property.variable]" multiple :placeholder="property.description" v-else :no-data-text="$t('slectEmpty')">
+          <el-select v-model="property[property.variable]" multiple :placeholder="property.description" v-else>
             <el-option v-for="item in hosts" :key="item.id" :label="item.hostname" :value="item.id">
             </el-option>
           </el-select>
@@ -158,7 +158,7 @@ export default {
     callMethod() {
       this.$validator.validateAll().then((result) => {
         if(!result) {
-          popWarn(this.$t('layer.warnTips'), true)
+          popWarn(this.$t('layer.warnTips'))
           return
         }
         this.component.hosts = {}
