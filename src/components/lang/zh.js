@@ -43,6 +43,7 @@ const componets = {
   startInstallButton: '开始安装',
   resets: '重置',
   addComponentsButton: '添加组件',
+  addComponentsTips: '没有组件可添加了',
   delteTips: '确定要删除该服务吗',
   startInstallCulsterTips: '确认开始安装集群',
   resetTips: '确认重置该集群到初始状态？',

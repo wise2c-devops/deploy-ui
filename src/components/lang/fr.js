@@ -43,6 +43,7 @@ const componets = {
   startInstallButton: 'Démarrer installation',
   resets: 'Reset',
   addComponentsButton: 'Ajouter composant',
+  addComponentsTips: 'Il n’y a plus d’composant à ajouter',
   delteTips: 'Êtes-vous sûr de vouloir supprimer le service ?',
   startInstallCulsterTips: `Confirmez le début de l'installation du cluster`,
   resetTips: `Confirmer que le cluster est réinitialisé à l'état initial ?`,
