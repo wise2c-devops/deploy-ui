@@ -39,7 +39,7 @@ const host = {
   }
 }
 
-const componets = {
+const components = {
   startInstallButton: '开始安装',
   resets: '重置',
   addComponentsButton: '添加组件',
@@ -111,6 +111,6 @@ module.exports = {
   Index,
   clusters,
   host,
-  componets,
+  components,
   errorMsg
 }
