@@ -145,7 +145,7 @@ export default {
     },
     addComponentDialog() {
       if (this.validComponentTypes && this.validComponentTypes.length === 0) {
-        return popWarn(this.$t('componets.addComponentsTips'))
+        return popWarn(this.$t('componets.addComponentsTips'),true)
       }
       this.component = {
         name: '',
