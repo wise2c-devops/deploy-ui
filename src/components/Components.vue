@@ -9,9 +9,9 @@
           <router-link to="">{{cluster.name}}</router-link>
         </li>
       </ol>
-      <el-button size="mini" type="primary" icon="el-icon-caret-right" @click.native.stop.prevent="install" class="status-icon" :disabled="selectComponents.length === 0">{{$t('componets.startInstallButton')}}</el-button>
-      <el-button size="mini" type="warning" icon="el-icon-warning" @click.native.stop.prevent="reset" class="status-icon" :disabled="isInitial">{{$t('componets.resets')}}</el-button>
-      <el-button size="small" type="primary" icon="el-icon-plus" @click.native.stop.prevent="addComponentDialog" class="pull-right">{{$t('componets.addComponentsButton')}}</el-button>
+      <el-button size="mini" type="primary" icon="el-icon-caret-right" @click.native.stop.prevent="install" class="status-icon" :disabled="selectComponents.length === 0">{{$t('components.startInstallButton')}}</el-button>
+      <el-button size="mini" type="warning" icon="el-icon-warning" @click.native.stop.prevent="reset" class="status-icon" :disabled="isInitial">{{$t('components.resets')}}</el-button>
+      <el-button size="small" type="primary" icon="el-icon-plus" @click.native.stop.prevent="addComponentDialog" class="pull-right">{{$t('components.addComponentsButton')}}</el-button>
     </div>
     <div class="panel-body">
       <div class="row hosts-table">
@@ -23,26 +23,26 @@
             width="40">
           </el-table-column>
         <!-- <el-table :data="components" :row-class-name="tableRowClassName" :stripe="true"> -->
-          <el-table-column align="center" prop="index" :label="$t('componets.table.num')" width="80px">
+          <el-table-column align="center" prop="index" :label="$t('components.table.num')" width="80px">
             <template scope="scope">
               {{scope.$index + 1}}
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="name" :label="$t('componets.table.serviceName')" width="120px">
+          <el-table-column align="center" prop="name" :label="$t('components.table.serviceName')" width="120px">
           </el-table-column>
-          <el-table-column align="center" prop="version" :label="$t('componets.table.version')" width="120px">
+          <el-table-column align="center" prop="version" :label="$t('components.table.version')" width="120px">
           </el-table-column>
-          <el-table-column align="left" :label="$t('componets.table.attribute')">
+          <el-table-column align="left" :label="$t('components.table.attribute')">
             <template scope="scope">
               <div v-html="properties(scope.row)"></div>
             </template>
           </el-table-column>
-          <el-table-column align="left" :label="$t('componets.table.host')">
+          <el-table-column align="left" :label="$t('components.table.host')">
             <template scope="scope">
               <div v-html="simpleHosts(scope.row)"></div>
             </template>
           </el-table-column>
-          <el-table-column align="center" :label="$t('componets.table.operate')" width="200px">
+          <el-table-column align="center" :label="$t('components.table.operate')" width="200px">
             <template scope="scope">
               <el-button @click.native.prevent="editComponentDialog(scope.row)" type="primary" size="small" icon="el-icon-edit"></el-button>
               <el-button @click.native.prevent="remove(scope.$index, scope.row)" type="danger" size="small" icon="el-icon-delete"></el-button>
@@ -123,7 +123,7 @@ export default {
       this.dialogVisible = true
     },
     remove(index, component) {
-      promptOnDelete(this, this.$t('componets.delteTips'), () => {
+      promptOnDelete(this, this.$t('components.delteTips'), () => {
         this.deleteComponent(this.clusterId, component.id, index, () => {
           this.selectComponents = this.selectComponents.filter(item=>item !== component.name)
           pop(this.$t('layer.deleteSuccess'))
@@ -145,7 +145,7 @@ export default {
     },
     addComponentDialog() {
       if (this.validComponentTypes && this.validComponentTypes.length === 0) {
-        return popWarn(this.$t('componets.addComponentsTips'),true)
+        return popWarn(this.$t('components.addComponentsTips'),true)
       }
       this.component = {
         name: '',
@@ -191,9 +191,9 @@ export default {
       }
       localStorage.setItem('selectComponents', JSON.stringify(this.selectComponents))
       //确认安装
-      promptOnDelete(this, this.$t('componets.startInstallCulsterTips'), () => {
+      promptOnDelete(this, this.$t('components.startInstallCulsterTips'), () => {
         this.deploy(this.clusterId, this.selectComponents, 'install', () => {
-          pop(this.$t('componets.startInstallButton'))
+          pop(this.$t('components.startInstallButton'))
           this.$router.push({
             path: `/clusters/${this.clusterId}/processing`
           })
@@ -201,9 +201,9 @@ export default {
       })
     },
     reset() {
-      promptOnDelete(this, this.$t('componets.resetTips'), () => {
+      promptOnDelete(this, this.$t('components.resetTips'), () => {
         this.deploy(this.clusterId, this.selectComponents, 'reset', () => {
-          pop(this.$t('componets.resetSuccessMsg'))
+          pop(this.$t('components.resetSuccessMsg'))
         })
       })
     }
