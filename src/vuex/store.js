@@ -2,12 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Cluster from './modules/cluster'
 import Component from './modules/component'
+
 Vue.use(Vuex)
 
 const state = {
 
   loading: false,
-  clusters: []
+  clusters: [],
 }
 
 const mutations = {
@@ -22,7 +23,7 @@ const mutations = {
   },
   DELETE_CLUSTER(state, index) {
     state.clusters.splice(index, 1)
-  }
+  },
 
 }
 
@@ -31,6 +32,6 @@ export default new Vuex.Store({
   mutations,
   modules: {
     cluster: Cluster,
-    component: Component
-  }
+    component: Component,
+  },
 })

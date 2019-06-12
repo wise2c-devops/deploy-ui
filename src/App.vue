@@ -65,8 +65,9 @@
 </style>
 <script type="text/javascript">
   import Loading from './components/Loading.vue'
-  import {showLoading, hideLoading} from './vuex/actions'
+  import { showLoading, hideLoading } from './vuex/actions'
   import store from './vuex/store'
+
   export default {
     components: {
       Loading
@@ -75,26 +76,26 @@
       return {
         title: 'Deployment UI',
         collapse: true,
-        mainCollsapn: {key: false},
+        mainCollsapn: { key: false },
         showMainNav: false,
         showContactUs: true,
-        content: ""
+        content: ''
       }
     },
     store,
-    created () {
+    created() {
       this.showLoading()
       this.hideLoading()
     },
-    mounted () {
+    mounted() {
     },
-    computed : {
+    computed: {
     },
     methods: {
       goPath(flag, path) {
         this.showContactUs = flag
         this.$router.push({
-          path: path
+          path
         })
       },
       changeI18n() {
@@ -106,7 +107,7 @@
           const local = localStorage.getItem('DEPLOYMENT_LANGUAGE')
           if (!local || local === 'zh') {
             localStorage.setItem('DEPLOYMENT_LANGUAGE', 'en')
-          }else {
+          } else {
             localStorage.setItem('DEPLOYMENT_LANGUAGE', 'zh')
           }
           this.$i18n.locale = localStorage.getItem('DEPLOYMENT_LANGUAGE')

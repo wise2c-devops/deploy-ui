@@ -47,82 +47,83 @@
 </template>
 
 <script>
-import { fetchHosts, getHosts, addHost, deleteHost, updateHost, getCluster } from 'vuexPath/modules/cluster'
-import HostDialog from './common/HostDialog'
-import { pop } from '../utils/alert'
-import { promptOnDelete } from '../utils/prompt'
-export default {
-  components: {
-    HostDialog
-  },
-  mounted() {
-    this.$root.$emit('clusterPage', 'hosts')
-    this.fetchHosts(this.clusterId)
-  },
-  computed: {
-    clusterId() {
-      return this.$route.params.id
-    }
-  },
-  methods: {
-    remove(index, id) {
-      promptOnDelete(this, this.$t('host.delteTips'), () => {
-        this.deleteHost(this.clusterId, id, index, () => {
-          pop(this.$t('layer.deleteSuccess'))
-        })
-      })
+  import { fetchHosts, getHosts, addHost, deleteHost, updateHost, getCluster } from 'vuexPath/modules/cluster'
+  import HostDialog from './common/HostDialog'
+  import { pop } from '../utils/alert'
+  import { promptOnDelete } from '../utils/prompt'
+
+  export default {
+    components: {
+      HostDialog
     },
-    back() {
-      this.$router.push({ name: 'clusters' })
+    mounted() {
+      this.$root.$emit('clusterPage', 'hosts')
+      this.fetchHosts(this.clusterId)
     },
-    next() {
-      this.$router.push({
-        path: `/clusters/${this.clusterId}/components`
-      })
-    },
-    addHostDialog() {
-      this.host = {
-        name: "",
-        description: ""
+    computed: {
+      clusterId() {
+        return this.$route.params.id
       }
-      this.dialogVisible = true
     },
-    create(host) {
-      this.addHost(this.clusterId, host, () => {
-        pop(this.$t('layer.createSuccess'))
-        this.dialogVisible = false
-      })
+    methods: {
+      remove(index, id) {
+        promptOnDelete(this, this.$t('host.delteTips'), () => {
+          this.deleteHost(this.clusterId, id, index, () => {
+            pop(this.$t('layer.deleteSuccess'))
+          })
+        })
+      },
+      back() {
+        this.$router.push({ name: 'clusters' })
+      },
+      next() {
+        this.$router.push({
+          path: `/clusters/${this.clusterId}/components`
+        })
+      },
+      addHostDialog() {
+        this.host = {
+          name: '',
+          description: ''
+        }
+        this.dialogVisible = true
+      },
+      create(host) {
+        this.addHost(this.clusterId, host, () => {
+          pop(this.$t('layer.createSuccess'))
+          this.dialogVisible = false
+        })
+      },
+      editHostDialog(host) {
+        this.host = Object.assign({}, host)
+        this.dialogVisible = true
+      },
+      update(host) {
+        this.updateHost(this.$route.params.id, host, () => {
+          pop(this.$t('layer.editSuccess'))
+          this.dialogVisible = false
+        })
+      }
     },
-    editHostDialog(host) {
-      this.host = Object.assign({}, host)
-      this.dialogVisible = true
+    vuex: {
+      getters: {
+        hosts: getHosts,
+        cluster: getCluster
+      },
+      actions: {
+        fetchHosts,
+        addHost,
+        deleteHost,
+        updateHost
+      }
     },
-    update(host) {
-      this.updateHost(this.$route.params.id, host, () => {
-        pop(this.$t('layer.editSuccess'))
-        this.dialogVisible = false
-      })
-    }
-  },
-  vuex: {
-    getters: {
-      hosts: getHosts,
-      cluster: getCluster
-    },
-    actions: {
-      fetchHosts,
-      addHost,
-      deleteHost,
-      updateHost
-    }
-  },
-  data() {
-    return {
-      dialogVisible: false,
-      host: {}
+    data() {
+      return {
+        dialogVisible: false,
+        host: {}
+      }
     }
   }
-}
 </script>
 <style lang="scss" scoped>
 .hosts-container {

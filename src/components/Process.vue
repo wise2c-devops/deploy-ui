@@ -4,7 +4,8 @@
       <li class="pull-left" v-for="(item, index) in validStages" :key="index">
         <div class="box">
           <div :class="'text-center ' + item.state">
-            <svg-filler :path="`/static/components/${item.name}-playbook/${item.name}.svg`" :fill="getFill(item)" width="45px" height="45px"/>
+            <svg-icon :icon-class="item.name" width="45px" height="45px" :fill="getFill(item)"></svg-icon>
+            <!-- <svg-filler :path="`/static/components/${item.name}-playbook/${item.name}.svg`" :fill="getFill(item)" width="45px" height="45px"/> -->
             <p class="title">{{item.name}}</p>
           </div>
         </div>
@@ -27,150 +28,151 @@
   </div>
 </template>
 <script>
-import SvgFiller from 'vue-svg-filler'
-import { pop } from '../utils/alert'
-import { cancel,
-  getCluster,
-  fetchClusterDetail,
-  getClusterStatus,
-  fetchClusterStatus,
-  fetchComponentTypes } from 'vuexPath/modules/cluster'
-import { findLast, findIndex } from 'lodash'
-let intervalId
+ /* eslint func-names: 'off' */
+  // import SvgFiller from 'vue-svg-filler'
+  import { pop } from '../utils/alert'
+  import { cancel,
+           getCluster,
+           fetchClusterDetail,
+           getClusterStatus,
+           fetchClusterStatus,
+           fetchComponentTypes } from 'vuexPath/modules/cluster'
+  import { findLast, findIndex } from 'lodash'
 
-export default {
-  computed: {
-    clusterId() {
-      return this.$route.params.id
+  let intervalId
+
+  export default {
+    computed: {
+      clusterId() {
+        return this.$route.params.id
+      },
+      isDone() {
+        return !!this.cluster && this.cluster.state === 'success'
+      }
     },
-    isDone() {
-      return !!this.cluster && this.cluster.state === 'success'
-    }
-  },
-  components: {
-    SvgFiller
-  },
-  data() {
-    return {
-      failed: false,
-      logs: [],
-      validStages: []
-    }
-  },
-  methods: {
-    back() {
-      this.$router.push({
-        path: `/clusters/${this.clusterId}/hosts`
-      })
+    // components: {
+    //   SvgFiller
+    // },
+    data() {
+      return {
+        failed: false,
+        logs: [],
+        validStages: []
+      }
     },
-    cancelDeployment() {
-      this.cancel(this.clusterId, () => {
-        const msg = this.$i18n.locale === 'zh'? '取消安装成功': 'Uninstall success'
-        pop(msg)
-        this.back()
-      })
-    },
-    getFill(item) {
-      if (item.state === 'ok') return '#2ACD98'
-      else if (item.state === 'failed') return '#f16a64'
-      return '#cdd1d9'
+    methods: {
+      back() {
+        this.$router.push({
+          path: `/clusters/${this.clusterId}/hosts`
+        })
+      },
+      cancelDeployment() {
+        this.cancel(this.clusterId, () => {
+          const msg = this.$i18n.locale === 'zh' ? '取消安装成功' : 'Uninstall success'
+          pop(msg)
+          this.back()
+        })
+      },
+      getFill(item) {
+        if (item.state === 'ok') return '#2ACD98'
+        if (item.state === 'failed') return '#f16a64'
+        return '#cdd1d9'
       // return item.enabled ? "#4CAF50" : '#cdd1d9'
-    },
-    listenSoket() {
-      var url = `${process.env.WEBSOCKET_HOST}/v1/stats`
-      if (process.env.NODE_ENV === 'production') {
-        url = `ws://${location.host}/v1/stats`
-      }
-      var socket = new WebSocket(url)
-      socket.onopen = (event) => {
-        console.info('Success link to backend server', event)
-      }
-      socket.onmessage = (event) => {
-
-        const json = JSON.parse(event.data)
-        const stage = findLast(this.validStages, stage => stage.name.toLowerCase() === json.stage.toLowerCase())
-
-        if (json.state === 'failed') {
-          this.failed = true
-          stage.state = 'failed'
+      },
+      listenSoket() {
+        console.log(SvgFiller, 'get SvgFiller==????????????')
+        let url = `${process.env.VUE_APP_WS_HOST}/v1/stats`
+        if (process.env.NODE_ENV === 'production') {
+          url = `${process.env.VUE_APP_WS_HOST}/v1/stats`
         }
+        const socket = new WebSocket(url)
+        socket.onopen = (event) => {
+          console.info('Success link to backend server', event)
+        }
+        socket.onmessage = (event) => {
+          const json = JSON.parse(event.data)
+          const stage = findLast(this.validStages, stage => stage.name.toLowerCase() === json.stage.toLowerCase())
 
-        this.logs.push(`${json.time}: [${json.stage}] [${json.host}]  task: ${json.task.name} - ${json.task.state},  message: ${json.data.msg}`)
-        if (json.state === 'ok') {
-          // var stage = findLast(this.validStages, stage => stage.name.toLowerCase() === json.stage.toLowerCase())
-          if (!!stage) {
-            stage.state = 'ok'
+          if (json.state === 'failed') {
+            this.failed = true
+            stage.state = 'failed'
+          }
+
+          this.logs.push(`${json.time}: [${json.stage}] [${json.host}]  task: ${json.task.name} - ${json.task.state},  message: ${json.data.msg}`)
+          if (json.state === 'ok') {
+            // var stage = findLast(this.validStages, stage => stage.name.toLowerCase() === json.stage.toLowerCase())
+            if (!!stage) {
+              stage.state = 'ok'
             // stage.enabled = true
+            }
           }
         }
+      },
+      formatStages() {
+        const slectComponents = JSON.parse(localStorage.getItem('selectComponents'))
+        this.componentTypes.forEach((componentType) => {
+          const target = findLast(slectComponents, slectComponent => slectComponent === componentType)
+          if (target) {
+            this.validStages.push({
+              name: target,
+              state: ''
+            })
+          }
+        })
+      },
+      computedStageState() {
+        this.fetchClusterStatus(this.clusterId, () => {
+          // 显示那些组件已经安装了
+          const index = findIndex(this.validStages, stage => stage.name.toLowerCase() === this.status.currentStage.toLowerCase())
+          if (!!this.cluster && this.cluster.state !== 'success' && index > 0) {
+            for (let tempIndex = 0; tempIndex < index; tempIndex++) {
+              this.validStages[tempIndex].state = 'ok'
+            }
+          }
+        })
       }
     },
-    formatStages() {
-      const slectComponents = JSON.parse(localStorage.getItem('selectComponents'))
-      this.componentTypes.forEach(componentType=>{
-        var target = findLast(slectComponents, slectComponent=>slectComponent === componentType)
-        if(target) {
-          this.validStages.push({
-            name: target,
-            state: ''
-          })
-        }
+    created() {
+      this.fetchComponentTypes(() => {
+        this.formatStages()
       })
-    },
-    computedStageState() {
-      this.fetchClusterStatus(this.clusterId, () => {
-        //显示那些组件已经安装了
-        const index = findIndex(this.validStages, stage => stage.name.toLowerCase() === this.status.currentStage.toLowerCase())
-        if(!!this.cluster && this.cluster.state !== 'success' && index > 0 ) {
-          for(var tempIndex = 0; tempIndex < index; tempIndex ++) {
-            this.validStages[tempIndex].state = 'ok'
-          }
-        }
-      })
-    }
-  },
-  created() {
-    this.fetchComponentTypes(()=>{
-      this.formatStages()
-    })
-    this.fetchClusterDetail(this.clusterId)
-  },
-  mounted() {
-    if (this.cluster.state === 'processing'){
-      this.computedStageState()
-    }
-    this.listenSoket()
-
-    intervalId = setInterval(()=>{
       this.fetchClusterDetail(this.clusterId)
-    }, 3000)
-
-  },
-  vuex: {
-    actions: {
-      cancel,
-      fetchClusterDetail,
-      fetchClusterStatus,
-      fetchComponentTypes
     },
-    getters: {
-      cluster: getCluster,
-      status: getClusterStatus,
-      componentTypes: state=>state.cluster.types
-    }
-  },
-  watch: {
-    'cluster.state': function(val) {
-      if (val === 'success' || val === 'failed') clearInterval(intervalId)
-      else if ( !!val && val === 'processing') {
+    mounted() {
+      if (this.cluster.state === 'processing') {
         this.computedStageState()
       }
+      this.listenSoket()
+
+      intervalId = setInterval(() => {
+        this.fetchClusterDetail(this.clusterId)
+      }, 3000)
+    },
+    vuex: {
+      actions: {
+        cancel,
+        fetchClusterDetail,
+        fetchClusterStatus,
+        fetchComponentTypes
+      },
+      getters: {
+        cluster: getCluster,
+        status: getClusterStatus,
+        componentTypes: state => state.cluster.types
+      }
+    },
+    watch: {
+      'cluster.state': function (val) {
+        if (val === 'success' || val === 'failed') clearInterval(intervalId)
+        else if (!!val && val === 'processing') {
+          this.computedStageState()
+        }
+      }
+    },
+    beforeDestroy() {
+      clearInterval(intervalId)
     }
-  },
-  beforeDestroy () {
-    clearInterval(intervalId)
   }
-}
 </script>
 <style lang="scss">
 @import "~assets/stylesheets/variables";

@@ -17,35 +17,36 @@
   </div>
 </template>
 <script>
-import { fetchLogs, getLogs, getCluster } from "vuexPath/modules/cluster"
-export default {
-  computed: {
-    clusterId() {
-      return this.$route.params.id
-    }
-  },
-  methods: {
-    getLog(log) {
-      return `${log.time}: [${log.stage}] [${log.host}]  task: ${log.task
-        .name} - ${log.task.state},  message: ${log.data.msg}`
-    }
-  },
-  mounted() {
-    setTimeout(() => {
-      this.$root.$emit("clusterPage", "logs")
-    }, 100)
-    this.fetchLogs(this.clusterId)
-  },
-  vuex: {
-    actions: {
-      fetchLogs
+  import { fetchLogs, getLogs, getCluster } from 'vuexPath/modules/cluster'
+
+  export default {
+    computed: {
+      clusterId() {
+        return this.$route.params.id
+      }
     },
-    getters: {
-      logs: getLogs,
-      cluster: getCluster
+    methods: {
+      getLog(log) {
+        return `${log.time}: [${log.stage}] [${log.host}]  task: ${log.task
+          .name} - ${log.task.state},  message: ${log.data.msg}`
+      }
+    },
+    mounted() {
+      setTimeout(() => {
+        this.$root.$emit('clusterPage', 'logs')
+      }, 100)
+      this.fetchLogs(this.clusterId)
+    },
+    vuex: {
+      actions: {
+        fetchLogs
+      },
+      getters: {
+        logs: getLogs,
+        cluster: getCluster
+      }
     }
   }
-}
 </script>
 <style lang="scss">
 @import "../assets/stylesheets/variables";
@@ -55,4 +56,3 @@ export default {
   }
 }
 </style>
-

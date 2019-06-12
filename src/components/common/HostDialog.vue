@@ -23,47 +23,47 @@
   </el-dialog>
 </template>
 <script>
-import {validationError} from '../../mixin/error'
-import {popWarn} from '../../utils/alert'
-export default {
-  mixins: [validationError],
-  props: {
-    dialogVisible: {
-      type: Boolean,
-      default: false
+  import { validationError } from '../../mixin/error'
+  import { popWarn } from '../../utils/alert'
+
+  export default {
+    mixins: [validationError],
+    props: {
+      dialogVisible: {
+        type: Boolean,
+        default: false
+      },
+      addHost: Function,
+      updateHost: Function,
+      host: {
+        type: Object,
+        default: {
+          hostname: '',
+          ip: '',
+          description: ''
+        }
+      }
     },
-    addHost: Function,
-    updateHost: Function,
-    host: {
-      type: Object,
-      default: {
-        hostname: '',
-        ip: '',
-        description: ''
+    methods: {
+      close() {
+        this.$emit('update:dialogVisible', false)
+      },
+      callMethod() {
+        this.$validator.validateAll().then((result) => {
+          if (!result) {
+            popWarn(this.$t('layer.warnTips'))
+            return
+          }
+
+          if (!!this.host.id) {
+            return this.updateHost(this.host)
+          }
+          return this.addHost(this.host)
+        })
+      },
+      onSubmit() {
+        this.callMethod()
       }
     }
-  },
-  methods: {
-    close() {
-      this.$emit('update:dialogVisible', false)
-    },
-    callMethod() {
-      this.$validator.validateAll().then((result) => {
-        if(!result) {
-          popWarn(this.$t('layer.warnTips'))
-          return
-        }
-
-        if(!!this.host.id) {
-          return this.updateHost(this.host)
-        }
-        return this.addHost(this.host)
-      })
-    },
-    onSubmit() {
-      this.callMethod()
-    }
   }
-}
 </script>
-

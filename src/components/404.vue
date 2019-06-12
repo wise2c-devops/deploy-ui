@@ -36,24 +36,24 @@
   }
 </style>
 <script tyee="text/javscript">
-  var timer
+  let timer
   export default {
-    data () {
+    data() {
       return {
         time: 5
       }
     },
-    mounted () {
-      timer = setInterval(()=>{
-        if (this.time===0) {
+    mounted() {
+      timer = setInterval(() => {
+        if (this.time === 0) {
           clearInterval()
-          this.$router.push({path: '/'})
-        }else {
-          this.time--
+          this.$router.push({ path: '/' })
+        } else {
+          this.time -= 1
         }
       }, 1000)
     },
-    destroyed () {
+    destroyed() {
       clearInterval(timer)
     }
   }

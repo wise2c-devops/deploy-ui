@@ -77,125 +77,125 @@
   </el-dialog>
 </template>
 <script>
-import { validationError } from '../../mixin/error'
-import {popWarn} from '../../utils/alert'
-import {
-  getComponentProperties,
-  resetProperties,
-  fetchComponentVersions,
-  getComponentVersions,
-  fetchVersionProperties} from 'vuexPath/modules/component'
-export default {
-  mixins: [validationError],
-  props: {
-    dialogVisible: {
-      type: Boolean,
-      default: false
-    },
-    hosts: {
-      type: Array,
-      default: []
-    },
-    addComponent: Function,
-    updateComponent: Function,
-    types: {
-      type: Array,
-      default: []
-    },
-    component: {
-      type: Object,
-      default: {
-        name: null,
-        hosts: {},
-        properties: {}
-      }
-    }
-  },
-  watch: {
-    dialogVisible(newValue) {
-      if(newValue && !!this.component.name && !!this.component.version) {
-        this.fetchComponentVersions(this.component.name)
-        this.fetchVersionProperties(this.component.name, this.component.version, {isEdit: true, component: this.component})
-      }
-    }
-  },
-  vuex: {
-    actions: {
-      resetProperties,
-      fetchComponentVersions,
-      fetchVersionProperties
-    },
-    getters: {
-      properties: getComponentProperties,
-      versions: getComponentVersions
-    }
-  },
-  data() {
-    return {
-      values: {},
-      selectedHosts: {}
-    }
-  },
-  computed: {
-    clusterId() {
-      return this.$route.params.id
-    }
-  },
-  beforeMount() {
-    this.resetProperties()
-  },
-  methods: {
-    close() {
-      this.$emit('update:dialogVisible', false)
-    },
-    validateTips(property) {
-      if (property.type==='host') {
-        return this.$t('componets.componentModal.hostTips')
-      }else {
-        return this.$t('componets.componentModal.tips') +`${property.label}`
-      }
-    },
-    callMethod() {
-      this.$validator.validateAll().then((result) => {
-        if(!result) {
-          popWarn(this.$t('layer.warnTips'))
-          return
+  import { validationError } from '../../mixin/error'
+  import { popWarn } from '../../utils/alert'
+  import {
+    getComponentProperties,
+    resetProperties,
+    fetchComponentVersions,
+    getComponentVersions,
+    fetchVersionProperties } from 'vuexPath/modules/component'
+
+  export default {
+    mixins: [validationError],
+    props: {
+      dialogVisible: {
+        type: Boolean,
+        default: false
+      },
+      hosts: {
+        type: Array,
+        default: []
+      },
+      addComponent: Function,
+      updateComponent: Function,
+      types: {
+        type: Array,
+        default: []
+      },
+      component: {
+        type: Object,
+        default: {
+          name: null,
+          hosts: {},
+          properties: {}
         }
-        this.component.hosts = {}
-        this.properties.forEach(item=>{
-          if (item[item.variable] instanceof Array) {
-            this.component.hosts[item.variable] = item[item.variable]
-          }else {
-            this.component.properties[item.variable] = item[item.variable]
+      }
+    },
+    watch: {
+      dialogVisible(newValue) {
+        if (newValue && !!this.component.name && !!this.component.version) {
+          this.fetchComponentVersions(this.component.name)
+          this.fetchVersionProperties(this.component.name, this.component.version, { isEdit: true, component: this.component })
+        }
+      }
+    },
+    vuex: {
+      actions: {
+        resetProperties,
+        fetchComponentVersions,
+        fetchVersionProperties
+      },
+      getters: {
+        properties: getComponentProperties,
+        versions: getComponentVersions
+      }
+    },
+    data() {
+      return {
+        values: {},
+        selectedHosts: {}
+      }
+    },
+    computed: {
+      clusterId() {
+        return this.$route.params.id
+      }
+    },
+    beforeMount() {
+      this.resetProperties()
+    },
+    methods: {
+      close() {
+        this.$emit('update:dialogVisible', false)
+      },
+      validateTips(property) {
+        if (property.type === 'host') {
+          return this.$t('componets.componentModal.hostTips')
+        }
+        return this.$t('componets.componentModal.tips') + `${property.label}`
+      },
+      callMethod() {
+        this.$validator.validateAll().then((result) => {
+          if (!result) {
+            popWarn(this.$t('layer.warnTips'))
+            return
           }
+          this.component.hosts = {}
+          this.properties.forEach((item) => {
+            if (item[item.variable] instanceof Array) {
+              this.component.hosts[item.variable] = item[item.variable]
+            } else {
+              this.component.properties[item.variable] = item[item.variable]
+            }
+          })
+          if (!!this.component.id) {
+            return this.updateComponent(this.component)
+          }
+          return this.addComponent(this.component)
         })
-        if (!!this.component.id) {
-          return this.updateComponent(this.component)
+      },
+      onSubmit() {
+        this.callMethod()
+      },
+      changeComponent(value) {
+        if (!!value && value !== '') {
+          this.component.version = ''
+          this.resetProperties()
+          this.fetchComponentVersions(value)
         }
-        return this.addComponent(this.component)
-      })
-    },
-    onSubmit(){
-      this.callMethod()
-    },
-    changeComponent(value) {
-      if(!!value && value !== '') {
-        this.component.version = ''
-        this.resetProperties()
-        this.fetchComponentVersions(value)
+      },
+      changeVersion(value) {
+        this.fetchVersionProperties(this.component.name, value, {})
+      },
+      validHosts(hosts) {
+        return hosts.map((host) => {
+          host.value = host.id
+          return host
+        })
       }
-    },
-    changeVersion(value) {
-      this.fetchVersionProperties(this.component.name, value, {})
-    },
-    validHosts(hosts) {
-      return hosts.map(host => {
-        host.value = host.id
-        return host
-      })
     }
   }
-}
 </script>
 
 <style lang="scss" scoped>
