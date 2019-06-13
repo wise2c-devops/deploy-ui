@@ -5,13 +5,12 @@
         <div class="box">
           <div :class="'text-center ' + item.state">
             <svg-icon :icon-class="item.name" width="45px" height="45px" :fill="getFill(item)"></svg-icon>
-            <!-- <svg-filler :path="`/static/components/${item.name}-playbook/${item.name}.svg`" :fill="getFill(item)" width="45px" height="45px"/> -->
             <p class="title">{{item.name}}</p>
           </div>
         </div>
       </li>
     </ul>
-    <div class="logs">
+    <div class="logs-wrapper logs">
       <div v-for="(log, index) in logs" :key="index" class="log">
         <span class="line-number">{{index + 1}}</span>
         <p v-html="log"></p>
@@ -29,7 +28,6 @@
 </template>
 <script>
  /* eslint func-names: 'off' */
-  // import SvgFiller from 'vue-svg-filler'
   import { pop } from '../utils/alert'
   import { cancel,
            getCluster,
@@ -50,9 +48,6 @@
         return !!this.cluster && this.cluster.state === 'success'
       }
     },
-    // components: {
-    //   SvgFiller
-    // },
     data() {
       return {
         failed: false,
@@ -80,7 +75,6 @@
       // return item.enabled ? "#4CAF50" : '#cdd1d9'
       },
       listenSoket() {
-        console.log(SvgFiller, 'get SvgFiller==????????????')
         let url = `${process.env.VUE_APP_WS_HOST}/v1/stats`
         if (process.env.NODE_ENV === 'production') {
           url = `${process.env.VUE_APP_WS_HOST}/v1/stats`
@@ -235,30 +229,4 @@
   }
 }
 
-.logs {
-  width: 80%;
-  margin: 50px auto;
-  padding: 20px;
-  border-top: 30px solid #b3b3b3;
-  background: lighten(#000, 15%);
-  border-radius: 8px;
-  color: #fff;
-  counter-reset: subsection;
-  .log {
-    font-size: 14px;
-    margin-bottom: 5px;
-    span {
-      display: inline-block;
-      color: #666;
-      text-align: right;
-      width: 30px;
-      margin-right: 10px;
-    }
-    p {
-      display: inline-block;
-      text-overflow: ellipsis;
-      width: 92%;
-    }
-  }
-}
 </style>

@@ -8,7 +8,7 @@ module.exports = {
   publicPath: '/',
   productionSourceMap: false,
   devServer: {
-    port: 3000,
+    port: 30001,
     open: true,
     overlay: {
       warnings: false,

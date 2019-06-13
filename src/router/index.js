@@ -7,53 +7,53 @@ export default new VueRouter({
   routes: [
     {
       path: '/',
-      component: require('../components/IndexPage.vue').default,
+      component: () => import('components/IndexPage.vue')
     },
     {
       path: '/clusters',
       name: 'clusters',
-      component: require('../components/Clusters.vue').default,
+      component: () => import('components/Clusters.vue')
     },
     {
       path: '/hosts',
-      component: require('../components/Hosts.vue').default,
+      component: () => import('components/Hosts.vue')
     },
     {
       path: '/globalConfig',
-      component: require('../components/GlobalConfig.vue').default,
+      component: () => import('components/GlobalConfig.vue')
     },
     {
       path: '/clusters/:id',
-      component: require('../components/ClusterBase.vue').default,
+      component: () => import('components/ClusterBase.vue'),
       children: [
         {
           name: 'hosts',
           path: 'hosts',
-          component: require('../components/Hosts.vue').default,
+          component: () => import('components/Hosts.vue')
         },
         {
           path: 'components',
           name: 'components',
-          component: require('../components/Components.vue').default,
+          component: () => import('components/Components.vue')
         },
         {
           path: 'logs',
           name: 'logs',
-          component: require('../components/Logs.vue').default,
+          component: () => import('components/Logs.vue')
         },
       ],
     },
     {
       path: '/clusters/:id/processing',
-      component: require('../components/Process.vue').default,
+      component: () => import('components/Process.vue')
     },
     {
       path: '*',
-      component: require('../components/404.vue').default,
+      component: () => import('components/404.vue')
     },
     // {
     //   path: '/contact',
-    //   component: require('../components/Contact.vue')
+    //   component: () => import('components/Contact.vue')
     // }
 
   ],

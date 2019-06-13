@@ -94,3 +94,31 @@ body {
     border-top: 1px solid #e5e5e5;
   }
 }
+
+
+.logs-wrapper.logs {
+  width: 80%;
+  margin: 50px auto;
+  padding: 20px;
+  border-top: 30px solid #b3b3b3;
+  background: lighten(#000, 15%);
+  border-radius: 8px;
+  color: #fff;
+  counter-reset: subsection;
+  .log {
+    font-size: 14px;
+    margin-bottom: 5px;
+    span {
+      display: inline-block;
+      color: #666;
+      text-align: right;
+      width: 30px;
+      margin-right: 10px;
+    }
+    p {
+      display: inline-block;
+      text-overflow: ellipsis;
+      width: 92%;
+    }
+  }
+}

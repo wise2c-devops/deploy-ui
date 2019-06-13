@@ -1,8 +1,8 @@
 <template>
-  <el-dialog :title="$t('componets.componentModal.modalTile')" :visible="dialogVisible" size="small" :close-on-click-modal="false" :show-close="false">
+  <el-dialog :title="$t('serviceComponent.componentModal.modalTile')" :visible="dialogVisible" size="small" :close-on-click-modal="false" :show-close="false">
     <form @submit.prevent="onSubmit">
       <div class="form-group">
-        <label for="componentType " class="required">{{$t('componets.componentModal.componentType')}}</label>
+        <label for="componentType " class="required">{{$t('serviceComponent.componentModal.componentType')}}</label>
         <br>
         <el-select v-model="component.name" :disabled="!!component.id" @change="changeComponent">
           <el-option v-for="item in types" :key="item" :label="item" :value="item">
@@ -10,7 +10,7 @@
         </el-select>
       </div>
       <div class="form-group">
-        <label for="componentType " class="required">{{$t('componets.componentModal.version')}}</label>
+        <label for="componentType " class="required">{{$t('serviceComponent.componentModal.version')}}</label>
         <br>
         <el-select v-model="component.version" @change="changeVersion">
           <el-option v-for="version in versions" :key="version" :label="version" :value="version">
@@ -151,9 +151,9 @@
       },
       validateTips(property) {
         if (property.type === 'host') {
-          return this.$t('componets.componentModal.hostTips')
+          return this.$t('serviceComponent.componentModal.hostTips')
         }
-        return this.$t('componets.componentModal.tips') + `${property.label}`
+        return this.$t('serviceComponent.componentModal.tips') + `${property.label}`
       },
       callMethod() {
         this.$validator.validateAll().then((result) => {

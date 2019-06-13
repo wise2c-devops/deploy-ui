@@ -51,7 +51,7 @@
       callMethod() {
         this.$validator.validateAll().then((result) => {
           if (!result) {
-            popWarn(this.$t('layer.warnTips'))
+            popWarn(this.$t('layer.warnTips'), true)
             return
           }
 

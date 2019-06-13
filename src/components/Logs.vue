@@ -8,7 +8,7 @@
         <router-link to="">{{cluster.name}}</router-link>
       </li>
     </ol>
-    <div class="log-wrapper logs">
+    <div class="logs-wrapper logs">
       <div v-for="(log, index) in logs" :key="index" class="log">
         <span class="line-number">{{index + 1}}</span>
         <p v-html="getLog(log)"></p>

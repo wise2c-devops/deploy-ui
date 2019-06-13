@@ -1,6 +1,6 @@
 REPO_DEV=registry.cn-hangzhou.aliyuncs.com/wise2c-dev/deploy-ui
 REPO_TEST=registry.cn-hangzhou.aliyuncs.com/wise2c-test/deploy-ui
-VERSION?=v0.5.6
+VERSION?=v0.5.7
 TIMEINFO=$(shell date +'%Y%m%d-%H%M%S')
 
 .PHONY:build push_dev push_test push release run
@@ -20,6 +20,7 @@ push_test:
 	docker push $(REPO_TEST):$(VERSION)
 
 push: push_dev push_test
+release_dev: build  push_dev
 release: build push
 
 

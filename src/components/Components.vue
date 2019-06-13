@@ -9,9 +9,9 @@
           <router-link to="">{{cluster.name}}</router-link>
         </li>
       </ol>
-      <el-button size="mini" type="primary" icon="el-icon-caret-right" @click.native.stop.prevent="install" class="status-icon" :disabled="selectComponents.length === 0">{{$t('componets.startInstallButton')}}</el-button>
-      <el-button size="mini" type="warning" icon="el-icon-warning" @click.native.stop.prevent="reset" class="status-icon" :disabled="isInitial">{{$t('componets.resets')}}</el-button>
-      <el-button size="small" type="primary" icon="el-icon-plus" @click.native.stop.prevent="addComponentDialog" class="pull-right">{{$t('componets.addComponentsButton')}}</el-button>
+      <el-button size="mini" type="primary" icon="el-icon-caret-right" @click.native.stop.prevent="install" class="status-icon" :disabled="selectComponents.length === 0">{{$t('serviceComponent.startInstallButton')}}</el-button>
+      <el-button size="mini" type="warning" icon="el-icon-warning" @click.native.stop.prevent="reset" class="status-icon" :disabled="isInitial">{{$t('serviceComponent.resets')}}</el-button>
+      <el-button size="small" type="primary" icon="el-icon-plus" @click.native.stop.prevent="addComponentDialog" class="pull-right">{{$t('serviceComponent.addComponentsButton')}}</el-button>
     </div>
     <div class="panel-body">
       <div class="row hosts-table">
@@ -23,26 +23,26 @@
             width="40">
           </el-table-column>
         <!-- <el-table :data="components" :row-class-name="tableRowClassName" :stripe="true"> -->
-          <el-table-column align="center" prop="index" :label="$t('componets.table.num')" width="80px">
+          <el-table-column align="center" prop="index" :label="$t('serviceComponent.table.num')" width="80px">
             <template scope="scope">
               {{scope.$index + 1}}
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="name" :label="$t('componets.table.serviceName')" width="120px">
+          <el-table-column align="center" prop="name" :label="$t('serviceComponent.table.serviceName')" width="120px">
           </el-table-column>
-          <el-table-column align="center" prop="version" :label="$t('componets.table.version')" width="120px">
+          <el-table-column align="center" prop="version" :label="$t('serviceComponent.table.version')" width="120px">
           </el-table-column>
-          <el-table-column align="left" :label="$t('componets.table.attribute')">
+          <el-table-column align="left" :label="$t('serviceComponent.table.attribute')">
             <template scope="scope">
               <div v-html="properties(scope.row)"></div>
             </template>
           </el-table-column>
-          <el-table-column align="left" :label="$t('componets.table.host')">
+          <el-table-column align="left" :label="$t('serviceComponent.table.host')">
             <template scope="scope">
               <div v-html="simpleHosts(scope.row)"></div>
             </template>
           </el-table-column>
-          <el-table-column align="center" :label="$t('componets.table.operate')" width="200px">
+          <el-table-column align="center" :label="$t('serviceComponent.table.operate')" width="200px">
             <template scope="scope">
               <el-button @click.native.prevent="editComponentDialog(scope.row)" type="primary" size="small" icon="el-icon-edit"></el-button>
               <el-button @click.native.prevent="remove(scope.$index, scope.row)" type="danger" size="small" icon="el-icon-delete"></el-button>
@@ -124,7 +124,7 @@
         this.dialogVisible = true
       },
       remove(index, component) {
-        promptOnDelete(this, this.$t('componets.delteTips'), () => {
+        promptOnDelete(this, this.$t('serviceComponent.delteTips'), () => {
           this.deleteComponent(this.clusterId, component.id, index, () => {
             this.selectComponents = this.selectComponents.filter(item => item !== component.name)
             pop(this.$t('layer.deleteSuccess'))
@@ -145,7 +145,7 @@
       },
       addComponentDialog() {
         if (this.validComponentTypes && this.validComponentTypes.length === 0) {
-          return popWarn(this.$t('componets.addComponentsTips'))
+          return popWarn(this.$t('serviceComponent.addComponentsTips'), true)
         }
         this.component = {
           name: '',
@@ -174,7 +174,7 @@
         let msg = ''
         Object.keys(component.properties).map((objectKey) => {
           let value = component.properties[objectKey]
-          if (objectKey.includes('password') || objectKey.includes('pwd')) {
+          if (objectKey.includes('password') || objectKey.includes('pwd') || objectKey.includes('Password')) {
             value = '*****'
           }
           msg += `<p><b>${objectKey}</b>: ${value || '--'}</p>`
@@ -191,9 +191,9 @@
         }
         localStorage.setItem('selectComponents', JSON.stringify(this.selectComponents))
         // 确认安装
-        promptOnDelete(this, this.$t('componets.startInstallCulsterTips'), () => {
+        promptOnDelete(this, this.$t('serviceComponent.startInstallCulsterTips'), () => {
           this.deploy(this.clusterId, this.selectComponents, 'install', () => {
-            pop(this.$t('componets.startInstallButton'))
+            pop(this.$t('serviceComponent.startInstallButton'))
             this.$router.push({
               path: `/clusters/${this.clusterId}/processing`
             })
@@ -201,9 +201,9 @@
         })
       },
       reset() {
-        promptOnDelete(this, this.$t('componets.resetTips'), () => {
+        promptOnDelete(this, this.$t('serviceComponent.resetTips'), () => {
           this.deploy(this.clusterId, this.selectComponents, 'reset', () => {
-            pop(this.$t('componets.resetSuccessMsg'))
+            pop(this.$t('serviceComponent.resetSuccessMsg'))
           })
         })
       }

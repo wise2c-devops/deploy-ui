@@ -2,19 +2,19 @@ import Vue from 'vue'
 import router from 'src/router'
 import store from 'vuexPath/store'
 import '../static/index.js'
-
-
-// import "spinkit/css/spinners/9-cube-grid.css"
 import moment from 'moment'
 import Element from 'element-ui'
 import VeeValidate from 'vee-validate'
-import ZH from './components/lang/zh'
-import EN from './components/lang/en'
+import ZH from './lang/zh'
+import EN from './lang/en'
+import FR from './lang/fr'
 import './assets/wise-icons/css/fontello.css'
 import 'element-ui/lib/theme-chalk/index.css'
 import VueI18n from 'vue-i18n'
 import App from './App'
 import sysconfig from '../config/sysconfig.json'
+import { getDocmentTitle, getDefaultLang } from 'utils/string'
+
 
 Vue.prototype.$config = Vue.prototype.$config || sysconfig
 
@@ -29,22 +29,25 @@ Vue.use(Element)
 Vue.use(VeeValidate)
 Vue.use(VueI18n)
 
+const defaultLang = getDefaultLang()
 const i18n = new VueI18n({
-  locale: localStorage.getItem('DEPLOYMENT_LANGUAGE') ? localStorage.getItem('DEPLOYMENT_LANGUAGE') : 'zh', // 语言标识
+  locale: defaultLang,
   messages: {
     zh: ZH,
     en: EN,
+    fr: FR,
   },
 })
 
-// router.beforeEach((to, from, next) => {
-//   document.title = 'WiseCloud 部署中心'
-//   next()
-// })
+router.beforeEach((to, from, next) => {
+  store.dispatch('UPDATE_LOADING', true)
+  document.title = `Kubernetes ${getDocmentTitle(defaultLang)}`
+  next()
+})
 
-// router.afterEach(() => {
-//   // do something
-// })
+router.afterEach(() => {
+  store.dispatch('UPDATE_LOADING', false)
+})
 
 
 // 全局可取
