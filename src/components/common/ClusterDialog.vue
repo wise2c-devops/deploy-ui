@@ -18,52 +18,51 @@
   </el-dialog>
 </template>
 <script>
-import {validationError} from '../../mixin/error'
-import {popWarn} from '../../utils/alert'
-export default {
-  mixins: [validationError],
-  props: {
-    dialogVisible: {
-      type: Boolean,
-      default: false
+  import { validationError } from '../../mixin/error'
+  import { popWarn } from '../../utils/alert'
+
+  export default {
+    mixins: [validationError],
+    props: {
+      dialogVisible: {
+        type: Boolean,
+        default: false
+      },
+      addCluster: Function,
+      updateCluster: Function,
+      cluster: {
+        type: Object,
+        default: {
+          name: '',
+          description: ''
+        }
+      }
     },
-    addCluster: Function,
-    updateCluster: Function,
-    cluster: {
-      type: Object,
-      default: {
-        name: "",
-        description: ""
+    methods: {
+      close() {
+        this.$emit('update:dialogVisible', false)
+      },
+      callMethod() {
+        this.$validator.validateAll().then((result) => {
+          if (!result) {
+            popWarn(this.$t('layer.warnTips'), true)
+            return
+          }
+
+          if (!!this.cluster.id) {
+            return this.updateCluster(this.cluster)
+          }
+          return this.addCluster(this.cluster)
+        })
+      },
+      onSubmit() {
+        this.callMethod()
+      }
+    },
+    computed: {
+      hasError() {
+        return this.errors.items.length !== 0
       }
     }
-  },
-  methods: {
-    close() {
-      this.$emit('update:dialogVisible', false)
-    },
-    callMethod() {
-      this.$validator.validateAll().then((result) => {
-        if(!result) {
-          popWarn(this.$t('layer.warnTips'))
-          return
-        }
-
-        if(!!this.cluster.id) {
-          return this.updateCluster(this.cluster)
-        }
-        return this.addCluster(this.cluster)
-      })
-
-    },
-    onSubmit() {
-      this.callMethod()
-    }
-  },
-  computed: {
-    hasError() {
-      return this.errors.items.length !== 0
-    }
   }
-}
 </script>
-

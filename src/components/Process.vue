@@ -3,14 +3,14 @@
     <ul class="clear-style row m0 process">
       <li class="pull-left" v-for="(item, index) in validStages" :key="index">
         <div class="box">
-          <div class="text-center">
-            <i :class="getIconClass(item)"></i>
+          <div :class="'text-center ' + item.state">
+            <svg-icon :icon-class="item.name" width="45px" height="45px" :fill="getFill(item)"></svg-icon>
             <p class="title">{{item.name}}</p>
           </div>
         </div>
       </li>
     </ul>
-    <div class="logs">
+    <div class="logs-wrapper logs">
       <div v-for="(log, index) in logs" :key="index" class="log">
         <span class="line-number">{{index + 1}}</span>
         <p v-html="log"></p>
@@ -19,157 +19,157 @@
     <div class="btn-wrapper row">
       <div class="col-md-3 col-md-offset-5">
         <el-button size="large" icon="arrow-left" class="pull-left " @click="back">{{$t('tipsButton.back')}}</el-button>
-        <el-button size="large" icon="close" type="danger" @click="cancelDeployment" v-if="!isDone">{{$t('tipsButton.cancel')}}</el-button>
+        <el-button size="large" icon="close" type="default" @click="cancelDeployment" v-if="!isDone && !failed">{{$t('tipsButton.cancel')}}</el-button>
+        <el-button size="large" icon="close" type="danger" @click="back" v-if="failed">{{$t('tipsButton.fail')}}</el-button>
         <el-button size="large" icon="check" type="primary" @click="back" v-if="isDone">{{$t('tipsButton.done')}}</el-button>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { pop } from '../utils/alert'
-import { cancel,
-  getCluster,
-  fetchClusterDetail,
-  getClusterStatus,
-  fetchClusterStatus,
-  fetchComponentTypes } from 'vuexPath/modules/cluster'
-import { findLast, findIndex, sortBy } from 'lodash'
-export default {
-  computed: {
-    clusterId() {
-      return this.$route.params.id
-    },
-    validStages() {
-      const slectComponents = JSON.parse(localStorage.getItem('selectComponents'))
-      let result = []
-      slectComponents.forEach(component=>{
-        var target = findLast(this.stages, stage=>stage.value === component)
-        if(target) {
-          result.push(target)
-        }else {
-          const obj = {
-            name: component,
-            icon: 'wise-icon-sys-operating--evn',
-            enabled: false,
-            value: component,
-            sort: this.stages.length + 1
-          }
-          result.push(obj)
-          this.stages.push(obj)
-        }
-      })
-      return sortBy(result, v=>v.sort)
-    },
-    isDone() {
-      if (this.failed || (!!this.cluster && this.cluster.state === 'success')) {
-        return true
-      }
-      // if (this.validStages.length > 0) {
-      //   return this.validStages.filter(stage => stage.enabled).length === this.validStages.length
-      // }
-      return false
-    }
-  },
-  data() {
-    return {
-      failed: false,
-      logs: [],
-      stages: [
-        { name: 'Docker', icon: 'wise-icon-docker-three', value: 'docker', enabled: false, sort: 1 },
-        { name: 'Registry', icon: 'wise-icon-registry', value: 'registry', enabled: false, sort: 2 },
-        { name: 'LoadBalance', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false, sort: 3 },
-        { name: 'Etcd', icon: 'wise-icon-etcd', value: 'etcd', enabled: false, sort: 4 },
-        { name: 'Mysql', icon: 'wise-icon-mysql', value: 'mysql', enabled: false, sort: 5 },
-        { name: 'kubernetes', icon: 'wise-icon-kubernets', value: 'kubernetes', enabled: false, sort: 6 },
-        { name: 'Redis', icon: 'wise-icon-redis', value: 'redis', enabled: false, sort: 7 },
-        { name: 'Consul', icon: 'wise-icon-consul', value: 'consul', enabled: false, sort: 8 },
-        { name: 'Rabbitmq', icon: 'wise-icon-rabbitmq', value: 'rabbitmq', enabled: false, sort: 9 },
-        { name: 'Nats', icon: 'wise-icon-sys-operating--evn', value: 'nats', enabled: false, sort: 10 },
-        // { name: 'K8sNode', icon: 'wise-icon-kubernets', value: 'k8snode', enabled: false, sort: 7 },
-        { name: 'Wisecloud', icon: 'wise-icon-wisecloud', value: 'wisecloud', enabled: false, sort: 11 }
-      ]
-    }
-  },
-  methods: {
-    back() {
-      this.$router.push({
-        path: `/clusters/${this.clusterId}/hosts`
-      })
-    },
-    cancelDeployment() {
-      this.cancel(this.clusterId, () => {
-        const msg = this.$i18n.locale === 'zh'? '取消安装成功': 'Uninstall success'
-        pop(msg)
-        this.back()
-      })
-    },
-    getIconClass(item) {
-      return [item.icon, item.enabled ? "enabled" : ""]
-    },
-    listenSoket() {
-      var url = `${process.env.WEBSOCKET_HOST}/v1/stats`
-      if (process.env.NODE_ENV === 'production') {
-        url = `ws://${location.host}/v1/stats`
-      }
-      var socket = new WebSocket(url)
-      socket.onopen = (event) => {
-        console.info('Success link to backend server', event)
-      }
-      socket.onmessage = (event) => {
-        var json = JSON.parse(event.data)
-        if (json.state === 'failed') {
-          this.failed = true
-        }
+ /* eslint func-names: 'off' */
+  import { pop } from '../utils/alert'
+  import { cancel,
+           getCluster,
+           fetchClusterDetail,
+           getClusterStatus,
+           fetchClusterStatus,
+           fetchComponentTypes } from 'vuexPath/modules/cluster'
+  import { findLast, findIndex } from 'lodash'
 
-        this.logs.push(`${json.time}: [${json.stage}] [${json.host}]  task: ${json.task.name} - ${json.task.state},  message: ${json.data.msg}`)
-        if (json.state === 'ok') {
-          var stage = findLast(this.validStages, (stage) => {
-            return stage.value === json.stage
-          })
-          if (!!stage) {
-            stage.enabled = true
+  let intervalId
+
+  export default {
+    computed: {
+      clusterId() {
+        return this.$route.params.id
+      },
+      isDone() {
+        return !!this.cluster && this.cluster.state === 'success'
+      }
+    },
+    data() {
+      return {
+        failed: false,
+        logs: [],
+        validStages: []
+      }
+    },
+    methods: {
+      back() {
+        this.$router.push({
+          path: `/clusters/${this.clusterId}/hosts`
+        })
+      },
+      cancelDeployment() {
+        this.cancel(this.clusterId, () => {
+          const msg = this.$i18n.locale === 'zh' ? '取消安装成功' : 'Uninstall success'
+          pop(msg)
+          this.back()
+        })
+      },
+      getFill(item) {
+        if (item.state === 'ok') return '#2ACD98'
+        if (item.state === 'failed') return '#f16a64'
+        return '#cdd1d9'
+      // return item.enabled ? "#4CAF50" : '#cdd1d9'
+      },
+      listenSoket() {
+        let url = `${process.env.VUE_APP_WS_HOST}/v1/stats`
+        if (process.env.NODE_ENV === 'production') {
+          url = `${process.env.VUE_APP_WS_HOST}/v1/stats`
+        }
+        const socket = new WebSocket(url)
+        socket.onopen = (event) => {
+          console.info('Success link to backend server', event)
+        }
+        socket.onmessage = (event) => {
+          const json = JSON.parse(event.data)
+          const stage = findLast(this.validStages, stage => stage.name.toLowerCase() === json.stage.toLowerCase())
+
+          if (json.state === 'failed') {
+            this.failed = true
+            stage.state = 'failed'
           }
+
+          this.logs.push(`${json.time}: [${json.stage}] [${json.host}]  task: ${json.task.name} - ${json.task.state},  message: ${json.data.msg}`)
+          if (json.state === 'ok') {
+            // var stage = findLast(this.validStages, stage => stage.name.toLowerCase() === json.stage.toLowerCase())
+            if (!!stage) {
+              stage.state = 'ok'
+            // stage.enabled = true
+            }
+          }
+        }
+      },
+      formatStages() {
+        const slectComponents = JSON.parse(localStorage.getItem('selectComponents'))
+        this.componentTypes.forEach((componentType) => {
+          const target = findLast(slectComponents, slectComponent => slectComponent === componentType)
+          if (target) {
+            this.validStages.push({
+              name: target,
+              state: ''
+            })
+          }
+        })
+      },
+      computedStageState() {
+        this.fetchClusterStatus(this.clusterId, () => {
+          // 显示那些组件已经安装了
+          const index = findIndex(this.validStages, stage => stage.name.toLowerCase() === this.status.currentStage.toLowerCase())
+          if (!!this.cluster && this.cluster.state !== 'success' && index > 0) {
+            for (let tempIndex = 0; tempIndex < index; tempIndex++) {
+              this.validStages[tempIndex].state = 'ok'
+            }
+          }
+        })
+      }
+    },
+    created() {
+      this.fetchComponentTypes(() => {
+        this.formatStages()
+      })
+      this.fetchClusterDetail(this.clusterId)
+    },
+    mounted() {
+      if (this.cluster.state === 'processing') {
+        this.computedStageState()
+      }
+      this.listenSoket()
+
+      intervalId = setInterval(() => {
+        this.fetchClusterDetail(this.clusterId)
+      }, 3000)
+    },
+    vuex: {
+      actions: {
+        cancel,
+        fetchClusterDetail,
+        fetchClusterStatus,
+        fetchComponentTypes
+      },
+      getters: {
+        cluster: getCluster,
+        status: getClusterStatus,
+        componentTypes: state => state.cluster.types
+      }
+    },
+    watch: {
+      'cluster.state': function (val) {
+        if (val === 'success' || val === 'failed') clearInterval(intervalId)
+        else if (!!val && val === 'processing') {
+          this.computedStageState()
         }
       }
-    }
-  },
-  created() {
-    this.fetchClusterDetail(this.clusterId)
-  },
-  mounted() {
-    if (this.cluster.state === 'processing'){
-      this.fetchClusterStatus(this.clusterId, () => {
-        //显示那些组件已经安装了
-        const index = findIndex(this.stages, (stage) => {
-          return stage.value === this.status.currentStage
-        })
-        if(!!this.cluster && this.cluster.state !== 'success' && index > 0 ) {
-          for(var tempIndex = 0; tempIndex < index; tempIndex ++) {
-            this.stages[tempIndex].enabled = true
-          }
-        }
-      })
-    }
-    this.listenSoket()
-  },
-  vuex: {
-    actions: {
-      cancel,
-      fetchClusterDetail,
-      fetchClusterStatus,
-      fetchComponentTypes
     },
-    getters: {
-      cluster: getCluster,
-      status: getClusterStatus,
-      componentTypes: state=>state.cluster.types
-      // selectComponents: state=>state.cluster.selectComponents
+    beforeDestroy() {
+      clearInterval(intervalId)
     }
   }
-}
 </script>
 <style lang="scss">
-@import "../assets/stylesheets/variables";
+@import "~assets/stylesheets/variables";
 .process-container {
   width: 80%;
   margin: 0 auto;
@@ -185,7 +185,7 @@ export default {
       .box {
         width: 70px;
         position: relative;
-        top: -30px;
+        top: -35px;
         background: #f5f8fa;
       }
       &:last-child {
@@ -203,17 +203,19 @@ export default {
         height: 60px;
         border-radius: 50%;
         border: 2px solid #cdd1d9;
-        color: #cdd1d9;
-        i {
-          font-size: 40px;
-          &.enabled {
-            color: $green-color;
-          }
+        &.ok {
+          border: 2px solid $green-color;
+        }
+        &.failed {
+          border: 2px solid $error-color;
         }
         p.title {
           color: $main-font-color;
-          margin-top: 10px;
           font-size: 14px;
+          position: absolute;
+          bottom: -30px;
+          transform: translateX(-50%);
+          left: 50%;
         }
       }
       &:first-child {
@@ -227,30 +229,4 @@ export default {
   }
 }
 
-.logs {
-  width: 80%;
-  margin: 50px auto;
-  padding: 20px;
-  border-top: 30px solid #b3b3b3;
-  background: lighten(#000, 15%);
-  border-radius: 8px;
-  color: #fff;
-  counter-reset: subsection;
-  .log {
-    font-size: 14px;
-    margin-bottom: 5px;
-    span {
-      display: inline-block;
-      color: #666;
-      text-align: right;
-      width: 30px;
-      margin-right: 10px;
-    }
-    p {
-      display: inline-block;
-      text-overflow: ellipsis;
-      width: 92%;
-    }
-  }
-}
 </style>

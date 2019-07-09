@@ -1,7 +1,7 @@
-import {get} from '../../utils/rest'
-import API from '../../utils/rest'
-import {formatString} from '../../utils/string'
-import {popWarn} from '../../utils/alert'
+import API, { get } from 'utils/rest'
+
+import { formatString } from 'utils/string'
+import { popWarn } from 'utils/alert'
 
 const state = {
   properties: [],
@@ -14,17 +14,17 @@ const mutations = {
   },
   SET_PROPERTIES(state, properties, obj) {
     properties.forEach((item) => {
-      if(item.type === 'host') {
+      if (item.type === 'host') {
         if (obj.isEdit) {
-          const hosts = obj.component.hosts[item.variable].map(item=>item.id)
+          const hosts = obj.component.hosts[item.variable].map(item => item.id)
           return item[item.variable] = hosts
         }
         item[item.variable] = item.default || []
-      }else if (item.type === 'bool') {
+      } else if (item.type === 'bool') {
         if (obj.isEdit) return item[item.variable] = obj.component.properties[item.variable]
         item[item.variable] = item.default || true
-      }else {
-        item[item.variable] = obj.isEdit? obj.component.properties[item.variable]: item.default
+      } else {
+        item[item.variable] = obj.isEdit ? obj.component.properties[item.variable] : item.default
       }
     })
     state.properties = properties
@@ -47,35 +47,29 @@ export default {
 //   })
 // }
 
-export const fetchComponentVersions = ({dispatch}, componentName, success = () => {}) => {
-  get(formatString(API.COMPONENT.VERSIONS, componentName)).then(response => {
+export const fetchComponentVersions = ({ dispatch }, componentName, success = () => {}) => {
+  get(formatString(API.COMPONENT.VERSIONS, componentName)).then((response) => {
     dispatch('SET_VERSIONS', JSON.parse(response.text))
     success()
-  }).catch(error => {
-    popWarn(`获取 ${componentName}版本信息失败`)
-    console.error(error)
+  }).catch((error) => {
+    popWarn(error || 'errGetComponentVersion')
   })
 }
 
-export const fetchVersionProperties = ({dispatch}, componentName, version, obj, success = () => {}) => {
-  get(formatString(API.COMPONENT.PROPERTIES, componentName, version)).then(response => {
+export const fetchVersionProperties = ({ dispatch }, componentName, version, obj, success = () => {}) => {
+  get(formatString(API.COMPONENT.PROPERTIES, componentName, version)).then((response) => {
     dispatch('SET_PROPERTIES', JSON.parse(response.text), obj)
     success()
-  }).catch(error => {
+  }).catch((error) => {
     dispatch('SET_PROPERTIES', [])
-    popWarn(`获取 ${componentName}组件属性失败`)
-    console.error(error)
+    popWarn(error || 'errGetComponentProperties')
   })
 }
 
-export const resetProperties = ({dispatch}) => {
+export const resetProperties = ({ dispatch }) => {
   dispatch('SET_PROPERTIES', [])
 }
 
 
-export const getComponentProperties = (state) => {
-  return state.component.properties
-}
-export const getComponentVersions = (state) => {
-  return state.component.versions
-}
+export const getComponentProperties = state => state.component.properties
+export const getComponentVersions = state => state.component.versions

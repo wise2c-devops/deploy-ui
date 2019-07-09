@@ -31,46 +31,47 @@
   }
 </style>
 <script>
-import {fetchClusterDetail} from '../vuex/modules/cluster'
-export default {
-  data() {
-    return {
-      subMenu: 'hosts',
-      cluster: {}
-    }
-  },
-  computed: {
-    id() {
-      return this.$route.params.id
+  import { fetchClusterDetail } from '../vuex/modules/cluster'
+
+  export default {
+    data() {
+      return {
+        subMenu: 'hosts',
+        cluster: {}
+      }
     },
-    hostsUrl() {
-      return `/clusters/${this.id}/hosts`
+    computed: {
+      id() {
+        return this.$route.params.id
+      },
+      hostsUrl() {
+        return `/clusters/${this.id}/hosts`
+      },
+      componentsUrl() {
+        return `/clusters/${this.id}/components`
+      },
+      logsUrl() {
+        return `/clusters/${this.id}/logs`
+      }
     },
-    componentsUrl() {
-      return `/clusters/${this.id}/components`
+    methods: {
+      getActiveClass(type) {
+        return this.subMenu === type ? 'active' : ''
+      }
     },
-    logsUrl() {
-      return `/clusters/${this.id}/logs`
-    }
-  },
-  methods: {
-    getActiveClass(type) {
-      return this.subMenu === type ? 'active' : ''
-    }
-  },
-  mounted() {
-    this.$root.$on('clusterPage', (name) => {
-      this.subMenu = name
-    })
-    this.fetchClusterDetail(this.id)
-  },
-  beforeDestroy() {
-    this.$root.$off('clusterPage')
-  },
-  vuex: {
-    actions: {
-      fetchClusterDetail
+    mounted() {
+      this.$root.$on('clusterPage', (name) => {
+        this.subMenu = name
+      })
+      this.fetchClusterDetail(this.id)
+    },
+    beforeDestroy() {
+      this.$root.$off('clusterPage')
+    },
+    vuex: {
+      actions: {
+        fetchClusterDetail
+      }
     }
   }
-}
 </script>

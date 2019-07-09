@@ -8,3 +8,6 @@ test/e2e/reports
 .idea
 *.iml
 .vscode
+building.sh
+public
+Makefile

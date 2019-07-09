@@ -13,7 +13,16 @@
         &nbsp;&nbsp;
         <span class="split-line">|</span>
         &nbsp;
-        <span type="" class="btn " @click="changeI18n">中文 / EN</span>
+        <el-dropdown  @command="changeI18n">
+          <span class="el-dropdown-link">
+            {{lang}}<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item :command="'中文'">中文</el-dropdown-item>
+            <el-dropdown-item :command="'English'">English</el-dropdown-item>
+            <el-dropdown-item :command="'Français'">Français</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
     </div>
     <loading></loading>
@@ -65,8 +74,10 @@
 </style>
 <script type="text/javascript">
   import Loading from './components/Loading.vue'
-  import {showLoading, hideLoading} from './vuex/actions'
+  import { getDocmentTitle, getDefaultLang } from 'utils/string'
+  import { showLoading, hideLoading } from './vuex/actions'
   import store from './vuex/store'
+
   export default {
     components: {
       Loading
@@ -75,46 +86,51 @@
       return {
         title: 'Deployment UI',
         collapse: true,
-        mainCollsapn: {key: false},
+        mainCollsapn: { key: false },
         showMainNav: false,
         showContactUs: true,
-        content: ""
+        content: '',
+        lang: this.getPlayLang()
       }
     },
     store,
-    created () {
-      this.showLoading()
-      this.hideLoading()
+    created() {
+      // this.showLoading()
+      // this.hideLoading()
     },
-    mounted () {
+    mounted() {
     },
-    computed : {
+    computed: {
     },
     methods: {
+      getPlayLang() {
+        const lang = getDefaultLang()
+        if (lang === 'en') return 'English'
+        if (lang === 'fr') return 'Français'
+        return '中文'
+      },
       goPath(flag, path) {
         this.showContactUs = flag
         this.$router.push({
-          path: path
+          path
         })
       },
-      changeI18n() {
-        this.$confirm(this.$t('layer.toggle'), this.$t('layer.tips'), {
-          confirmButtonText: this.$t('tipsButton.ok'),
-          cancelButtonText: this.$t('tipsButton.cancel'),
-          type: 'warning'
-        }).then(() => {
-          const local = localStorage.getItem('DEPLOYMENT_LANGUAGE')
-          if (!local || local === 'zh') {
-            localStorage.setItem('DEPLOYMENT_LANGUAGE', 'en')
-          }else {
-            localStorage.setItem('DEPLOYMENT_LANGUAGE', 'zh')
-          }
-          this.$i18n.locale = localStorage.getItem('DEPLOYMENT_LANGUAGE')
-        }).catch(() => {
-          // this.$message({
-          //   type: 'info',
-          // })
-        })
+      changeI18n(langType) {
+        this.lang = langType
+
+        switch (langType) {
+        case 'English':
+          window.sessionStorage.setItem('DEPLOYMENT_LANGUAGE', 'en')
+          break
+        case 'Français':
+          window.sessionStorage.setItem('DEPLOYMENT_LANGUAGE', 'fr')
+          break
+        default:
+          window.sessionStorage.setItem('DEPLOYMENT_LANGUAGE', 'zh')
+          break
+        }
+        this.$i18n.locale = window.sessionStorage.getItem('DEPLOYMENT_LANGUAGE')
+        document.title = `Kubernetes ${getDocmentTitle(window.sessionStorage.getItem('DEPLOYMENT_LANGUAGE'))}`
       }
     },
     vuex: {

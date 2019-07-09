@@ -28,57 +28,57 @@
 </template>
 
 <script type="text/javascript">
-import ClusterDialog from './common/ClusterDialog'
-import { fetchClusters, createCluster, deleteCluster } from 'vuexPath/actions'
-import { getClusters } from 'vuexPath/getters'
-import { promptOnDelete } from '../utils/prompt'
-import { pop } from '../utils/alert'
-export default {
-  components: { ClusterDialog },
-  data() {
-    return {
-      dialogVisible: false,
-      cluster: {
-        name: "",
-        description: ""
+  import ClusterDialog from './common/ClusterDialog'
+  import { fetchClusters, createCluster, deleteCluster } from 'vuexPath/actions'
+  import { getClusters } from 'vuexPath/getters'
+  import { promptOnDelete } from '../utils/prompt'
+  import { pop } from '../utils/alert'
+
+  export default {
+    components: { ClusterDialog },
+    data() {
+      return {
+        dialogVisible: false,
+        cluster: {
+          name: '',
+          description: ''
+        }
       }
-    }
-  },
-  methods: {
-    remove(index, id) {
-      promptOnDelete(this, this.$t('clusters.delteTips'), () => {
-        this.deleteCluster(id, index, () => {
-          pop(this.$t('layer.deleteSuccess'))
+    },
+    methods: {
+      remove(index, id) {
+        promptOnDelete(this, this.$t('clusters.delteTips'), () => {
+          this.deleteCluster(id, index, () => {
+            pop(this.$t('layer.deleteSuccess'))
+          })
         })
-      })
-    },
-    editClusterDialog(cluster) {
-      this.cluster = cluster
-      this.dialogVisible = true
-    },
-    showCluster(cluster) {
-      this.$router.push({ name: "hosts", params: { id: cluster.id } })
-    },
-    addClusterDialog() {
-      this.cluster = {
-        name: "",
-        description: ""
-      }
-      this.dialogVisible = true
-      return
-    },
-    create(cluster) {
-      var newCluster = Object.assign({}, cluster)
-      this.createCluster(newCluster, () => {
-        pop(this.$t('layer.createSuccess'))
-        this.dialogVisible = false
-      })
-    },
-    updateCluster() {
+      },
+      editClusterDialog(cluster) {
+        this.cluster = cluster
+        this.dialogVisible = true
+      },
+      showCluster(cluster) {
+        this.$router.push({ name: 'hosts', params: { id: cluster.id } })
+      },
+      addClusterDialog() {
+        this.cluster = {
+          name: '',
+          description: ''
+        }
+        this.dialogVisible = true
+      },
+      create(cluster) {
+        const newCluster = Object.assign({}, cluster)
+        this.createCluster(newCluster, () => {
+          pop(this.$t('layer.createSuccess'))
+          this.dialogVisible = false
+        })
+      },
+      updateCluster() {
       // console.log('update')
-    },
-    icon(cluster) {
-      switch(cluster.state) {
+      },
+      icon(cluster) {
+        switch (cluster.state) {
         case 'initial':
           return 'fa-desktop'
         case 'proccessing':
@@ -89,23 +89,23 @@ export default {
           return 'fa-times'
         default:
           return 'fa-desktop'
+        }
+      }
+    },
+    mounted() {
+      this.fetchClusters()
+    },
+    vuex: {
+      actions: {
+        fetchClusters,
+        createCluster,
+        deleteCluster
+      },
+      getters: {
+        clusters: getClusters
       }
     }
-  },
-  mounted() {
-    this.fetchClusters()
-  },
-  vuex: {
-    actions: {
-      fetchClusters,
-      createCluster,
-      deleteCluster
-    },
-    getters: {
-      clusters: getClusters
-    }
   }
-}
 </script>
 
 <style lang="scss" scoped>

@@ -1,9 +1,8 @@
-import {get, post, put, destroy} from '../../utils/rest'
-import API from '../../utils/rest'
-import {formatString} from '../../utils/string'
-import {popWarn} from '../../utils/alert'
-import {findIndex} from 'lodash'
-const lang = localStorage.getItem('DEPLOYMENT_LANGUAGE') || 'zh'
+import API, { get, post, put, destroy } from 'utils/rest'
+import { formatString } from 'utils/string'
+import { popWarn } from 'utils/alert'
+import { findIndex } from 'lodash'
+
 const state = {
   hosts: [],
   components: [],
@@ -29,12 +28,10 @@ const mutations = {
     state.components = components
   },
   UPDATE_HOST(state, host) {
-    var index = findIndex(state.hosts, (item) => {
-      return item.id === host.id
-    })
+    const index = findIndex(state.hosts, item => item.id === host.id)
     state.hosts.splice(index, 1, host)
   },
-  SET_CLUSTER(state, cluster){
+  SET_CLUSTER(state, cluster) {
     state.cluster = cluster
   },
   ADD_COMPONENT(state, component) {
@@ -44,9 +41,7 @@ const mutations = {
     state.components.splice(index, 1)
   },
   UPDATE_COMPONENT(state, component) {
-    var index = findIndex(state.components, (item) => {
-      return item.id === component.id
-    })
+    const index = findIndex(state.components, item => item.id === component.id)
     state.components.splice(index, 1, component)
   },
   SET_LOGS(state, logs) {
@@ -55,7 +50,7 @@ const mutations = {
   SET_STATUS(state, status) {
     state.status = status
   },
-  RESET_SELECT_COMPONENTS (state, selectComponents) {
+  RESET_SELECT_COMPONENTS(state, selectComponents) {
     state.selectComponents = selectComponents
   },
   SET_TYPES(state, types) {
@@ -68,170 +63,160 @@ export default {
   mutations
 }
 
-export const fetchHosts= ({dispatch}, clusterId, success = () =>{}) => {
+export const fetchHosts = ({ dispatch }, clusterId, success = () => {}) => {
   get(formatString(API.CLUSTER.HOSTS, clusterId)).then((response) => {
     dispatch('SET_HOSTS', response.body)
     success()
-  }).catch((thvueis) => {
-    popWarn(lang === 'zh'? '获取集群下主机列表失败': 'Getting the host list failure under the cluster')
+  }).catch(() => {
+    popWarn(error || 'errGetHostList')
   })
 }
 
-export const fetchComponents = ({dispatch}, clusterId, success = () =>{}) => {
+export const fetchComponents = ({ dispatch }, clusterId, success = () => {}) => {
   get(formatString(API.CLUSTER.COMPONENTS, clusterId)).then((response) => {
     dispatch('SET_COMPONENTS', response.body)
     success(response.body)
   }).catch(() => {
-    popWarn(lang === 'zh'? '获取集群下服务组件列表失败': 'Getting the list of service components in the cluster failed')
+    popWarn(error || 'errGetCmponentList')
   })
 }
 
-export const addHost = ({dispatch}, clusterId, host, success = () =>{}) => {
+export const addHost = ({ dispatch }, clusterId, host, success = () => {}) => {
   post(formatString(API.CLUSTER.HOSTS, clusterId), host).then((response) => {
     dispatch('ADD_HOST', response.body)
     success()
   }).catch(() => {
-    popWarn(lang === 'zh'? '添加主机失败': 'Add host failure')
+    popWarn(error || 'errAddHost')
   })
 }
 
-export const deleteHost = ({dispatch}, clusterId, hostId, index, success = () =>{}) => {
-  destroy(formatString(API.CLUSTER.HOST_DETAIL, clusterId, hostId), {}).then( ()=> {
+export const deleteHost = ({ dispatch }, clusterId, hostId, index, success = () => {}) => {
+  destroy(formatString(API.CLUSTER.HOST_DETAIL, clusterId, hostId), {}).then(() => {
     dispatch('DELETE_HOST', index)
     success()
   }).catch(() => {
-    popWarn(lang === 'zh'? '删除主机失败': 'Delete host failure')
+    popWarn(error || 'errDelHost')
   })
 }
 
-export const updateHost = ({dispatch}, clusterId, host, success = ()=>{}) => {
-  put(formatString(API.CLUSTER.HOST_DETAIL, clusterId, host.id), host).then((response)=> {
+export const updateHost = ({ dispatch }, clusterId, host, success = () => {}) => {
+  put(formatString(API.CLUSTER.HOST_DETAIL, clusterId, host.id), host).then((response) => {
     dispatch('UPDATE_HOST', response.body)
     success()
   }).catch(() => {
-    popWarn(lang === 'zh'? '更新主机失败': 'Update host failure')
+    popWarn(error || 'errUpdateHost')
   })
 }
 
-export const fetchClusterDetail = ({dispatch}, clusterId) => {
+export const fetchClusterDetail = ({ dispatch }, clusterId) => {
   get(formatString(API.CLUSTER.DETAIL, clusterId)).then((response) => {
     dispatch('SET_CLUSTER', response.body)
   }).catch(() => {
-    popWarn(lang === 'zh'? '获取集群详情失败': 'Failure to get cluster details')
+    popWarn(error || 'errGetCulsterDetail')
   })
 }
 
-export const createComponent = ({dispatch}, clusterId, component, success = ()=>{}) => {
+export const createComponent = ({ dispatch }, clusterId, component, success = () => {}) => {
   post(formatString(API.CLUSTER.COMPONENTS, clusterId), component).then((response) => {
     dispatch('ADD_COMPONENT', response.body)
     success(response.body)
   }).catch((error) => {
-    popWarn(lang === 'zh'? '创建服务组件失败': 'Failure to create a service component')
+    popWarn(error || 'errAddComponent')
     console.error(error)
   })
 }
 
-export const deleteComponent = ({dispatch}, clusterId, componentId, index, success = ()=>{}) => {
-  destroy(formatString(API.CLUSTER.COMPONENT, clusterId, componentId), {}).then( ()=> {
+export const deleteComponent = ({ dispatch }, clusterId, componentId, index, success = () => {}) => {
+  destroy(formatString(API.CLUSTER.COMPONENT, clusterId, componentId), {}).then(() => {
     dispatch('DELETE_COMPONENT', index)
     success()
   }).catch((error) => {
-    popWarn(lang === 'zh'? '删除组件失败': 'Delete component failure')
+    popWarn(error || 'errDeleteComponent')
     console.error(error)
   })
 }
 
-export const updateComponent = ({dispatch}, clusterId, component, success= ()=> {}) => {
-  put(formatString(API.CLUSTER.COMPONENT, clusterId, component.id), component).then( (response)=> {
+export const updateComponent = ({ dispatch }, clusterId, component, success = () => {}) => {
+  put(formatString(API.CLUSTER.COMPONENT, clusterId, component.id), component).then((response) => {
     dispatch('UPDATE_COMPONENT', response.body)
     success()
   }).catch((error) => {
-    popWarn(lang === 'zh'? '更新组件失败': 'Update component failure')
+    popWarn(error || 'errUpdateComponent')
     console.error(error)
   })
 }
 
-export const resetSlectComponents = ({dispatch}, selectComponents) => {
+export const resetSlectComponents = ({ dispatch }, selectComponents) => {
   dispatch('RESET_SELECT_COMPONENTS', selectComponents)
 }
 
 
-export const deploy = ({dispatch}, clusterId, selectComponents, type='install', success=()=>{}) => {
-  put(formatString(API.CLUSTER.DEPLOY, clusterId), {operation: type, components: selectComponents}).then(() => {
+export const deploy = ({ dispatch }, clusterId, selectComponents, type = 'install', success = () => {}) => {
+  put(formatString(API.CLUSTER.DEPLOY, clusterId), { operation: type, components: selectComponents }).then(() => {
     success()
-  }).catch(error => {
-    popWarn(lang === 'zh'? '无法执行部署命令，请稍后重试': 'The deployment command cannot be executed. Please try again late')
+  }).catch((error) => {
+    popWarn(error || 'errDeploy')
     console.error(error)
   })
 }
 
-export const cancel = ({dispatch}, clusterId, success=()=>{}) => {
+export const cancel = ({ dispatch }, clusterId, success = () => {}) => {
   destroy(formatString(API.CLUSTER.DEPLOY, clusterId), {}).then(() => {
     success()
-  }).catch(error => {
-    popWarn(lang === 'zh'? '无法执行部署命令，请稍后重试': 'The deployment command cannot be executed. Please try again late')
+  }).catch((error) => {
+    popWarn(error || 'errDeploy')
     console.error(error)
   })
 }
 
-export const fetchLogs = ({dispatch}, clusterId, success = ()=>{}) =>{
+export const fetchLogs = ({ dispatch }, clusterId, success = () => {}) => {
   get(formatString(API.CLUSTER.LOGS, clusterId)).then((response) => {
     dispatch('SET_LOGS', response.body)
     success()
-  }).catch(error => {
-    popWarn(lang === 'zh'? '获取集群安装日志失败': 'Getting cluster installation log failed')
+  }).catch((error) => {
+    popWarn(error || 'errGetInstallCulsterLog')
     console.error(error)
   })
 }
 
-export const fetchClusterStatus = ({dispatch}, clusterId, success = ()=>{}) => {
-  get(formatString(API.CLUSTER.STATUS, clusterId)).then(response => {
+export const fetchClusterStatus = ({ dispatch }, clusterId, success = () => {}) => {
+  get(formatString(API.CLUSTER.STATUS, clusterId)).then((response) => {
     dispatch('SET_STATUS', response.body)
     success()
-  }).catch(error => {
-    popWarn(lang === 'zh'? '获取集群状态失败': 'Getting cluster state failure')
+  }).catch((error) => {
+    popWarn(error || 'errGetCulsterState')
     console.error(error)
   })
 }
 
-export const fetchComponentProperties = ({dispatch}, clusterId, componentName, success = () => {}) => {
-  get(formatString(API.CLUSTER.COMPONENT_PROPERTIES, clusterId, componentName)).then(response => {
+export const fetchComponentProperties = ({ dispatch }, clusterId, componentName, success = () => {}) => {
+  get(formatString(API.CLUSTER.COMPONENT_PROPERTIES, clusterId, componentName)).then((response) => {
     dispatch('SET_COMPONENT', response.body)
     success()
-  }).catch(error => {
-    popWarn(lang === 'zh'? '获取集群状态失败': 'Getting cluster state failure')
+  }).catch((error) => {
+    popWarn(error || 'errGetCulsterState')
     console.error(error)
   })
 }
 
-export const fetchComponentTypes = ({dispatch}, success = () => {}) => {
-  get(API.CLUSTER.COMPONENT_TYPES).then(response => {
+export const fetchComponentTypes = ({ dispatch }, success = () => {}) => {
+  get(API.CLUSTER.COMPONENT_TYPES).then((response) => {
     dispatch('SET_TYPES', response.body)
     success()
-  }).catch(error => {
-    popWarn(lang === 'zh'? '获取组件类型失败': 'Getting component type failure')
+  }).catch((error) => {
+    popWarn(error || 'errGetComponentType')
     console.error(error)
   })
 }
-//getters
+// getters
 
-export const getHosts = (state) => {
-  return state.cluster.hosts
-}
+export const getHosts = state => state.cluster.hosts
 
-export const getComponents = (state) => {
-  return state.cluster.components
-}
+export const getComponents = state => state.cluster.components
 
-export const getCluster = (state) => {
-  return state.cluster.cluster
-}
+export const getCluster = state => state.cluster.cluster
 
-export const getLogs = (state) => {
-  return state.cluster.logs
-}
+export const getLogs = state => state.cluster.logs
 
 
-export const getClusterStatus = (state) => {
-  return state.cluster.status
-}
+export const getClusterStatus = state => state.cluster.status

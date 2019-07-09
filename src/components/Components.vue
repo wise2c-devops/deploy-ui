@@ -9,9 +9,9 @@
           <router-link to="">{{cluster.name}}</router-link>
         </li>
       </ol>
-      <el-button size="mini" type="primary" icon="el-icon-caret-right" @click.native.stop.prevent="install" class="status-icon" :disabled="selectComponents.length === 0">{{$t('componets.startInstallButton')}}</el-button>
-      <el-button size="mini" type="warning" icon="el-icon-warning" @click.native.stop.prevent="reset" class="status-icon" :disabled="isInitial">{{$t('componets.resets')}}</el-button>
-      <el-button size="small" type="primary" icon="el-icon-plus" @click.native.stop.prevent="addComponentDialog" class="pull-right">{{$t('componets.addComponentsButton')}}</el-button>
+      <el-button size="mini" type="primary" icon="el-icon-caret-right" @click.native.stop.prevent="install" class="status-icon" :disabled="selectComponents.length === 0">{{$t('serviceComponent.startInstallButton')}}</el-button>
+      <el-button size="mini" type="warning" icon="el-icon-warning" @click.native.stop.prevent="reset" class="status-icon" :disabled="isInitial">{{$t('serviceComponent.resets')}}</el-button>
+      <el-button size="small" type="primary" icon="el-icon-plus" @click.native.stop.prevent="addComponentDialog" class="pull-right">{{$t('serviceComponent.addComponentsButton')}}</el-button>
     </div>
     <div class="panel-body">
       <div class="row hosts-table">
@@ -23,26 +23,26 @@
             width="40">
           </el-table-column>
         <!-- <el-table :data="components" :row-class-name="tableRowClassName" :stripe="true"> -->
-          <el-table-column align="center" prop="index" :label="$t('componets.table.num')" width="80px">
+          <el-table-column align="center" prop="index" :label="$t('serviceComponent.table.num')" width="80px">
             <template scope="scope">
               {{scope.$index + 1}}
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="name" :label="$t('componets.table.serviceName')" width="120px">
+          <el-table-column align="center" prop="name" :label="$t('serviceComponent.table.serviceName')" width="120px">
           </el-table-column>
-          <el-table-column align="center" prop="version" :label="$t('componets.table.version')" width="120px">
+          <el-table-column align="center" prop="version" :label="$t('serviceComponent.table.version')" width="120px">
           </el-table-column>
-          <el-table-column align="left" :label="$t('componets.table.attribute')">
+          <el-table-column align="left" :label="$t('serviceComponent.table.attribute')">
             <template scope="scope">
               <div v-html="properties(scope.row)"></div>
             </template>
           </el-table-column>
-          <el-table-column align="left" :label="$t('componets.table.host')">
+          <el-table-column align="left" :label="$t('serviceComponent.table.host')">
             <template scope="scope">
               <div v-html="simpleHosts(scope.row)"></div>
             </template>
           </el-table-column>
-          <el-table-column align="center" :label="$t('componets.table.operate')" width="200px">
+          <el-table-column align="center" :label="$t('serviceComponent.table.operate')" width="200px">
             <template scope="scope">
               <el-button @click.native.prevent="editComponentDialog(scope.row)" type="primary" size="small" icon="el-icon-edit"></el-button>
               <el-button @click.native.prevent="remove(scope.$index, scope.row)" type="danger" size="small" icon="el-icon-delete"></el-button>
@@ -64,197 +64,196 @@
 </template>
 
 <script>
-import { getCluster,
-  getComponents,
-  fetchComponents,
-  createComponent,
-  fetchHosts,
-  getHosts,
-  deleteComponent,
-  updateComponent,
-  deploy,
-  resetSlectComponents,
-  fetchComponentTypes} from 'vuexPath/modules/cluster'
-import ComponentDialog from './common/ComponentDialog'
-import { pop } from '../utils/alert'
-import { promptOnDelete } from '../utils/prompt'
-import { filter, map } from 'lodash'
-import { resetProperties } from 'vuexPath/modules/component'
-export default {
-  components: {
-    ComponentDialog
-  },
-  mounted() {
-    this.fetchComponents(this.clusterId, (data)=>{
-      this.selectComponents = data.map(item=>item.name)
-      this.checked()
-    })
-    setTimeout(() => {
-      this.$root.$emit('clusterPage', 'components')
-    }, 300)
-    this.fetchHosts(this.clusterId)
-    this.fetchComponentTypes()
-  },
-  methods: {
-    checked () {
-      this.$nextTick(()=>{
-        this.components.forEach(row=>{
-          this.$refs.multipleTable.toggleRowSelection(row)
-        })
-      })
-    },
-    selectRow(selection) {
-      if (selection.length) {
-        this.selectComponents = selection.map(item=>item.name)
-      }else {
-        this.selectComponents = []
-      }
-    },
-    create(component) {
-      this.createComponent(this.clusterId, component, (data) => {
-        this.dialogVisible = false
-        this.$refs.multipleTable.toggleRowSelection(data)
-        this.selectComponents.push(data.name)
-        pop(this.$t('layer.createSuccess'))
-      })
-    },
-    editComponentDialog(component) {
-      this.component = Object.assign({}, component)
-      this.dialogVisible = true
-    },
-    remove(index, component) {
-      promptOnDelete(this, this.$t('componets.delteTips'), () => {
-        this.deleteComponent(this.clusterId, component.id, index, () => {
-          this.selectComponents = this.selectComponents.filter(item=>item !== component.name)
-          pop(this.$t('layer.deleteSuccess'))
-        })
-      })
-    },
-    back() {
-      this.$router.go(-1)
-    },
-    next() {
-      this.install()
-    },
-    update(component) {
-      this.updateComponent(this.clusterId, component, () => {
-        pop(this.$t('layer.editSuccess'))
-        this.dialogVisible = false
-      })
+  import { getCluster,
+           getComponents,
+           fetchComponents,
+           createComponent,
+           fetchHosts,
+           getHosts,
+           deleteComponent,
+           updateComponent,
+           deploy,
+           resetSlectComponents,
+           fetchComponentTypes } from 'vuexPath/modules/cluster'
+  import ComponentDialog from './common/ComponentDialog'
+  import { pop, popWarn } from '../utils/alert'
+  import { promptOnDelete } from '../utils/prompt'
+  import { filter, map } from 'lodash'
+  import { resetProperties } from 'vuexPath/modules/component'
 
+  export default {
+    components: {
+      ComponentDialog
     },
-    addComponentDialog() {
-      this.component = {
-        name: '',
-        version: '',
-        properties: {},
-        hosts: {}
-      }
-      this.resetProperties()
-      this.dialogVisible = true
-    },
-    simpleHosts(component) {
-      if (!component.hosts || Object.keys(component.hosts).length === 0) {
-        return "--"
-      }
-      let msg = ''
-      Object.keys(component.hosts).map((objectKey)=>{
-        let value = component.hosts[objectKey].map(item=>item.hostname)
-        msg += `<p><b>${objectKey}</b>: ${value.join(', ') || '--'}</p>`
+    mounted() {
+      this.fetchComponents(this.clusterId, (data) => {
+        this.selectComponents = data.map(item => item.name)
+        this.checked()
       })
-      return msg
+      setTimeout(() => {
+        this.$root.$emit('clusterPage', 'components')
+      }, 300)
+      this.fetchHosts(this.clusterId)
+      this.fetchComponentTypes()
     },
-    properties(component) {
-      if (!component.properties || Object.keys(component.properties).length === 0) {
-        return "--"
-      }
-      var msg = ""
-      Object.keys(component.properties).map(function(objectKey) {
-        let value = component.properties[objectKey]
-        if (objectKey.includes('password') || objectKey.includes('pwd')) {
-          value = '*****'
-        }
-        msg += `<p><b>${objectKey}</b>: ${value || '--'}</p>`
-      })
-      return msg
-    },
-    install() {
-      // this.resetSlectComponents(this.selectComponents)
-      if (this.cluster.state === 'processing') {
-        this.$router.push({
-          path: `/clusters/${this.clusterId}/processing`
+    methods: {
+      checked() {
+        this.$nextTick(() => {
+          this.components.forEach((row) => {
+            this.$refs.multipleTable.toggleRowSelection(row)
+          })
         })
-        return
-      }
-      localStorage.setItem('selectComponents', JSON.stringify(this.selectComponents))
-      //确认安装
-      promptOnDelete(this, this.$t('componets.startInstallCulsterTips'), () => {
-        this.deploy(this.clusterId, this.selectComponents, 'install', () => {
-          pop(this.$t('componets.startInstallButton'))
+      },
+      selectRow(selection) {
+        if (selection.length) {
+          this.selectComponents = selection.map(item => item.name)
+        } else {
+          this.selectComponents = []
+        }
+      },
+      create(component) {
+        this.createComponent(this.clusterId, component, (data) => {
+          this.dialogVisible = false
+          this.$refs.multipleTable.toggleRowSelection(data)
+          this.selectComponents.push(data.name)
+          pop(this.$t('layer.createSuccess'))
+        })
+      },
+      editComponentDialog(component) {
+        this.component = Object.assign({}, component)
+        this.dialogVisible = true
+      },
+      remove(index, component) {
+        promptOnDelete(this, this.$t('serviceComponent.delteTips'), () => {
+          this.deleteComponent(this.clusterId, component.id, index, () => {
+            this.selectComponents = this.selectComponents.filter(item => item !== component.name)
+            pop(this.$t('layer.deleteSuccess'))
+          })
+        })
+      },
+      back() {
+        this.$router.go(-1)
+      },
+      next() {
+        this.install()
+      },
+      update(component) {
+        this.updateComponent(this.clusterId, component, () => {
+          pop(this.$t('layer.editSuccess'))
+          this.dialogVisible = false
+        })
+      },
+      addComponentDialog() {
+        if (this.validComponentTypes && this.validComponentTypes.length === 0) {
+          return popWarn(this.$t('serviceComponent.addComponentsTips'), true)
+        }
+        this.component = {
+          name: '',
+          version: '',
+          properties: {},
+          hosts: {}
+        }
+        this.resetProperties()
+        this.dialogVisible = true
+      },
+      simpleHosts(component) {
+        if (!component.hosts || Object.keys(component.hosts).length === 0) {
+          return '--'
+        }
+        let msg = ''
+        Object.keys(component.hosts).map((objectKey) => {
+          const value = component.hosts[objectKey].map(item => item.hostname)
+          msg += `<p><b>${objectKey}</b>: ${value.join(', ') || '--'}</p>`
+        })
+        return msg
+      },
+      properties(component) {
+        if (!component.properties || Object.keys(component.properties).length === 0) {
+          return '--'
+        }
+        let msg = ''
+        Object.keys(component.properties).map((objectKey) => {
+          let value = component.properties[objectKey]
+          if (objectKey.includes('password') || objectKey.includes('pwd') || objectKey.includes('Password')) {
+            value = '*****'
+          }
+          msg += `<p><b>${objectKey}</b>: ${value || '--'}</p>`
+        })
+        return msg
+      },
+      install() {
+        // this.resetSlectComponents(this.selectComponents)
+        if (this.cluster.state === 'processing') {
           this.$router.push({
             path: `/clusters/${this.clusterId}/processing`
           })
+          return
+        }
+        localStorage.setItem('selectComponents', JSON.stringify(this.selectComponents))
+        // 确认安装
+        promptOnDelete(this, this.$t('serviceComponent.startInstallCulsterTips'), () => {
+          this.deploy(this.clusterId, this.selectComponents, 'install', () => {
+            pop(this.$t('serviceComponent.startInstallButton'))
+            this.$router.push({
+              path: `/clusters/${this.clusterId}/processing`
+            })
+          })
         })
-      })
-    },
-    reset() {
-      promptOnDelete(this, this.$t('componets.resetTips'), () => {
-        this.deploy(this.clusterId, this.selectComponents, 'reset', () => {
-          pop(this.$t('componets.resetSuccessMsg'))
-        })
-      })
-    }
-  },
-  computed: {
-    clusterId() {
-      return this.$route.params.id
-    },
-    existedComponentTypes() {
-      return map(this.components, (component) => {
-        return component.name
-      })
-    },
-    validComponentTypes() {
-      return filter(this.types, (type) => {
-        return this.existedComponentTypes.indexOf(type) === -1
-      })
-    },
-    isInitial() {
-      return this.cluster.state === 'initial' || this.selectComponents.length === 0
-    }
-  },
-  data() {
-    return {
-      component: {
-        name: '',
-        hosts: {},
-        version: '',
-        properties: {}
       },
-      selectComponents: [],
-      dialogVisible: false
-    }
-  },
-  vuex: {
-    actions: {
-      fetchComponents,
-      createComponent,
-      fetchHosts,
-      deleteComponent,
-      updateComponent,
-      deploy,
-      resetProperties,
-      resetSlectComponents,
-      fetchComponentTypes
+      reset() {
+        promptOnDelete(this, this.$t('serviceComponent.resetTips'), () => {
+          this.deploy(this.clusterId, this.selectComponents, 'reset', () => {
+            pop(this.$t('serviceComponent.resetSuccessMsg'))
+          })
+        })
+      }
     },
-    getters: {
-      cluster: getCluster,
-      components: getComponents,
-      hosts: getHosts,
-      types: state=>state.cluster.types
+    computed: {
+      clusterId() {
+        return this.$route.params.id
+      },
+      existedComponentTypes() {
+        return map(this.components, component => component.name)
+      },
+      validComponentTypes() {
+        return filter(this.types, type => this.existedComponentTypes.indexOf(type) === -1)
+      },
+      isInitial() {
+        return this.cluster.state === 'initial' || this.selectComponents.length === 0
+      }
+    },
+    data() {
+      return {
+        component: {
+          name: '',
+          hosts: {},
+          version: '',
+          properties: {}
+        },
+        selectComponents: [],
+        dialogVisible: false
+      }
+    },
+    vuex: {
+      actions: {
+        fetchComponents,
+        createComponent,
+        fetchHosts,
+        deleteComponent,
+        updateComponent,
+        deploy,
+        resetProperties,
+        resetSlectComponents,
+        fetchComponentTypes
+      },
+      getters: {
+        cluster: getCluster,
+        components: getComponents,
+        hosts: getHosts,
+        types: state => state.cluster.types
+      }
     }
   }
-}
 </script>
 <style lang="scss">
 

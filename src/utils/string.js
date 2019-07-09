@@ -4,8 +4,8 @@
  * @param str
  * @param placeholders
  */
-export const formatString = function (str, ...placeholders) {
-  for (var index = 0; index < placeholders.length; index++) {
+export const formatString = (str, ...placeholders) => {
+  for (let index = 0; index < placeholders.length; index++) {
     str = str.replace(`$${index + 1}`, placeholders[index])
   }
   return str
@@ -17,17 +17,39 @@ export const formatString = function (str, ...placeholders) {
  * null  OR undefined OR str.trim() is ''
  * @param str
  */
-export const isNilOrEmpty = function (str) {
-  let isNil = str === null || str === void 0
+export const isNilOrEmpty = (str) => {
+  const isNil = str === null || str === void 0
   if (isNil) return isNil
   if (toString.call(str) === '[object Object]') {
     return false
   }
-  if (toString.call(str) === '[object Number]'){
+  if (toString.call(str) === '[object Number]') {
     return false
   }
-  if (toString.call(str) !== '[object String]'){
+  if (toString.call(str) !== '[object String]') {
     throw Error('parameter should be string or number')
   }
   return str.trim() === ''
+}
+
+export const getDocmentTitle = (lang) => {
+  let title = ''
+  switch (lang) {
+    case 'fr':
+      title = 'Centre de déploiement'
+      break
+    case 'en':
+      title = 'Deployment Center'
+      break
+    default:
+      title = '部署中心'
+      break
+  }
+  return title
+}
+
+export const getDefaultLang = () => {
+  let lang = 'zh'
+  if (!!navigator.language) lang = navigator.language.split('-')[0]
+  return window.sessionStorage.getItem('DEPLOYMENT_LANGUAGE') || lang
 }

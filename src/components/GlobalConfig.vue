@@ -53,7 +53,7 @@
 </template>
 <script>
   export default {
-    data () {
+    data() {
       return {
         changeInstall: ['Etcd', 'K8sMaster', 'K8sNode', 'Mysql', 'LoadBalance', 'Wisecloud']
       }
@@ -62,7 +62,7 @@
       back() {
         this.$router.go(-1)
       },
-      next () {
+      next() {
         this.$router.push({
           path: 'process'
         })
