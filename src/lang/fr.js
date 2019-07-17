@@ -98,7 +98,8 @@ module.exports = {
     deleteSuccess: 'Supprimer terminé',
     createSuccess: 'Création terminé',
     editSuccess: 'Mise à jour terminé',
-    warnTips: 'S\'il vous plaît remplir les paramètres requis et le soumettre'
+    warnTips: 'S\'il vous plaît remplir les paramètres requis et le soumettre',
+    cancelSuccess: 'Annuler l\'installation avec succès'
   },
   tipsButton: {
     ok: 'Ok',
