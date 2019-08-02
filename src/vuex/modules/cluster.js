@@ -172,7 +172,7 @@ export const cancel = ({ dispatch }, clusterId, success = () => {}) => {
 export const fetchLogs = ({ dispatch }, clusterId, success = () => {}) => {
   get(formatString(API.CLUSTER.LOGS, clusterId)).then((response) => {
     dispatch('SET_LOGS', response.body)
-    success()
+    success(response.body)
   }).catch((error) => {
     popWarn(error || 'errGetInstallCulsterLog')
     console.error(error)

@@ -98,7 +98,8 @@ module.exports = {
     deleteSuccess: '删除成功',
     createSuccess: '创建成功',
     editSuccess: '更新成功',
-    warnTips: '请填充必选参数后再进行提交'
+    warnTips: '请填充必选参数后再进行提交',
+    cancelSuccess: '取消安装成功'
   },
   tipsButton: {
     ok: '确 定',

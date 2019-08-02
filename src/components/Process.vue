@@ -13,7 +13,7 @@
     <div class="logs-wrapper logs">
       <div v-for="(log, index) in logs" :key="index" class="log">
         <span class="line-number">{{index + 1}}</span>
-        <p v-html="log"></p>
+        <p v-html="computedLog(log)"></p>
       </div>
     </div>
     <div class="btn-wrapper row">
@@ -31,6 +31,7 @@
   import { pop } from '../utils/alert'
   import { cancel,
            getCluster,
+           fetchLogs,
            fetchClusterDetail,
            getClusterStatus,
            fetchClusterStatus,
@@ -46,11 +47,17 @@
       },
       isDone() {
         return !!this.cluster && this.cluster.state === 'success'
+      },
+      failed() {
+        return !!this.cluster && this.cluster.state === 'failed'
+      },
+      formatLastOneLog() {
+        return this.logs[this.logs.length - 1]
       }
     },
     data() {
       return {
-        failed: false,
+        // failed: false,
         logs: [],
         validStages: []
       }
@@ -63,8 +70,7 @@
       },
       cancelDeployment() {
         this.cancel(this.clusterId, () => {
-          const msg = this.$i18n.locale === 'zh' ? '取消安装成功' : 'Uninstall success'
-          pop(msg)
+          pop(this.$t('layer.cancelSuccess'))
           this.back()
         })
       },
@@ -72,7 +78,9 @@
         if (item.state === 'ok') return '#2ACD98'
         if (item.state === 'failed') return '#f16a64'
         return '#cdd1d9'
-      // return item.enabled ? "#4CAF50" : '#cdd1d9'
+      },
+      computedLog(log) {
+        if (!!log) return `${log.time}: [${log.stage}] [${log.host}]  task: ${log.task.name} - ${log.task.state},  message: ${log.data.msg}`
       },
       listenSoket() {
         let url = `${process.env.VUE_APP_WS_HOST}/v1/stats`
@@ -115,36 +123,46 @@
         })
       },
       computedStageState() {
-        this.fetchClusterStatus(this.clusterId, () => {
-          // 显示那些组件已经安装了
-          const index = findIndex(this.validStages, stage => stage.name.toLowerCase() === this.status.currentStage.toLowerCase())
-          if (!!this.cluster && this.cluster.state !== 'success' && index > 0) {
-            for (let tempIndex = 0; tempIndex < index; tempIndex++) {
-              this.validStages[tempIndex].state = 'ok'
-            }
+        if (this.formatLastOneLog) {
+          if (this.isDone) this.validStages[this.validStages.length - 1].state = 'ok'
+          const index = findIndex(this.validStages, stage => stage.name.toLowerCase() === this.formatLastOneLog.stage.toLowerCase())
+          if (index === -1) return
+          this.validStages[index].state = this.formatLastOneLog.state
+          for (let tempIndex = 0; tempIndex < index; tempIndex++) {
+            this.validStages[tempIndex].state = 'ok'
           }
-        })
+        }
+        // this.fetchClusterStatus(this.clusterId, () => {
+        //   // 显示那些组件已经安装了
+        //   const index = findIndex(this.validStages, stage => stage.name.toLowerCase() === this.status.currentStage.toLowerCase())
+        //   if (!!this.cluster && this.cluster.state !== 'success' && index > 0) {
+        //     for (let tempIndex = 0; tempIndex < index; tempIndex++) {
+        //       this.validStages[tempIndex].state = 'ok'
+        //     }
+        //   }
+        // })
       }
     },
     created() {
+      this.fetchClusterDetail(this.clusterId)
       this.fetchComponentTypes(() => {
         this.formatStages()
+        this.computedStageState()
       })
-      this.fetchClusterDetail(this.clusterId)
+      setTimeout(() => {
+        this.fetchLogs(this.clusterId, (res => this.logs = res))
+      }, 1500)
     },
     mounted() {
-      if (this.cluster.state === 'processing') {
-        this.computedStageState()
-      }
-      this.listenSoket()
-
       intervalId = setInterval(() => {
         this.fetchClusterDetail(this.clusterId)
+        this.fetchLogs(this.clusterId, (res => this.logs = res))
       }, 3000)
     },
     vuex: {
       actions: {
         cancel,
+        fetchLogs,
         fetchClusterDetail,
         fetchClusterStatus,
         fetchComponentTypes
@@ -157,10 +175,13 @@
     },
     watch: {
       'cluster.state': function (val) {
-        if (val === 'success' || val === 'failed') clearInterval(intervalId)
-        else if (!!val && val === 'processing') {
+        if (val === 'success' || val === 'failed') {
+          clearInterval(intervalId)
           this.computedStageState()
         }
+      },
+      'formatLastOneLog.stage': function () {
+        this.computedStageState()
       }
     },
     beforeDestroy() {
