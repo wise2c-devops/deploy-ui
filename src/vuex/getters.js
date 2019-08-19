@@ -1,3 +1,1 @@
-export const getClusters = (store) => {
-  return store.clusters
-}
+export const getClusters = store => store.clusters

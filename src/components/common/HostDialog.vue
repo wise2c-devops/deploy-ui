@@ -37,11 +37,7 @@
       updateHost: Function,
       host: {
         type: Object,
-        default: {
-          hostname: '',
-          ip: '',
-          description: ''
-        }
+        default: () => ({ hostname: '', ip: '', description: '' })
       }
     },
     methods: {

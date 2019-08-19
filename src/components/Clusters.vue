@@ -11,7 +11,6 @@
       <a class="app-item" @click="showCluster(cluster)">
         <div class="icon-container">
           <i :class="['app-icon', 'fa', icon(cluster), cluster.state]" style="font-size:60px"></i>
-          </br>
         </div>
         <span class="app-name">{{cluster.name}}</span>
         <span class="hint--top help app-edit" aria-label="编辑应用" v-if="false">

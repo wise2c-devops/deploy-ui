@@ -1,3 +1,5 @@
+/* eslint no-unused-vars: ["off", { "allow": ["dispatch"] }] */
+
 import API, { get, post, put, destroy } from 'utils/rest'
 import { formatString } from 'utils/string'
 import { popWarn } from 'utils/alert'

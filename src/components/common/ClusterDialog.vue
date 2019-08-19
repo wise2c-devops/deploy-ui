@@ -32,10 +32,7 @@
       updateCluster: Function,
       cluster: {
         type: Object,
-        default: {
-          name: '',
-          description: ''
-        }
+        default: () => ({ name: '', description: '' })
       }
     },
     methods: {

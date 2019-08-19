@@ -95,21 +95,17 @@
       },
       hosts: {
         type: Array,
-        default: []
+        default: () => []
       },
       addComponent: Function,
       updateComponent: Function,
       types: {
         type: Array,
-        default: []
+        default: () => []
       },
       component: {
         type: Object,
-        default: {
-          name: null,
-          hosts: {},
-          properties: {}
-        }
+        default: () => ({ name: null, hosts: {}, properties: {} })
       }
     },
     watch: {
