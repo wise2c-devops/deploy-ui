@@ -33,8 +33,8 @@ const host = {
     modalTile: 'Host',
     hostName: 'Host name',
     hostNameTips: 'Please enter the name of the host',
-    hostIp: 'Host ip',
-    hostIpTips: 'Please enter a valid ip address',
+    hostIp: 'Host IP/FQDN',
+    hostIpTips: 'Please enter a valid ip address or FQDN, e.g. 192.168.9.11 or master01.wisecloud.com',
     hostDescrtipion: 'Description'
   }
 }

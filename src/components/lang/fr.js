@@ -33,8 +33,8 @@ const host = {
     modalTile: 'Hôte',
     hostName: `nom d'hôte`,
     hostNameTips: `S'il vous plaît entrer le nom de l'hôte`,
-    hostIp: 'adresse ip hôte',
-    hostIpTips: `S'il vous plaît entrer une adresse IP validenter le nom de l'hôte`,
+    hostIp: 'adresse ip ou fqdn hôte', 
+    hostIpTips: `S'il vous plaît entrer une IP/FQDN validenter le nom de l'hôte`,
     hostDescrtipion: 'Description'
   }
 }
