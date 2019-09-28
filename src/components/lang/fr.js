@@ -25,7 +25,7 @@ const host = {
   table: {
     num: 'Nomber',
     name: 'Nom hôte',
-    ip: 'IP',
+    ip: 'IP/FQDN',
     des: 'Description',
     operate: 'Opération'
   },
