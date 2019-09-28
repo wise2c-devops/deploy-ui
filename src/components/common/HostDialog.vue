@@ -8,7 +8,8 @@
       </div>
       <div class="form-group">
         <label for="ip" class="required">{{$t('host.hostModal.hostIp')}}</label>
-        <input type="text" class="form-control" v-model="host.ip" name="ip" id="ip">
+        <input type="text" class="form-control" v-model="host.ip" v-validate="'required'" name="ip" id="ip" placeholder="$t('host.hostModal.hostName')">
+        <i v-show="errors.has('ip')" class="error fa fa-warning">{{$t('host.hostModal.hostIpTips')}}</i>
       </div>
       <div class="form-group">
         <label for="description">{{$t('host.hostModal.hostDescrtipion')}}</label>
