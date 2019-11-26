@@ -87,7 +87,7 @@ export default {
         { name: 'Jaeger', icon: 'wise-icon-jaeger', value: 'jaeger', enabled: false, sort: 16 },
         { name: 'Kong', icon: 'wise-icon-kong', value: 'kong', enabled: false, sort: 17 },
         { name: 'Ambassador', icon: 'wise-icon-ambassador', value: 'ambassador', enabled: false, sort: 18 },
-        { name: 'Ambassador', icon: 'wise-icon-elasticcloud', value: 'elasticcloud', enabled: false, sort: 19 }
+        { name: 'ElasticCloud', icon: 'wise-icon-elasticcloud', value: 'elasticcloud', enabled: false, sort: 19 }
       ]
     }
   },
