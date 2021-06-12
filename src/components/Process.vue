@@ -88,6 +88,7 @@ export default {
         { name: 'Kong', icon: 'wise-icon-kong', value: 'kong', enabled: false, sort: 17 },
         { name: 'Ambassador', icon: 'wise-icon-ambassador', value: 'ambassador', enabled: false, sort: 18 },
         { name: 'ElasticCloud', icon: 'wise-icon-elasticcloud', value: 'elasticcloud', enabled: false, sort: 19 }
+        { name: 'CRIO', icon: 'wise-icon-crio', value: 'crio', enabled: false, sort: 20 }
       ]
     }
   },
