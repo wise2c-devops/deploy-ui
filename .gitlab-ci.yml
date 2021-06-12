@@ -1,0 +1,10 @@
+build_image:
+  image: docker:git
+  services:
+    - docker:dind
+  script:
+    - docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:10.15 bash -c "npm install && npm run build"
+    - docker build -t wise2c/deploy-ui:$CI_COMMIT_REF_NAME .
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - docker push wise2c/deploy-ui:$CI_COMMIT_REF_NAME
+  when: always
