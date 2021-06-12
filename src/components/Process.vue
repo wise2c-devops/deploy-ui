@@ -69,7 +69,7 @@ export default {
       failed: false,
       logs: [],
       stages: [
-        { name: 'Docker', icon: 'wise-icon-docker-three', value: 'docker', enabled: false, sort: 1 },
+        { name: 'CRIO', icon: 'wise-icon-crio', value: 'crio', enabled: false, sort: 1 },
         { name: 'Harbor', icon: 'wise-icon-harbor', value: 'harbor', enabled: false, sort: 2 },
         { name: 'LoadBalancer', icon: 'wise-icon-lb-service', value: 'loadbalancer', enabled: false, sort: 3 },
         { name: 'Etcd', icon: 'wise-icon-etcd', value: 'etcd', enabled: false, sort: 4 },
@@ -88,7 +88,7 @@ export default {
         { name: 'Kong', icon: 'wise-icon-kong', value: 'kong', enabled: false, sort: 17 },
         { name: 'Ambassador', icon: 'wise-icon-ambassador', value: 'ambassador', enabled: false, sort: 18 },
         { name: 'ElasticCloud', icon: 'wise-icon-elasticcloud', value: 'elasticcloud', enabled: false, sort: 19 },
-        { name: 'CRIO', icon: 'wise-icon-crio', value: 'crio', enabled: false, sort: 20 }
+        { name: 'Docker', icon: 'wise-icon-docker-three', value: 'docker', enabled: false, sort: 20 }
       ]
     }
   },
