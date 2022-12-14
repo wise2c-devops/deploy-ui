@@ -25,7 +25,7 @@ const host = {
   table: {
     num: '序号',
     name: '名称',
-    ip: 'IP/FQDN',
+    ip: 'IP',
     des: '描述',
     operate: '操作'
   },
@@ -33,8 +33,8 @@ const host = {
     modalTile: '主机',
     hostName: '主机名称',
     hostNameTips: '请输入主机名称',
-    hostIp: '主机 IP/FQDN',
-    hostIpTips: '请输入有效的IP地址或FQDN，例如：192.168.9.11 或 master01.wisecloud.com',
+    hostIp: '主机 IP',
+    hostIpTips: '请输入有效的IP地址',
     hostDescrtipion: '描述信息'
   }
 }

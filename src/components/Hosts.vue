@@ -22,7 +22,7 @@
           </el-table-column>
           <el-table-column align="center" prop="hostname" :label="$t('host.table.name')">
           </el-table-column>
-          <el-table-column align="center" prop="ip" label="IP/FQDN">
+          <el-table-column align="center" prop="ip" label="IP">
           </el-table-column>
           <el-table-column align="center" prop="description" :label="$t('host.table.des')">
           </el-table-column>
