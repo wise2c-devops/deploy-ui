@@ -1,0 +1,108 @@
+jobs:
+  build-branches-amd64:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Build an amd64 container image
+          command: |
+            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:10.15 bash -c "node install && node run build"
+            docker build -f Dockerfile.amd64 -t wise2c/deploy-ui:amd64-$CIRCLE_BRANCH .
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker push wise2c/deploy-ui:amd64-$CIRCLE_BRANCH
+
+  build-tags-amd64:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Build an amd64 container image
+          command: |
+            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:14 bash -c "yarn install && yarn run build"
+            docker build -f Dockerfile.amd64 -t wise2c/deploy-ui:amd64-$CIRCLE_TAG .
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker push wise2c/deploy-ui:amd64-$CIRCLE_TAG
+
+  build-branches-aarch64:
+    machine: true
+    resource_class: arm.medium
+    steps:
+      - checkout
+      - run:
+          name: Build an aarch64 container image
+          command: |
+            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:14 bash -c "yarn install && yarn run build"          
+            docker build -f Dockerfile.aarch64 -t wise2c/deploy-ui:aarch64-$CIRCLE_BRANCH .
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker push wise2c/deploy-ui:aarch64-$CIRCLE_BRANCH
+
+  build-tags-aarch64:
+    resource_class: arm.medium
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Build an aarch64 container image
+          command: |
+            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:14 bash -c "yarn install && yarn run build"
+            docker build -f Dockerfile.aarch64 -t wise2c/deploy-ui:aarch64-$CIRCLE_TAG .
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker push wise2c/deploy-ui:aarch64-$CIRCLE_TAG
+
+  build-branches-multi-arch:
+    machine: true
+    steps:
+      - run:
+          name: Build a multi-arch container image
+          command: |
+            docker manifest create wise2c/deploy-ui:$CIRCLE_BRANCH wise2c/deploy-ui:amd64-$CIRCLE_BRANCH wise2c/deploy-ui:aarch64-$CIRCLE_BRANCH
+            docker manifest annotate wise2c/deploy-ui:$CIRCLE_BRANCH wise2c/deploy-ui:amd64-$CIRCLE_BRANCH --os linux --arch amd64
+            docker manifest annotate wise2c/deploy-ui:$CIRCLE_BRANCH wise2c/deploy-ui:aarch64-$CIRCLE_BRANCH --os linux --arch arm64
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker manifest push wise2c/deploy-ui:$CIRCLE_BRANCH
+
+  build-tags-multi-arch:
+    machine: true
+    steps:
+      - run:
+          name: Build a multi-arch container image
+          command: |
+            docker manifest create wise2c/deploy-ui:$CIRCLE_TAG wise2c/deploy-ui:amd64-$CIRCLE_TAG wise2c/deploy-ui:aarch64-$CIRCLE_TAG
+            docker manifest annotate wise2c/deploy-ui:$CIRCLE_TAG wise2c/deploy-ui:amd64-$CIRCLE_TAG --os linux --arch amd64
+            docker manifest annotate wise2c/deploy-ui:$CIRCLE_TAG wise2c/deploy-ui:aarch64-$CIRCLE_TAG --os linux --arch arm64
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker manifest push wise2c/deploy-ui:$CIRCLE_TAG
+
+workflows:
+  version: 2
+  build-for-branches:
+    jobs:
+      - build-branches-amd64
+      - build-branches-aarch64
+      - build-branches-multi-arch:
+          requires:
+            - build-branches-amd64
+            - build-branches-aarch64
+  build-for-tags:
+    jobs:
+      - build-tags-amd64:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - build-tags-aarch64:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - build-tags-multi-arch:
+          requires:
+            - build-tags-amd64
+            - build-tags-aarch64
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
