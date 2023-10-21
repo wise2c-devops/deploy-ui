@@ -18,8 +18,8 @@ jobs:
       - run:
           name: Build an amd64 container image
           command: |
-            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:14 bash -c "yarn install && yarn run build"
-            docker build -f Dockerfile.amd64 -t wise2c/deploy-ui:amd64-$CIRCLE_TAG .
+            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:10.15 bash -c "npm install && npm run build"
+            docker build -f Dockerfile -t wise2c/deploy-ui:amd64-$CIRCLE_TAG .
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push wise2c/deploy-ui:amd64-$CIRCLE_TAG
 
@@ -32,7 +32,7 @@ jobs:
           name: Build an aarch64 container image
           command: |
             docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:14 bash -c "yarn install && yarn run build"          
-            docker build -f Dockerfile.aarch64 -t wise2c/deploy-ui:aarch64-$CIRCLE_BRANCH .
+            docker build -f Dockerfile -t wise2c/deploy-ui:aarch64-$CIRCLE_BRANCH .
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push wise2c/deploy-ui:aarch64-$CIRCLE_BRANCH
 
@@ -45,7 +45,7 @@ jobs:
           name: Build an aarch64 container image
           command: |
             docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:14 bash -c "yarn install && yarn run build"
-            docker build -f Dockerfile.aarch64 -t wise2c/deploy-ui:aarch64-$CIRCLE_TAG .
+            docker build -f Dockerfile -t wise2c/deploy-ui:aarch64-$CIRCLE_TAG .
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push wise2c/deploy-ui:aarch64-$CIRCLE_TAG
 
