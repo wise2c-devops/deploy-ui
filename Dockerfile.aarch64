@@ -1,12 +1,10 @@
-FROM wise2c/deploy-ui:amd64-v2.0.0 as dist
-
 FROM alpine:3.7
 
 WORKDIR /root
 
 RUN apk add curl bash gnupg caddy --no-cache
 
-COPY --from=dist /root/ui /root/ui
+ADD dist/ /root/ui
 
 COPY entrypoint.sh /root
 COPY caddy/Caddyfile /root
