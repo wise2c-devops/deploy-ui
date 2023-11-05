@@ -1,5 +1,4 @@
 # deploy-ui
-[![Build Status](https://travis-ci.org/wise2c-devops/deploy-ui.svg?branch=master)](https://travis-ci.org/wise2c-devops/deploy-ui)
 
 > deploy-ui 启动前端项目
 
