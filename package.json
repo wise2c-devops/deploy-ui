@@ -64,7 +64,7 @@
     "nightwatch": "^0.8.18",
     "node-sass": "^9.0.0",
     "ora": "^0.2.0",
-    "sass-loader": "^13.2.2",
+    "sass-loader": "^9.0.0",
     "selenium-server": "2.53.0",
     "shelljs": "^0.6.0",
     "sinon": "^1.17.3",
