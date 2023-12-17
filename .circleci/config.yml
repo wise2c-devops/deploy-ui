@@ -6,7 +6,7 @@ jobs:
       - run:
           name: Build an amd64 container image
           command: |
-            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:21 bash -c "apt-get update && apt-get install python3 && yarn config set python /usr/bin/python3 && yarn add --dev node-gyp@10.0.1 @babel/core@7.23.6 && yarn run build"
+            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:21 bash -c "apt-get update && apt-get install python3 && yarn config set python /usr/bin/python3 && yarn add --dev node-gyp@10.0.1 @babel/core@7.23.6 @popperjs/core@^2.11.8 && yarn run build"
             docker build -f Dockerfile -t wise2c/deploy-ui:amd64-$CIRCLE_BRANCH .
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push wise2c/deploy-ui:amd64-$CIRCLE_BRANCH
@@ -18,7 +18,7 @@ jobs:
       - run:
           name: Build an amd64 container image
           command: |
-            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:21 bash -c "apt-get update && apt-get install python3 && yarn config set python /usr/bin/python3 && yarn add node-gyp@10.0.1 && yarn run build"
+            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:21 bash -c "apt-get update && apt-get install python3 && yarn config set python /usr/bin/python3 && yarn add --dev node-gyp@10.0.1 @babel/core@7.23.6 @popperjs/core@^2.11.8 && yarn run build"
             docker build -f Dockerfile -t wise2c/deploy-ui:amd64-$CIRCLE_TAG .
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push wise2c/deploy-ui:amd64-$CIRCLE_TAG
@@ -31,7 +31,7 @@ jobs:
       - run:
           name: Build an aarch64 container image
           command: |
-            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:21 bash -c "apt-get update && apt-get install python3 && yarn config set python /usr/bin/python3 && yarn add node-gyp@10.0.1 && yarn run build"          
+            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:21 bash -c "apt-get update && apt-get install python3 && yarn config set python /usr/bin/python3 && yarn add --dev node-gyp@10.0.1 @babel/core@7.23.6 @popperjs/core@^2.11.8 && yarn run build"
             docker build -f Dockerfile -t wise2c/deploy-ui:aarch64-$CIRCLE_BRANCH .
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push wise2c/deploy-ui:aarch64-$CIRCLE_BRANCH
@@ -44,7 +44,7 @@ jobs:
       - run:
           name: Build an aarch64 container image
           command: |
-            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:21 bash -c "apt-get update && apt-get install python3 && yarn config set python /usr/bin/python3 && yarn add node-gyp@10.0.1 && yarn run build"
+            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:21 bash -c "apt-get update && apt-get install python3 && yarn config set python /usr/bin/python3 && yarn add --dev node-gyp@10.0.1 @babel/core@7.23.6 @popperjs/core@^2.11.8 && yarn run build"
             docker build -f Dockerfile -t wise2c/deploy-ui:aarch64-$CIRCLE_TAG .
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push wise2c/deploy-ui:aarch64-$CIRCLE_TAG
