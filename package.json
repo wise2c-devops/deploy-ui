@@ -75,7 +75,7 @@
     "vue-style-loader": "^1.0.0",
     "vue-template-compiler": "^2.5.2",
     "weatherstar-switch": "^1.0.6",
-    "webpack": "^4.0.0",
+    "webpack": "^4.47.0",
     "webpack-dev-middleware": "^6.1.1",
     "webpack-hot-middleware": "^2.25.4",
     "webpack-merge": "^5.10.0"
