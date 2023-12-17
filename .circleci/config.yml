@@ -6,7 +6,7 @@ jobs:
       - run:
           name: Build an amd64 container image
           command: |
-            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:22 bash -c "apt-get update && apt-get install python3 && yarn config set python /usr/bin/python3 && yarn add chromedriver && yarn add node-gyp@latest && yarn run build"
+            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:21 bash -c "apt-get update && apt-get install python3 && yarn config set python /usr/bin/python3 && yarn add chromedriver && yarn add node-gyp@latest && yarn run build"
             docker build -f Dockerfile -t wise2c/deploy-ui:amd64-$CIRCLE_BRANCH .
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push wise2c/deploy-ui:amd64-$CIRCLE_BRANCH
