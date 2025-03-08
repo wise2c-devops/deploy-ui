@@ -93,7 +93,12 @@ export default {
         default:
           return 'fa-desktop'
       }
-    }
+    },
+    ...mapActions([
+      'fetchClusters',
+      'createCluster',
+      'deleteCluster'
+    ])
   },
   mounted() {
     this.fetchClusters()
@@ -102,14 +107,7 @@ export default {
     ...mapGetters({
       clusters: 'getClusters'
     })
-  },
-  methods: {
-    ...mapActions([
-      'fetchClusters',
-      'createCluster',
-      'deleteCluster'
-    ]),
-}
+  }
 </script>
 
 <style lang="scss" scoped>
