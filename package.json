@@ -54,7 +54,7 @@
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "http-proxy-middleware": "^2.0.1",
-    "inject-loader": "^5.0.1",
+    "inject-loader": "",
     "json-loader": "^0.5.7",
     "nightwatch": "^2.0.0",
     "node-sass": "^7.0.0",
