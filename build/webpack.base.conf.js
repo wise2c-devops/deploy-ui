@@ -98,7 +98,17 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: 'style-loader!css-loader'
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: process.env.NODE_ENV === 'production' ?
+                config.build.productionSourceMap :
+                config.dev.cssSourceMap
+            }
+          }
+        ]
       }
     ]
   },
