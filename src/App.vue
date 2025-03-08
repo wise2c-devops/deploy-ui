@@ -73,10 +73,11 @@
   }
 </style>
 <script type="text/javascript">
+  import Vue from 'vue'
   import Loading from './components/Loading.vue'
-  import {getDocmentTitle, getDefaultLang} from 'utils/string'
-  import {showLoading, hideLoading} from './vuex/actions'
-  import store from './vuex/store'
+  import {getDocmentTitle, getDefaultLang} from '@/utils/string'
+  import {showLoading, hideLoading} from '@/vuex/actions'
+  import store from '@/vuex/store'
   export default {
     components: {
       Loading
@@ -93,9 +94,9 @@
       }
     },
     store,
-    created () {
-      this.showLoading()
-      this.hideLoading()
+    created() {
+      this.$store.dispatch('showLoading')
+      this.$store.dispatch('hideLoading')
     },
     mounted () {
     },
@@ -132,11 +133,11 @@
         document.title = `Kubernetes ${getDocmentTitle(window.sessionStorage.getItem('DEPLOYMENT_LANGUAGE'))}`
       }
     },
-    vuex: {
-      actions: {
-        showLoading,
-        hideLoading
-      }
+    methods: {
+      ...mapActions([
+        'showLoading',
+        'hideLoading'
+      ])
     }
   }
 </script>
