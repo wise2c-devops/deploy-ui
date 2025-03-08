@@ -3,7 +3,7 @@ const config = require('../config')
 const utils = require('./utils')
 const projectRoot = path.resolve(__dirname, '../')
 const TerserPlugin = require('terser-webpack-plugin')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -38,15 +38,7 @@ module.exports = {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          loaders: utils.cssLoaders({
-            sourceMap: process.env.NODE_ENV === 'production' ?
-              config.build.productionSourceMap :
-              config.dev.cssSourceMap,
-            extract: process.env.NODE_ENV === 'production'
-          })
-        }
+        loader: 'vue-loader'
       },
       {
         test: /\.js$/,
