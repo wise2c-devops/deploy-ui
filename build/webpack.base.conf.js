@@ -1,9 +1,12 @@
-var path = require('path')
-var config = require('../config')
-var utils = require('./utils')
-var projectRoot = path.resolve(__dirname, '../')
+const path = require('path')
+const config = require('../config')
+const utils = require('./utils')
+const projectRoot = path.resolve(__dirname, '../')
+const TerserPlugin = require('terser-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
     app: './src/main.js'
   },
@@ -31,21 +34,7 @@ module.exports = {
     fallback: [path.join(__dirname, '../node_modules')]
   },
   module: {
-    noParse: /.npminstall\/localforage\/1.4.3\/localforage\/dist\/localforage.js/,    
-    preLoaders: [
-      {
-        test: /\.vue$/,
-        loader: 'eslint',
-        include: projectRoot,
-        exclude: /node_modules/
-      },
-      {
-        test: /\.js$/,
-        loader: 'eslint',
-        include: projectRoot,
-        exclude: /node_modules/
-      }
-    ],
+    noParse: /.npminstall\/localforage\/1.4.3\/localforage\/dist\/localforage.js/,
     rules: [
       {
         test: /\.vue$/,
@@ -108,10 +97,24 @@ module.exports = {
   eslint: {
     formatter: require('eslint-friendly-formatter')
   },
-  vue: {
-    loaders: utils.cssLoaders(),
-    compilerOptions: {
-      preserveWhitespace: false
-    }
-  }
+  optimization: {
+    minimize: process.env.NODE_ENV === 'production',
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          compress: {
+            warnings: false
+          },
+          output: {
+            comments: false
+          }
+        },
+        sourceMap: config.build.productionSourceMap,
+        parallel: true
+      })
+    ]
+  },
+  plugins: [
+    new VueLoaderPlugin()
+  ]
 }
