@@ -10,8 +10,10 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var env
 if (process.env.NODE_ENV === 'testing') {
   env = require('../config/test.env')
+} else if (process.env.NODE_ENV === 'production') {
+  env = require('../config/prod.env')
 } else {
-  env = config[process.env.NODE_ENV].env
+  env = require('../config/dev.env')
 }
 
 console.log('webpack env :\n', env)
