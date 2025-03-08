@@ -17,15 +17,4 @@
   }
 </style>
 <script type="text/javascript">
-import { loadingMixin } from '../mixin/loading'
-
-export default {
-  mixins: [loadingMixin],
-  created() {
-    this.showLoading()
-  },
-  mounted() {
-    this.hideLoading()
-  }
-}
 </script>

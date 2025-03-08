@@ -1,4 +1,6 @@
-module.exports = {
+var merge = require('webpack-merge')
+
+module.exports = merge({}, {
   NODE_ENV: '"production"',
   HTTP_HOST: '""',
   WEBSOCKET_HOST: '"ws://192.168.9.10:8080"',
@@ -11,4 +13,4 @@ module.exports = {
   FEATURE_CHART: '"KUBERNETES"',
   PUSHER_KEY: '"kubernetes"',
   TYPE_ENV:'"K8S"'
-}
+})

@@ -1,6 +1,6 @@
 var path = require('path')
 var config = require('../config')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 exports.assetsPath = function (_path) {
   return path.posix.join(config.build.assetsSubDirectory, _path)
@@ -11,26 +11,21 @@ exports.cssLoaders = function (options) {
   // generate loader string to be used with extract text plugin
   function generateLoaders (loaders) {
     var sourceLoader = loaders.map(function (loader) {
-      var loaderName = loader.replace(/\?.*$/, '')
-      var query = loader.replace(/^[^?]*\??/, '')
-      var loaderObj = {
-        loader: loaderName + '-loader',
-        options: {}
+      var extraParamChar
+      if (/\?/.test(loader)) {
+        loader = loader.replace(/\?/, '-loader?')
+        extraParamChar = '&'
+      } else {
+        loader = loader + '-loader'
+        extraParamChar = '?'
       }
-      if (options.sourceMap) {
-        loaderObj.options.sourceMap = true
-      }
-      if (query) {
-        loaderObj.options = Object.assign(loaderObj.options, 
-          Object.fromEntries(new URLSearchParams(query)))
-      }
-      return loaderObj
-    })
+      return loader + (options.sourceMap ? extraParamChar + 'sourceMap' : '')
+    }).join('!')
 
     if (options.extract) {
-      return [{ loader: MiniCssExtractPlugin.loader }].concat(sourceLoader)
+      return ExtractTextPlugin.extract('vue-style-loader', sourceLoader)
     } else {
-      return [{ loader: 'vue-style-loader' }].concat(sourceLoader)
+      return ['vue-style-loader', sourceLoader].join('!')
     }
   }
 
@@ -54,7 +49,7 @@ exports.styleLoaders = function (options) {
     var loader = loaders[extension]
     output.push({
       test: new RegExp('\\.' + extension + '$'),
-      use: loader
+      loader: loader
     })
   }
   return output

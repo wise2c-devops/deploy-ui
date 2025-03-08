@@ -29,13 +29,12 @@
 
 <script type="text/javascript">
 import ClusterDialog from './common/ClusterDialog'
-import { mapActions, mapGetters } from 'vuex'
+import { fetchClusters, createCluster, deleteCluster } from 'vuexPath/actions'
+import { getClusters } from 'vuexPath/getters'
 import { promptOnDelete } from '../utils/prompt'
 import { pop } from '../utils/alert'
-import loadingMixin from '../mixin/loading'
 export default {
   components: { ClusterDialog },
-  mixins: [loadingMixin],
   data() {
     return {
       dialogVisible: false,
@@ -68,19 +67,12 @@ export default {
       this.dialogVisible = true
       return
     },
-    async create(cluster) {
-      try {
-        this.showLoading()
-        const newCluster = Object.assign({}, cluster)
-        await this.createCluster(newCluster)
+    create(cluster) {
+      var newCluster = Object.assign({}, cluster)
+      this.createCluster(newCluster, () => {
         pop(this.$t('layer.createSuccess'))
         this.dialogVisible = false
-        await this.fetchClusters() // Refresh the list
-      } catch (error) {
-        console.error('Error creating cluster:', error)
-      } finally {
-        this.hideLoading()
-      }
+      })
     },
     updateCluster() {
       // console.log('update')
@@ -98,20 +90,20 @@ export default {
         default:
           return 'fa-desktop'
       }
-    },
-    ...mapActions([
-      'fetchClusters',
-      'createCluster',
-      'deleteCluster'
-    ])
+    }
   },
   mounted() {
     this.fetchClusters()
   },
-  computed: {
-    ...mapGetters({
-      clusters: 'getClusters'
-    })
+  vuex: {
+    actions: {
+      fetchClusters,
+      createCluster,
+      deleteCluster
+    },
+    getters: {
+      clusters: getClusters
+    }
   }
 }
 </script>
