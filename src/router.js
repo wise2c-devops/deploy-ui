@@ -1,52 +1,62 @@
 import VueRouter from 'vue-router'
+import IndexPage from './components/IndexPage.vue'
+import Clusters from './components/Clusters.vue'
+import Hosts from './components/Hosts.vue'
+import GlobalConfig from './components/GlobalConfig.vue'
+import ClusterBase from './components/ClusterBase.vue'
+import Components from './components/Components.vue'
+import Logs from './components/Logs.vue'
+import Process from './components/Process.vue'
+import NotFound from './components/404.vue'
+
 export default new VueRouter({
   // mode: 'history',
   routes: [
     {
       path: '/',
-      component: require('./components/IndexPage.vue')
+      component: IndexPage
     },
     {
       path: '/clusters',
       name: "clusters",
-      component: require('./components/Clusters.vue')
+      component: Clusters
     },
     {
       path: '/hosts',
-      component: require('./components/Hosts.vue')
+      component: Hosts
     },
     {
       path: '/globalConfig',
-      component: require('./components/GlobalConfig.vue')
+      component: GlobalConfig
     },
     {
       path: '/clusters/:id',
-      component: require('./components/ClusterBase.vue'),
+      component: ClusterBase,
       children: [
         {
           name: "hosts",
           path: 'hosts',
-          component: require('./components/Hosts.vue')
+          component: Hosts
         },
         {
           path: 'components',
           name: "components",
-          component: require('./components/Components.vue')
+          component: Components
         },
         {
           path: 'logs',
           name: "logs",
-          component: require('./components/Logs.vue')
+          component: Logs
         }
       ]
     },
     {
       path: '/clusters/:id/processing',
-      component: require('./components/Process.vue')
+      component: Process
     },
     {
       path: "*",
-      component: require('./components/404.vue')
+      component: NotFound
     }
     // {
     //   path: '/contact',
