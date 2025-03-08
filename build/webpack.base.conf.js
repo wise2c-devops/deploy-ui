@@ -67,8 +67,7 @@ module.exports = {
       },
       {
         test: /\.json$/,
-        type: 'javascript/auto',
-        loader: 'json-loader'
+        type: 'json'
       },
       {
         test: /\.html$/,
