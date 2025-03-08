@@ -1,4 +1,4 @@
-import Vue from 'vue/dist/vue.esm.js'
+import Vue from 'vue'
 
 import App from './App'
 
@@ -16,7 +16,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import VueI18n from 'vue-i18n'
 import {getDocmentTitle, getDefaultLang} from './utils/string'
 
-const config = require('../config/sysconfig.json')
+import config from '../config/sysconfig.json'
 Vue.prototype.$config = Vue.prototype.$config || config
 Vue.use(Element)
 
