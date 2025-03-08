@@ -1,4 +1,4 @@
-export const loadingMixin = {
+export default {
   data() {
     return {
       isLoading: false

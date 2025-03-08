@@ -32,7 +32,7 @@ import ClusterDialog from './common/ClusterDialog'
 import { mapActions, mapGetters } from 'vuex'
 import { promptOnDelete } from '../utils/prompt'
 import { pop } from '../utils/alert'
-import { loadingMixin } from '../mixin/loading'
+import loadingMixin from '../mixin/loading'
 export default {
   components: { ClusterDialog },
   mixins: [loadingMixin],

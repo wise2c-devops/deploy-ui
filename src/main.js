@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 import App from './App'
-import { loadingMixin } from './mixin/loading'
+import loadingMixin from './mixin/loading'
 
 import VueRouter from 'vue-router'
 import router from './router'
