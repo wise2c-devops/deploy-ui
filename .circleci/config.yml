@@ -6,7 +6,7 @@ jobs:
       - run:
           name: Build an amd64 container image
           command: |
-            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:20.17.0 bash -c "yarn add json-loader --dev && yarn install && yarn run build"
+            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:20.17.0 bash -c "yarn remove babel-polyfill babel-runtime && yarn add -D @babel/core @babel/preset-env babel-loader@8 terser-webpack-plugin@5 @babel/plugin-transform-runtime && yarn add @babel/runtime core-js regenerator-runtime && yarn install && yarn run build"
             docker build -t wise2c/deploy-ui:amd64-$CIRCLE_BRANCH .
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push wise2c/deploy-ui:amd64-$CIRCLE_BRANCH

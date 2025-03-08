@@ -1,4 +1,6 @@
-import Vue from 'vue'
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
+import Vue from 'vue/dist/vue.esm.js'
 import App from './App'
 
 import VueRouter from 'vue-router'
