@@ -1,6 +1,7 @@
 import Vue from 'vue'
 
 import App from './App'
+import { loadingMixin } from './mixin/loading'
 
 import VueRouter from 'vue-router'
 import router from './router'
@@ -54,9 +55,16 @@ window.vue = new Vue({
   el: '#app',
   router,
   i18n,
+  mixins: [loadingMixin],
   render: h => h(App),
   data: {
     eventHub: new Vue()
+  },
+  created() {
+    this.showLoading()
+  },
+  mounted() {
+    this.hideLoading()
   }
 })
 
