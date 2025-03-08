@@ -22,27 +22,22 @@ exports.cssLoaders = function (options) {
       return loader + (options.sourceMap ? extraParamChar + 'sourceMap' : '')
     }).join('!')
 
-    // Extract CSS when that option is specified
     if (options.extract) {
-      return ExtractTextPlugin.extract({
-        use: sourceLoader,
-        fallback: 'vue-style-loader'
-      })
+      return ExtractTextPlugin.extract('vue-style-loader', sourceLoader)
     } else {
-      return ['style-loader', sourceLoader].join('!')
+      return ['vue-style-loader', sourceLoader].join('!')
     }
   }
 
   // http://vuejs.github.io/vue-loader/configurations/extract-css.html
   return {
     css: generateLoaders(['css']),
-    postcss: generateLoaders(['css', 'postcss']),
+    postcss: generateLoaders(['css']),
     less: generateLoaders(['css', 'less']),
     sass: generateLoaders(['css', 'sass?indentedSyntax']),
     scss: generateLoaders(['css', 'sass']),
     stylus: generateLoaders(['css', 'stylus']),
-    styl: generateLoaders(['css', 'stylus']),
-    font: generateLoaders(['file-loader'])
+    styl: generateLoaders(['css', 'stylus'])
   }
 }
 

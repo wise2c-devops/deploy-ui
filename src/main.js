@@ -1,4 +1,5 @@
 import Vue from 'vue'
+
 import App from './App'
 
 import VueRouter from 'vue-router'
@@ -13,10 +14,9 @@ import FR from './components/lang/fr'
 import './assets/wise-icons/css/fontello.css'
 import 'element-ui/lib/theme-chalk/index.css'
 import VueI18n from 'vue-i18n'
-import {getDocmentTitle, getDefaultLang} from './utils/string'
+import {getDocmentTitle, getDefaultLang} from 'utils/string'
 
-import config from '../config/sysconfig.json'
-Vue.prototype.$config = config
+Vue.prototype.$config = Vue.prototype.$config || require('../config/sysconfig.json')
 Vue.use(Element)
 
 // if(process.env.NODE_ENV==='production') {
@@ -50,7 +50,7 @@ router.afterEach(() => {
 
 
 //全局可取
-new Vue({
+window.vue = new Vue({
   el: '#app',
   router,
   i18n,

@@ -2,7 +2,6 @@ var merge = require('webpack-merge')
 
 module.exports = merge({}, {
   NODE_ENV: '"production"',
-  TYPE_ENV: '"K8S"',
   HTTP_HOST: '""',
   WEBSOCKET_HOST: '"ws://192.168.9.10:8080"',
   FEATURE_DEPLOY_PIPELINE: false,

@@ -1,12 +1,9 @@
-const path = require('path')
-const config = require('../config')
-const utils = require('./utils')
-const projectRoot = path.resolve(__dirname, '../')
-const TerserPlugin = require('terser-webpack-plugin')
-const { VueLoaderPlugin } = require('vue-loader')
+var path = require('path')
+var config = require('../config')
+var utils = require('./utils')
+var projectRoot = path.resolve(__dirname, '../')
 
 module.exports = {
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
     app: './src/main.js'
   },
@@ -34,79 +31,69 @@ module.exports = {
     fallback: [path.join(__dirname, '../node_modules')]
   },
   module: {
-    noParse: /.npminstall\/localforage\/1.4.3\/localforage\/dist\/localforage.js/,
-    rules: [
+    noParse: /.npminstall\/localforage\/1.4.3\/localforage\/dist\/localforage.js/,    
+    preLoaders: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader'
+        loader: 'eslint',
+        include: projectRoot,
+        exclude: /node_modules/
       },
       {
         test: /\.js$/,
-        loader: 'babel-loader',
+        loader: 'eslint',
+        include: projectRoot,
+        exclude: /node_modules/
+      }
+    ],
+    loaders: [
+      // {
+      //   test: require.resolve('jsplumb'),
+      //   loaders: [
+      //     'imports?this=>window',
+      //     'script'
+      //   ]
+      // },
+      {
+        test: /\.vue$/,
+        loader: 'vue'
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel',
         include: projectRoot,
         exclude: /node_modules/
       },
       {
         test: /\.json$/,
-        type: 'json'
+        loader: 'json'
       },
       {
         test: /\.html$/,
-        loader: 'vue-html-loader'
+        loader: 'vue-html'
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
+        loader: 'url',
+        query: {
           limit: 10000,
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
+        loader: 'url',
+        query: {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      },
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: process.env.NODE_ENV === 'production' ?
-                config.build.productionSourceMap :
-                config.dev.cssSourceMap
-            }
-          }
-        ]
       }
     ]
   },
   eslint: {
     formatter: require('eslint-friendly-formatter')
   },
-  optimization: {
-    minimize: process.env.NODE_ENV === 'production',
-    minimizer: [
-      new TerserPlugin({
-        terserOptions: {
-          compress: {
-            warnings: false
-          },
-          output: {
-            comments: false
-          },
-          sourceMap: config.build.productionSourceMap
-        },
-        parallel: true
-      })
-    ]
-  },
-  plugins: [
-    new VueLoaderPlugin()
-  ]
+  vue: {
+    loaders: utils.cssLoaders()
+  }
 }

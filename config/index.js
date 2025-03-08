@@ -21,9 +21,6 @@ module.exports = {
   workflow: {
     env: require('./workflow.env')
   },
-  development: {
-    env: require('./dev.env')
-  },
   dev: {
     env: require('./dev.env'),
     port: 3000,
