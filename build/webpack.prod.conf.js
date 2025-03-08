@@ -4,7 +4,7 @@ var utils = require('./utils')
 var webpack = require('webpack')
 var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 var env
@@ -40,7 +40,9 @@ var webpackConfig = merge(baseWebpackConfig, {
     }),
     new webpack.optimize.OccurenceOrderPlugin(),
     // extract css into its own file
-    new ExtractTextPlugin(utils.assetsPath('css/[name].[contenthash].css')),
+    new MiniCssExtractPlugin({
+      filename: utils.assetsPath('css/[name].[contenthash].css')
+    }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
