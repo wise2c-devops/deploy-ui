@@ -12,7 +12,11 @@ var env
 if (process.env.NODE_ENV === 'testing') {
   env = require('../config/test.env')
 } else {
-  env = config[process.env.NODE_ENV].env
+  const envConfig = config[process.env.NODE_ENV]
+  if (!envConfig) {
+    throw new Error(`No configuration found for NODE_ENV=${process.env.NODE_ENV}`)
+  }
+  env = envConfig.env
 }
 
 console.log('webpack env :\n', env)

@@ -4,6 +4,9 @@ const ora = require('ora')
 const webpack = require('webpack')
 const webpackConfig = require('./webpack.prod.conf')
 
+// Ensure NODE_ENV is set
+process.env.NODE_ENV = 'production'
+
 const spinner = ora('Building for production...')
 spinner.start()
 
