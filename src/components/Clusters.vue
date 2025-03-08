@@ -108,6 +108,7 @@ export default {
       clusters: 'getClusters'
     })
   }
+}
 </script>
 
 <style lang="scss" scoped>
