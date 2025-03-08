@@ -11,17 +11,18 @@ exports.cssLoaders = function (options) {
   // generate loader string to be used with extract text plugin
   function generateLoaders (loaders) {
     var sourceLoader = loaders.map(function (loader) {
-      var loaderObj = {}
-      if (/\?/.test(loader)) {
-        loaderObj.loader = loader.replace(/\?/, '-loader?')
-        if (options.sourceMap) {
-          loaderObj.options = { sourceMap: true }
-        }
-      } else {
-        loaderObj.loader = loader + '-loader'
-        if (options.sourceMap) {
-          loaderObj.options = { sourceMap: true }
-        }
+      var loaderName = loader.replace(/\?.*$/, '')
+      var query = loader.replace(/^[^?]*\??/, '')
+      var loaderObj = {
+        loader: loaderName + '-loader',
+        options: {}
+      }
+      if (options.sourceMap) {
+        loaderObj.options.sourceMap = true
+      }
+      if (query) {
+        loaderObj.options = Object.assign(loaderObj.options, 
+          Object.fromEntries(new URLSearchParams(query)))
       }
       return loaderObj
     })
@@ -53,7 +54,7 @@ exports.styleLoaders = function (options) {
     var loader = loaders[extension]
     output.push({
       test: new RegExp('\\.' + extension + '$'),
-      loader: loader
+      use: loader
     })
   }
   return output
