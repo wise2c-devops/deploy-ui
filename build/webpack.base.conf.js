@@ -99,9 +99,9 @@ module.exports = {
           },
           output: {
             comments: false
-          }
+          },
+          sourceMap: config.build.productionSourceMap
         },
-        sourceMap: config.build.productionSourceMap,
         parallel: true
       })
     ]
