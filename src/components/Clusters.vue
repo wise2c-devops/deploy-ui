@@ -29,7 +29,7 @@
 
 <script type="text/javascript">
 import ClusterDialog from './common/ClusterDialog'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex/dist/vuex.esm-bundler.js'
 import { promptOnDelete } from '../utils/prompt'
 import { pop } from '../utils/alert'
 export default {

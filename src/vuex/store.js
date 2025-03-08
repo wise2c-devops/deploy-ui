@@ -5,7 +5,6 @@ import Component from './modules/component'
 Vue.use(Vuex)
 
 const state = {
-
   loading: false,
   clusters: []
 }
@@ -23,12 +22,28 @@ const mutations = {
   DELETE_CLUSTER(state, index) {
     state.clusters.splice(index, 1)
   }
+}
 
+const actions = {
+  fetchClusters({ commit }) {
+    // Add your API call here
+    const clusters = [] // Replace with actual data
+    commit('UPDATE_CLUSTERS', clusters)
+  },
+  createCluster({ commit }, cluster) {
+    // Add your API call here
+    commit('ADD_CLUSTER', cluster)
+  },
+  deleteCluster({ commit }, { id, index }) {
+    // Add your API call here
+    commit('DELETE_CLUSTER', index)
+  }
 }
 
 export default new Vuex.Store({
   state,
   mutations,
+  actions,
   modules: {
     cluster: Cluster,
     component: Component
