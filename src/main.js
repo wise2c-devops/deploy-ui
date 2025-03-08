@@ -1,6 +1,5 @@
-import Vue from 'vue/dist/vue.esm.js'
-
-import App from './App.vue'
+import Vue from 'vue'
+import App from './App'
 
 import VueRouter from 'vue-router'
 import router from './router'
@@ -51,7 +50,7 @@ router.afterEach(() => {
 
 
 //全局可取
-window.vue = new Vue({
+new Vue({
   el: '#app',
   router,
   i18n,
