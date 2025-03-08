@@ -67,16 +67,12 @@ module.exports = {
       },
       {
         test: /\.json$/,
-        loader: 'json-loader',
-        type: 'javascript/auto'
+        type: 'javascript/auto',
+        loader: 'json-loader'
       },
       {
         test: /\.html$/,
         loader: 'vue-html-loader'
-      },
-      {
-        test: /\.json$/,
-        loader: 'json-loader'
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
