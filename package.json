@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.23.0",
-    "core-js": "^3.35.0",
+    "core-js": "^3.23.3",
     "regenerator-runtime": "^0.14.0",
     "bootstrap": "^5.3.2",
     "element-ui": "^2.15.14",
@@ -26,7 +26,7 @@
     "moment": "^2.29.4",
     "spinkit": "^2.0.1",
     "superagent": "^9.0.0",
-    "superagent-jsonapify": "^1.5.0",
+    "superagent-jsonapify": "^1.6.0",
     "vee-validate": "^4.7.3",
     "vue": "^2.7.14",
     "vue-i18n": "^8.28.2",
