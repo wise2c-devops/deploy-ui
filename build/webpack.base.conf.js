@@ -56,7 +56,15 @@ module.exports = {
       // },
       {
         test: /\.vue$/,
-        loader: 'vue'
+        loader: 'vue',
+        options: {
+          loaders: utils.cssLoaders({
+            sourceMap: process.env.NODE_ENV === 'production' ?
+              config.build.productionSourceMap :
+              config.dev.cssSourceMap,
+            extract: process.env.NODE_ENV === 'production'
+          })
+        }
       },
       {
         test: /\.js$/,
