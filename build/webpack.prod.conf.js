@@ -9,12 +9,18 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 
 var env
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = 'production'
+}
+
 if (process.env.NODE_ENV === 'testing') {
   env = require('../config/test.env')
 } else {
   const envConfig = config[process.env.NODE_ENV]
   if (!envConfig) {
-    throw new Error(`No configuration found for NODE_ENV=${process.env.NODE_ENV}`)
+    console.error(`No configuration found for NODE_ENV=${process.env.NODE_ENV}`)
+    console.log('Available configurations:', Object.keys(config))
+    process.exit(1)
   }
   env = envConfig.env
 }

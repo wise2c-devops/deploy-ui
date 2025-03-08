@@ -5,14 +5,23 @@ const webpack = require('webpack')
 const webpackConfig = require('./webpack.prod.conf')
 
 // Ensure NODE_ENV is set
-process.env.NODE_ENV = 'production'
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = 'production'
+}
+
+console.log(`Building with NODE_ENV=${process.env.NODE_ENV}`)
 
 const spinner = ora('Building for production...')
 spinner.start()
 
 // Clean dist directory
-execSync('rm -rf dist')
-execSync('mkdir -p dist')
+try {
+  execSync('rm -rf dist')
+  execSync('mkdir -p dist')
+} catch (err) {
+  console.error('Error cleaning dist directory:', err)
+  process.exit(1)
+}
 
 // Copy static assets
 execSync('cp -R static/* dist/')
