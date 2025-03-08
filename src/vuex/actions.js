@@ -28,12 +28,15 @@ export const fetchClusters = ({dispatch}, success = ()=> {}) => {
   })
 }
 
-export const createCluster = ({dispatch}, cluster, success = ()=>{}) => {
-  post(API.CLUSTERS, cluster).then((response) => {
-    dispatch('ADD_CLUSTER', response.body)
-    success()
-  }).catch(() => {
-    popWarn('errAddCluster')
+export const createCluster = ({commit}, cluster) => {
+  return new Promise((resolve, reject) => {
+    post(API.CLUSTERS, cluster).then((response) => {
+      commit('ADD_CLUSTER', response.body)
+      resolve(response)
+    }).catch((error) => {
+      popWarn('errAddCluster')
+      reject(error)
+    })
   })
 }
 

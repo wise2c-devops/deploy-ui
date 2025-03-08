@@ -29,8 +29,7 @@
 
 <script type="text/javascript">
 import ClusterDialog from './common/ClusterDialog'
-import { fetchClusters, createCluster, deleteCluster } from 'vuexPath/actions'
-import { getClusters } from 'vuexPath/getters'
+import { mapActions, mapGetters } from 'vuex'
 import { promptOnDelete } from '../utils/prompt'
 import { pop } from '../utils/alert'
 export default {
@@ -67,12 +66,16 @@ export default {
       this.dialogVisible = true
       return
     },
-    create(cluster) {
-      var newCluster = Object.assign({}, cluster)
-      this.createCluster(newCluster, () => {
+    async create(cluster) {
+      try {
+        const newCluster = Object.assign({}, cluster)
+        await this.createCluster(newCluster)
         pop(this.$t('layer.createSuccess'))
         this.dialogVisible = false
-      })
+        await this.fetchClusters() // Refresh the list
+      } catch (error) {
+        console.error('Error creating cluster:', error)
+      }
     },
     updateCluster() {
       // console.log('update')
@@ -95,16 +98,17 @@ export default {
   mounted() {
     this.fetchClusters()
   },
-  vuex: {
-    actions: {
-      fetchClusters,
-      createCluster,
-      deleteCluster
-    },
-    getters: {
-      clusters: getClusters
-    }
-  }
+  computed: {
+    ...mapGetters({
+      clusters: 'getClusters'
+    })
+  },
+  methods: {
+    ...mapActions([
+      'fetchClusters',
+      'createCluster',
+      'deleteCluster'
+    ]),
 }
 </script>
 
