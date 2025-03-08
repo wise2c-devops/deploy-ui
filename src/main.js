@@ -16,8 +16,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 import VueI18n from 'vue-i18n'
 import {getDocmentTitle, getDefaultLang} from './utils/string'
 
-import config from '../config/sysconfig.json'
-Vue.prototype.$config = Vue.prototype.$config || config
+const config = require('../config/sysconfig.json')
+Vue.prototype.$config = Vue.prototype.$config || config.default || config
 Vue.use(Element)
 
 // if(process.env.NODE_ENV==='production') {
