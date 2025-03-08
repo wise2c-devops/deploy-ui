@@ -14,9 +14,10 @@ import FR from './components/lang/fr'
 import './assets/wise-icons/css/fontello.css'
 import 'element-ui/lib/theme-chalk/index.css'
 import VueI18n from 'vue-i18n'
-import {getDocmentTitle, getDefaultLang} from 'utils/string'
+import {getDocmentTitle, getDefaultLang} from './utils/string'
 
-Vue.prototype.$config = Vue.prototype.$config || require('../config/sysconfig.json')
+const config = require('../config/sysconfig.json')
+Vue.prototype.$config = Vue.prototype.$config || config
 Vue.use(Element)
 
 // if(process.env.NODE_ENV==='production') {
