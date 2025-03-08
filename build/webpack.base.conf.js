@@ -46,17 +46,10 @@ module.exports = {
         exclude: /node_modules/
       }
     ],
-    loaders: [
-      // {
-      //   test: require.resolve('jsplumb'),
-      //   loaders: [
-      //     'imports?this=>window',
-      //     'script'
-      //   ]
-      // },
+    rules: [
       {
         test: /\.vue$/,
-        loader: 'vue',
+        loader: 'vue-loader',
         options: {
           loaders: utils.cssLoaders({
             sourceMap: process.env.NODE_ENV === 'production' ?
@@ -68,30 +61,30 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        loader: 'babel',
+        loader: 'babel-loader',
         include: projectRoot,
         exclude: /node_modules/
       },
       {
         test: /\.json$/,
-        loader: 'json'
+        loader: 'json-loader'
       },
       {
         test: /\.html$/,
-        loader: 'vue-html'
+        loader: 'vue-html-loader'
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url',
-        query: {
+        loader: 'url-loader',
+        options: {
           limit: 10000,
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url',
-        query: {
+        loader: 'url-loader',
+        options: {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
