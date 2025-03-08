@@ -32,8 +32,10 @@ import ClusterDialog from './common/ClusterDialog'
 import { mapActions, mapGetters } from 'vuex'
 import { promptOnDelete } from '../utils/prompt'
 import { pop } from '../utils/alert'
+import { loadingMixin } from '../mixin/loading'
 export default {
   components: { ClusterDialog },
+  mixins: [loadingMixin],
   data() {
     return {
       dialogVisible: false,
@@ -68,6 +70,7 @@ export default {
     },
     async create(cluster) {
       try {
+        this.showLoading()
         const newCluster = Object.assign({}, cluster)
         await this.createCluster(newCluster)
         pop(this.$t('layer.createSuccess'))
@@ -75,6 +78,8 @@ export default {
         await this.fetchClusters() // Refresh the list
       } catch (error) {
         console.error('Error creating cluster:', error)
+      } finally {
+        this.hideLoading()
       }
     },
     updateCluster() {
