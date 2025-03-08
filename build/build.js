@@ -1,35 +1,53 @@
-// https://github.com/shelljs/shelljs
-require('shelljs/global')
-env.NODE_ENV = 'production'
+const path = require('path')
+const { execSync } = require('child_process')
+const ora = require('ora')
+const webpack = require('webpack')
+const webpackConfig = require('./webpack.prod.conf')
 
-var path = require('path')
-var config = require('../config')
-var ora = require('ora')
-var webpack = require('webpack')
-var webpackConfig = require('./webpack.prod.conf')
-
-console.log(
-  '  Tip:\n' +
-  '  Built files are meant to be served over an HTTP server.\n' +
-  '  Opening index.html over file:// won\'t work.\n'
-)
-
-var spinner = ora('building for production...')
+const spinner = ora('Building for production...')
 spinner.start()
 
-var assetsPath = path.join(config.build.assetsRoot, config.build.assetsSubDirectory)
-rm('-rf', assetsPath)
-mkdir('-p', assetsPath)
-cp('-R', 'static/', assetsPath)
+// Clean dist directory
+execSync('rm -rf dist')
+execSync('mkdir -p dist')
 
-webpack(webpackConfig, function (err, stats) {
+// Copy static assets
+execSync('cp -R static/* dist/')
+
+const compiler = webpack(webpackConfig)
+
+compiler.run((err, stats) => {
   spinner.stop()
-  if (err) throw err
-  process.stdout.write(stats.toString({
-    colors: true,
-    modules: false,
-    children: false,
-    chunks: false,
-    chunkModules: false
-  }) + '\n')
+  
+  if (err) {
+    console.error(err.stack || err)
+    if (err.details) {
+      console.error(err.details)
+    }
+    process.exit(1)
+  }
+
+  const info = stats.toJson()
+
+  if (stats.hasErrors()) {
+    console.error(info.errors)
+    process.exit(1)
+  }
+
+  if (stats.hasWarnings()) {
+    console.warn(info.warnings)
+  }
+
+  console.log(
+    stats.toString({
+      colors: true,
+      modules: false,
+      children: false,
+      chunks: false,
+      chunkModules: false
+    })
+  )
+
+  console.log('\nBuild complete!')
+  console.log('Files output to:', path.resolve(__dirname, '../dist'))
 })

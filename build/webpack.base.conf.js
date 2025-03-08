@@ -1,9 +1,11 @@
-var path = require('path')
-var config = require('../config')
-var utils = require('./utils')
+const path = require('path')
+const config = require('../config')
+const utils = require('./utils')
+const { VueLoaderPlugin } = require('vue-loader')
 var projectRoot = path.resolve(__dirname, '../')
 
 module.exports = {
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
     app: './src/main.js'
   },
@@ -13,8 +15,7 @@ module.exports = {
     filename: '[name].js'
   },
   resolve: {
-    extensions: ['', '.js', '.vue'],
-    fallback: [path.join(__dirname, '../node_modules')],
+    extensions: ['.js', '.vue'],
     alias: {
       vue: 'vue/dist/vue.js',
       'src': path.resolve(__dirname, '../src'),
@@ -28,72 +29,74 @@ module.exports = {
     }
   },
   resolveLoader: {
-    fallback: [path.join(__dirname, '../node_modules')]
+    modules: [path.join(__dirname, '../node_modules')]
   },
+  plugins: [
+    new VueLoaderPlugin()
+  ],
   module: {
-    noParse: /.npminstall\/localforage\/1.4.3\/localforage\/dist\/localforage.js/,    
-    preLoaders: [
+    rules: [
       {
         test: /\.vue$/,
-        loader: 'eslint',
-        include: projectRoot,
-        exclude: /node_modules/
+        loader: 'vue-loader',
+        options: {
+          compilerOptions: {
+            preserveWhitespace: false
+          }
+        }
       },
       {
         test: /\.js$/,
-        loader: 'eslint',
-        include: projectRoot,
-        exclude: /node_modules/
-      }
-    ],
-    loaders: [
-      // {
-      //   test: require.resolve('jsplumb'),
-      //   loaders: [
-      //     'imports?this=>window',
-      //     'script'
-      //   ]
-      // },
-      {
-        test: /\.vue$/,
-        loader: 'vue'
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel',
+        loader: 'babel-loader',
         include: projectRoot,
         exclude: /node_modules/
       },
       {
         test: /\.json$/,
-        loader: 'json'
+        type: 'json'
       },
       {
         test: /\.html$/,
-        loader: 'vue-html'
+        loader: 'html-loader'
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url',
-        query: {
-          limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+        type: 'asset/resource',
+        generator: {
+          filename: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url',
-        query: {
-          limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+        type: 'asset/resource',
+        generator: {
+          filename: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
+      },
+      {
+        test: /\.css$/,
+        use: [
+          process.env.NODE_ENV !== 'production'
+            ? 'vue-style-loader'
+            : MiniCssExtractPlugin.loader,
+          'css-loader'
+        ]
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          process.env.NODE_ENV !== 'production'
+            ? 'vue-style-loader'
+            : MiniCssExtractPlugin.loader,
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass')
+            }
+          }
+        ]
       }
     ]
-  },
-  eslint: {
-    formatter: require('eslint-friendly-formatter')
-  },
-  vue: {
-    loaders: utils.cssLoaders()
   }
 }
