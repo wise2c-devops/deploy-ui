@@ -1,6 +1,6 @@
-var merge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 
-module.exports = merge({}, {
+module.exports = merge({
   NODE_ENV: '"production"',
   HTTP_HOST: '""',
   WEBSOCKET_HOST: '"ws://192.168.9.10:8080"',
