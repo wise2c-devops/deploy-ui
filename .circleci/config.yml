@@ -6,7 +6,7 @@ jobs:
       - run:
           name: Build an amd64 container image
           command: |
-            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:20 bash -c "npm install ora@5.4.1 --save-dev && npm install --legacy-peer-deps && npm run build"
+            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:20 bash -c "npm install inject-loader@5.0.0 --save-dev && npm install ora@5.4.1 --save-dev && npm install --legacy-peer-deps && npm run bui"
             docker build -t wise2c/deploy-ui:amd64-$CIRCLE_BRANCH .
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push wise2c/deploy-ui:amd64-$CIRCLE_BRANCH
@@ -18,7 +18,7 @@ jobs:
       - run:
           name: Build an amd64 container image
           command: |
-            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:20 bash -c "npm install ora@5.4.1 --save-dev && npm install --legacy-peer-deps && npm run build"
+            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:20 bash -c "npm install inject-loader@5.0.0 --save-dev && npm install ora@5.4.1 --save-dev && npm install --legacy-peer-deps && npm run bui"
             docker build -t wise2c/deploy-ui:amd64-$CIRCLE_TAG .
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push wise2c/deploy-ui:amd64-$CIRCLE_TAG
@@ -31,7 +31,7 @@ jobs:
       - run:
           name: Build an aarch64 container image
           command: |
-            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:20 bash -c "npm install ora@5.4.1 --save-dev && npm install --legacy-peer-deps && npm run build"          
+            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:20 bash -c "npm install inject-loader@5.0.0 --save-dev && npm install ora@5.4.1 --save-dev && npm install --legacy-peer-deps && npm run bui"          
             docker build -t wise2c/deploy-ui:aarch64-$CIRCLE_BRANCH .
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push wise2c/deploy-ui:aarch64-$CIRCLE_BRANCH
@@ -44,7 +44,7 @@ jobs:
       - run:
           name: Build an aarch64 container image
           command: |
-            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:20 bash -c "npm install ora@5.4.1 --save-dev && npm install --legacy-peer-deps && npm run build"
+            docker run -t --rm -v ${PWD}:/deploy-ui -w /deploy-ui node:20 bash -c "npm install inject-loader@5.0.0 --save-dev && npm install ora@5.4.1 --save-dev && npm install --legacy-peer-deps && npm run bui"
             docker build -t wise2c/deploy-ui:aarch64-$CIRCLE_TAG .
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker push wise2c/deploy-ui:aarch64-$CIRCLE_TAG
