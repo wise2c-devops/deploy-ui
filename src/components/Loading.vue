@@ -42,7 +42,7 @@
   }
 </style>
 <script type="text/javascript">
-  import {hideLoading} from 'vuexPath/actions'
+  import {hideLoading} from '../vuex/actions'
   var timer
   export default{
     vuex: {

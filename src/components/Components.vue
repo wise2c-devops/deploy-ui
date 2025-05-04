@@ -74,12 +74,12 @@ import { getCluster,
   updateComponent,
   deploy,
   resetSlectComponents,
-  fetchComponentTypes} from 'vuexPath/modules/cluster'
+  fetchComponentTypes} from '../vuex/modules/cluster'
 import ComponentDialog from './common/ComponentDialog'
 import { pop, popWarn } from '../utils/alert'
 import { promptOnDelete } from '../utils/prompt'
 import { filter, map } from 'lodash'
-import { resetProperties } from 'vuexPath/modules/component'
+import { resetProperties } from '../vuex/modules/component'
 export default {
   components: {
     ComponentDialog

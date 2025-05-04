@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { fetchHosts, getHosts, addHost, deleteHost, updateHost, getCluster } from 'vuexPath/modules/cluster'
+import { fetchHosts, getHosts, addHost, deleteHost, updateHost, getCluster } from '../vuex/modules/cluster'
 import HostDialog from './common/HostDialog'
 import { pop } from '../utils/alert'
 import { promptOnDelete } from '../utils/prompt'

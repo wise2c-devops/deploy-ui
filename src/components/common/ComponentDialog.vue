@@ -84,7 +84,7 @@ import {
   resetProperties,
   fetchComponentVersions,
   getComponentVersions,
-  fetchVersionProperties} from 'vuexPath/modules/component'
+  fetchVersionProperties} from '../../vuex/modules/component'
 export default {
   mixins: [validationError],
   props: {

@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-import { fetchLogs, getLogs, getCluster } from "vuexPath/modules/cluster"
+import { fetchLogs, getLogs, getCluster } from "../vuex/modules/cluster"
 export default {
   computed: {
     clusterId() {
