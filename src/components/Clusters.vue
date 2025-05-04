@@ -29,10 +29,13 @@
 
 <script type="text/javascript">
 import ClusterDialog from './common/ClusterDialog'
-import { fetchClusters, createCluster, deleteCluster } from '../vuex/actions'
+import { fetchClusters, createCluster, deleteCluster, getClusters } from '../vuex/modules/cluster'
 import { getClusters } from '../vuex/getters'
 import { promptOnDelete } from '../utils/prompt'
 import { pop } from '../utils/alert'
+import { mapActions, mapGetters } from 'vuex'
+import store from '../vuex/store'
+
 export default {
   components: { ClusterDialog },
   data() {
@@ -44,7 +47,11 @@ export default {
       }
     }
   },
-  methods: {
+  store,
+  methods: Object.assign (
+    // Map actions
+    mapActions(['fetchClusters', 'createCluster', 'deleteCluster']),
+    {
     remove(index, id) {
       promptOnDelete(this, this.$t('clusters.delteTips'), () => {
         this.deleteCluster(id, index, () => {
@@ -91,20 +98,16 @@ export default {
           return 'fa-desktop'
       }
     }
+    }
   },
   mounted() {
     this.fetchClusters()
   },
-  vuex: {
-    actions: {
-      fetchClusters,
-      createCluster,
-      deleteCluster
-    },
-    getters: {
-      clusters: getClusters
-    }
-  }
+  computed: Object.assign({},
+    mapGetters({
+      clusters: 'clusters' // Map 'clusters' getter to this.clusters
+    })
+  )
 }
 </script>
 
