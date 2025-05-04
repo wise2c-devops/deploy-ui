@@ -29,7 +29,7 @@
 
 <script type="text/javascript">
 import ClusterDialog from './common/ClusterDialog'
-import { fetchClusters, createCluster, deleteCluster, getClusters } from '../vuex/modules/cluster'
+// import { fetchClusters, createCluster, deleteCluster, getClusters } from '../vuex/modules/cluster'
 import { promptOnDelete } from '../utils/prompt'
 import { pop } from '../utils/alert'
 import { mapActions, mapGetters } from 'vuex'
