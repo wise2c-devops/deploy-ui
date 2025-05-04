@@ -30,7 +30,6 @@
 <script type="text/javascript">
 import ClusterDialog from './common/ClusterDialog'
 import { fetchClusters, createCluster, deleteCluster, getClusters } from '../vuex/modules/cluster'
-import { getClusters } from '../vuex/getters'
 import { promptOnDelete } from '../utils/prompt'
 import { pop } from '../utils/alert'
 import { mapActions, mapGetters } from 'vuex'
@@ -54,9 +53,9 @@ export default {
     {
     remove(index, id) {
       promptOnDelete(this, this.$t('clusters.delteTips'), () => {
-        this.deleteCluster(id, index, () => {
-          pop(this.$t('layer.deleteSuccess'))
-        })
+	this.deleteCluster(id, index, () => {
+	  pop(this.$t('layer.deleteSuccess'))
+	})
       })
     },
     editClusterDialog(cluster) {
@@ -68,8 +67,8 @@ export default {
     },
     addClusterDialog() {
       this.cluster = {
-        name: "",
-        description: ""
+	name: "",
+	description: ""
       }
       this.dialogVisible = true
       return
@@ -77,8 +76,8 @@ export default {
     create(cluster) {
       var newCluster = Object.assign({}, cluster)
       this.createCluster(newCluster, () => {
-        pop(this.$t('layer.createSuccess'))
-        this.dialogVisible = false
+	pop(this.$t('layer.createSuccess'))
+	this.dialogVisible = false
       })
     },
     updateCluster() {
@@ -86,20 +85,19 @@ export default {
     },
     icon(cluster) {
       switch(cluster.state) {
-        case 'initial':
-          return 'fa-desktop'
-        case 'proccessing':
-          return 'fa-hourglass-half'
-        case 'success':
-          return 'fa-check-circle-o'
-        case 'failed':
-          return 'fa-times'
-        default:
-          return 'fa-desktop'
+	case 'initial':
+	  return 'fa-desktop'
+	case 'proccessing':
+	  return 'fa-hourglass-half'
+	case 'success':
+	  return 'fa-check-circle-o'
+	case 'failed':
+	  return 'fa-times'
+	default:
+	  return 'fa-desktop'
       }
     }
-    }
-  },
+  ),
   mounted() {
     this.fetchClusters()
   },
