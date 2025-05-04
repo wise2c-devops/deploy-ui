@@ -2,19 +2,19 @@ import {get, post, destroy } from '../utils/rest'
 import API from '../utils/rest'
 import {popWarn} from '../utils/alert'
 import {formatString} from '../utils/string'
-export const showLoading = function ({ dispatch }, success = null) {
-  dispatch('UPDATE_LOADING', true)
+
+export const showLoading = ({ commit }, success = null) => {
+  commit('UPDATE_LOADING', true)
   if (success !== null) success()
   //强制清除 loading
   setTimeout(() => {
-    dispatch('UPDATE_LOADING', false)
+    commit('UPDATE_LOADING', false)
   }, 20000)
-
 }
 
-export const hideLoading = function ({ dispatch }, success = null) {
+export const hideLoading = ({ commit }, success = null) => {
   setTimeout(() => {
-    dispatch('UPDATE_LOADING', false)
+    commit('UPDATE_LOADING', false)
     if (success !== null) success()
   }, 500)
 }

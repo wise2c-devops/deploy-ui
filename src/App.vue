@@ -75,8 +75,11 @@
 <script type="text/javascript">
   import Loading from './components/Loading.vue'
   import {getDocmentTitle, getDefaultLang} from 'utils/string'
-  import {showLoading, hideLoading} from './vuex/actions'
+  // import {showLoading, hideLoading} from './vuex/actions'
   import store from './vuex/store'
+  // 导入 mapActions
+  import { mapActions } from 'vuex'
+
   export default {
     components: {
       Loading
@@ -101,43 +104,48 @@
     },
     computed : {
     },
-    methods: {
-      getPlayLang() {
-        const lang = getDefaultLang()
-        if (lang === 'en') return 'English'
-        if (lang === 'fr') return 'Français'
-        else return '中文'
-      },
-      goPath(flag, path) {
-        this.showContactUs = flag
-        this.$router.push({
-          path: path
-        })
-      },
-      changeI18n(langType) {
-        this.lang = langType
+    methods: Object.assign(
+      // 使用 mapActions 映射 Vuex actions 到组件方法
+      mapActions(['showLoading', 'hideLoading']),
+      {
+        getPlayLang() {
+          const lang = getDefaultLang()
+          if (lang === 'en') return 'English'
+          if (lang === 'fr') return 'Français'
+          else return '中文'
+        },
+        goPath(flag, path) {
+          this.showContactUs = flag
+          this.$router.push({
+            path: path
+          })
+        },
+        changeI18n(langType) {
+          this.lang = langType
 
-        switch (langType) {
-          case 'English':
-            window.sessionStorage.setItem('DEPLOYMENT_LANGUAGE', 'en')
-            break
-          case 'Français':
-            window.sessionStorage.setItem('DEPLOYMENT_LANGUAGE', 'fr')
-            break
-          default:
-            window.sessionStorage.setItem('DEPLOYMENT_LANGUAGE', 'zh')
-            break
+          switch (langType) {
+            case 'English':
+              window.sessionStorage.setItem('DEPLOYMENT_LANGUAGE', 'en')
+              break
+            case 'Français':
+              window.sessionStorage.setItem('DEPLOYMENT_LANGUAGE', 'fr')
+              break
+            default:
+              window.sessionStorage.setItem('DEPLOYMENT_LANGUAGE', 'zh')
+              break
+          }
+          this.$i18n.locale = window.sessionStorage.getItem('DEPLOYMENT_LANGUAGE')
+          document.title = `Kubernetes ${getDocmentTitle(window.sessionStorage.getItem('DEPLOYMENT_LANGUAGE'))}`
         }
-        this.$i18n.locale = window.sessionStorage.getItem('DEPLOYMENT_LANGUAGE')
-        document.title = `Kubernetes ${getDocmentTitle(window.sessionStorage.getItem('DEPLOYMENT_LANGUAGE'))}`
       }
-    },
-    vuex: {
-      actions: {
-        showLoading,
-        hideLoading
-      }
-    }
+    )
+    // 删除旧的vuex配置
+    // vuex: {
+    //   actions: {
+    //     showLoading,
+    //     hideLoading
+    //   }
+    // }
   }
 </script>
 
