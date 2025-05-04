@@ -51,50 +51,51 @@ export default {
     // Map actions
     mapActions(['fetchClusters', 'createCluster', 'deleteCluster']),
     {
-    remove(index, id) {
-      promptOnDelete(this, this.$t('clusters.delteTips'), () => {
-	this.deleteCluster(id, index, () => {
-	  pop(this.$t('layer.deleteSuccess'))
-	})
-      })
-    },
-    editClusterDialog(cluster) {
-      this.cluster = cluster
-      this.dialogVisible = true
-    },
-    showCluster(cluster) {
-      this.$router.push({ name: "hosts", params: { id: cluster.id } })
-    },
-    addClusterDialog() {
-      this.cluster = {
-	name: "",
-	description: ""
-      }
-      this.dialogVisible = true
-      return
-    },
-    create(cluster) {
-      var newCluster = Object.assign({}, cluster)
-      this.createCluster(newCluster, () => {
-	pop(this.$t('layer.createSuccess'))
-	this.dialogVisible = false
-      })
-    },
-    updateCluster() {
-      // console.log('update')
-    },
-    icon(cluster) {
-      switch(cluster.state) {
-	case 'initial':
-	  return 'fa-desktop'
-	case 'proccessing':
-	  return 'fa-hourglass-half'
-	case 'success':
-	  return 'fa-check-circle-o'
-	case 'failed':
-	  return 'fa-times'
-	default:
-	  return 'fa-desktop'
+      remove(index, id) {
+        promptOnDelete(this, this.$t('clusters.delteTips'), () => {
+          this.deleteCluster(id, index, () => {
+            pop(this.$t('layer.deleteSuccess'))
+          })
+        })
+      },
+      editClusterDialog(cluster) {
+        this.cluster = cluster
+        this.dialogVisible = true
+      },
+      showCluster(cluster) {
+        this.$router.push({ name: "hosts", params: { id: cluster.id } })
+      },
+      addClusterDialog() {
+        this.cluster = {
+          name: "",
+          description: ""
+        }
+        this.dialogVisible = true
+        return
+      },
+      create(cluster) {
+        var newCluster = Object.assign({}, cluster)
+        this.createCluster(newCluster, () => {
+          pop(this.$t('layer.createSuccess'))
+          this.dialogVisible = false
+        })
+      },
+      updateCluster() {
+        // console.log('update')
+      },
+      icon(cluster) {
+        switch(cluster.state) {
+          case 'initial':
+            return 'fa-desktop'
+          case 'proccessing':
+            return 'fa-hourglass-half'
+          case 'success':
+            return 'fa-check-circle-o'
+          case 'failed':
+            return 'fa-times'
+          default:
+            return 'fa-desktop'
+        }
       }
     }
   ),
