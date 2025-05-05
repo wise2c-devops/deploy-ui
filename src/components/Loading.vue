@@ -42,21 +42,15 @@
   }
 </style>
 <script type="text/javascript">
-  import {hideLoading} from '../vuex/actions'
+  import { mapGetters, mapActions } from 'vuex'
   var timer
-  export default{
-    vuex: {
-      getters: {
-        loading: (state) => state.loading
-      },
-      actions: {
-        hideLoading
-      }
-    },
+  export default {
+    computed: Object.assign({}, mapGetters(['loading'])),
+    methods: Object.assign({}, mapActions(['hideLoading'])),
     mounted() {
       timer = setInterval(() => {
         let error = localStorage.getItem('error')
-        if(!!error){
+        if (!!error) {
           this.hideLoading()
           localStorage.removeItem('error')
         }

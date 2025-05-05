@@ -4,31 +4,42 @@ import Cluster from './modules/cluster'
 import Component from './modules/component'
 Vue.use(Vuex)
 
-const state = {
 
-  loading: false,
-  clusters: []
-}
-
-const mutations = {
-  UPDATE_LOADING(state, status) {
-    state.loading = status
-  },
-  UPDATE_CLUSTERS(state, clusters) {
-    state.clusters = clusters
-  },
-  ADD_CLUSTER(state, cluster) {
-    state.clusters.push(cluster)
-  },
-  DELETE_CLUSTER(state, index) {
-    state.clusters.splice(index, 1)
-  }
-
-}
 
 export default new Vuex.Store({
-  state,
-  mutations,
+  state: {
+    clusters: [],
+    loading: false
+  },
+  mutations: {
+    SHOW_LOADING(state) {
+      state.loading = true
+    },
+    HIDE_LOADING(state) {
+      state.loading = false
+    },
+    SET_CLUSTERS(state, clusters) {
+      state.clusters = clusters
+    },
+    FETCH_CLUSTERS(state, clusters) {
+      state.clusters = clusters
+    }
+  },
+  actions: {
+    showLoading({ commit }) {
+      commit('SHOW_LOADING')
+    },
+    hideLoading({ commit }) {
+      commit('HIDE_LOADING')
+    },
+    fetchClusters({ commit }, clusters) {
+      commit('FETCH_CLUSTERS', clusters)
+    }
+  },
+  getters: {
+    clusters: state => state.clusters,
+    loading: state => state.loading
+  },
   modules: {
     cluster: Cluster,
     component: Component

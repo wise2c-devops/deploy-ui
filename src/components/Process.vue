@@ -131,8 +131,8 @@ export default {
       url = `ws://${location.host}/v1/stats`
     }
     var socket = new WebSocket(url)
-    socket.onopen = (event) => {
-      console.info('Success link to backend server', event)
+    socket.onopen = () => {
+      // WebSocket连接成功
     }
     socket.onmessage = (event) => {
       var json = JSON.parse(event.data)
