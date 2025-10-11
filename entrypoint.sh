@@ -1,3 +1,3 @@
 #!/bin/sh
 
-caddy -quic --conf /root/Caddyfile
+caddy run --config /root/Caddyfile

@@ -1,18 +1,16 @@
-0.0.0.0:80 {
-  root /root/ui
-  timeouts none
-  gzip
-  log stdout
-  errors stdout
-}
+:80 {
+  root * /root/ui
+  file_server
 
-# 代理华相的 API
-0.0.0.0:80/v1 {
-  proxy /  127.0.0.1:8080/v1 {
-    transparent
-    websocket
+  encode gzip
+
+  log {
+    output stdout
+    format console
   }
-  gzip
-  log stdout
-  errors stdout
+
+  # 代理华相的 API：保持原有 /v1 前缀转发到 127.0.0.1:8080
+  handle /v1* {
+    reverse_proxy 127.0.0.1:8080
+  }
 }
